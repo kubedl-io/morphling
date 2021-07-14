@@ -1,0 +1,38 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: morphling-ui
+  namespace: morphling-system
+  labels:
+    app: morphling
+    component: ui
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: morphling
+      component: ui
+  template:
+    metadata:
+      name: morphling-ui
+      labels:
+        app: morphling
+        component: ui
+    spec:
+      containers:
+        - name: morphling-ui
+          image: kubedl/morphling-ui
+          imagePullPolicy: IfNotPresent
+          command:
+            - './morphling-ui'
+          args:
+            - '--port=8080'
+          env:
+            - name: MORPHLING_CORE_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          ports:
+            - name: ui
+              containerPort: 8080
+      serviceAccountName: morphling-ui

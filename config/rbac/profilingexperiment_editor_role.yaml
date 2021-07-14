@@ -1,0 +1,24 @@
+# permissions for end users to edit profilingexperiments.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: profilingexperiment-editor-role
+rules:
+- apiGroups:
+  - tuning.kubedl.io
+  resources:
+  - profilingexperiments
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - tuning.kubedl.io
+  resources:
+  - profilingexperiments/status
+  verbs:
+  - get

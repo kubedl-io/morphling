@@ -1,0 +1,48 @@
+apiVersion: "tuning.kubedl.io/v1alpha1"
+kind: ProfilingExperiment
+metadata:
+  namespace: default
+  name: random-experiment
+spec:
+  requestTemplate: ""
+  serviceName: "resnet"
+  objective:
+    type: maximize
+    objectiveMetricName: qps
+  algorithm:
+    algorithmName: random
+  samplingLimit: 3
+  serviceClientTemplate:
+    metadata:
+      name: "resnet-client"
+      namespace: "default"
+    spec:
+      template:
+        spec:
+          containers:
+            - name: pi
+              image: perl
+              command: ["perl",  "-Mbignum=bpi", "-wle", "print bpi(2)"]
+              imagePullPolicy: IfNotPresent
+          restartPolicy: Never
+      backoffLimit: 4
+  servicePodTemplate:
+    metadata:
+      name: "resnet-pod"
+      namespace: "default"
+    template:
+      spec:
+        containers:
+          - name: resnet-container
+            image: lwangbm/resnet_serving
+            imagePullPolicy: IfNotPresent
+            ports:
+              - containerPort: 8500
+  parameters:
+    - category: "resource"
+      parameters:
+        - parameterType: double
+          name: "cpu"
+          feasibleSpace:
+            min: "0.01"
+            max: "0.03"

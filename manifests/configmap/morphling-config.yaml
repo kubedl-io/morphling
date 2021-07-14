@@ -1,0 +1,39 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: morphling-config
+  namespace: morphling-system
+data:
+  sampling: |-
+    {
+      "random": {
+        "image": "gcr.io/kubeflow-images-public/katib/v1alpha3/suggestion-hyperopt"
+      },
+      "grid": {
+        "image": "gcr.io/kubeflow-images-public/katib/v1alpha3/suggestion-chocolate"
+      },
+      "hyperband": {
+        "image": "gcr.io/kubeflow-images-public/katib/v1alpha3/suggestion-hyperband"
+      },
+      "bayesianoptimization": {
+        "image": "gcr.io/kubeflow-images-public/katib/v1alpha3/suggestion-skopt"
+      },
+      "tpe": {
+        "image": "gcr.io/kubeflow-images-public/katib/v1alpha3/suggestion-hyperopt"
+      },
+      "enas": {
+        "image": "gcr.io/kubeflow-images-public/katib/v1alpha3/suggestion-enas",
+        "imagePullPolicy": "Always",
+        "resources": {
+          "limits": {
+            "memory": "200Mi"
+          }
+        }
+      },
+      "cmaes": {
+        "image": "gcr.io/kubeflow-images-public/katib/v1alpha3/suggestion-goptuna"
+      },
+      "darts": {
+        "image": "gcr.io/kubeflow-images-public/katib/v1alpha3/suggestion-darts"
+      }
+    }

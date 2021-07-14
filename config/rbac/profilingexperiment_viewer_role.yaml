@@ -1,0 +1,20 @@
+# permissions for end users to view profilingexperiments.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: profilingexperiment-viewer-role
+rules:
+- apiGroups:
+  - tuning.kubedl.io
+  resources:
+  - profilingexperiments
+  verbs:
+  - get
+  - list
+  - watch
+- apiGroups:
+  - tuning.kubedl.io
+  resources:
+  - profilingexperiments/status
+  verbs:
+  - get

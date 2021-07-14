@@ -1,0 +1,49 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: morphling-db-manager
+  namespace: morphling-system
+  labels:
+    app: morphling
+    component: db-manager
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: morphling
+      component: db-manager
+  template:
+    metadata:
+      name: morphling-db-manager
+      labels:
+        app: morphling
+        component: db-manager
+    spec:
+      containers:
+        - name: morphling-db-manager
+          image: kubedl/morphling-database-manager
+          imagePullPolicy: IfNotPresent
+          env:
+            - name : DB_NAME
+              value: "mysql"
+            - name: DB_PASSWORD
+              value: "morphling"
+          #            valueFrom:
+          #              secretKeyRef:
+          #                name: morphling-mysql-secrets
+          #                key: MYSQL_ROOT_PASSWORD
+          command:
+            - './morphling-db-manager'
+          ports:
+            - name: api
+              containerPort: 6799
+          readinessProbe:
+            exec:
+              command: ["/bin/grpc_health_probe", "-addr=:6799"]
+            initialDelaySeconds: 5
+          livenessProbe:
+            exec:
+              command: ["/bin/grpc_health_probe", "-addr=:6799"]
+            initialDelaySeconds: 10
+            periodSeconds: 60
+            failureThreshold: 5

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: random
+  namespace: morphling-system
+spec:
+  ports:
+    - name: morphling-api
+#      nodePort: 6789
+      port: 6789
+      protocol: TCP
+      targetPort: 6789
+  selector:
+    deployment: random
+  type: NodePort

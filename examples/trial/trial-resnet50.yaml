@@ -1,0 +1,74 @@
+apiVersion: tuning.kubedl.io/v1alpha1
+kind: Trial
+metadata:
+  name: resnet50-experiment-trial
+  namespace: morphling-system
+spec:
+  objective:
+    objectiveMetricName: qps
+    type: maximize
+  requestTemplate: https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2153705155,1396952620&fm=11&gp=0.jpg
+  samplingResult:
+    - category: resource
+      name: cpu
+      value: "1"
+    - category: env
+      name: BATCH_SIZE
+      value: "1"
+  serviceClientTemplate:
+    metadata:
+      creationTimestamp: null
+      name: resnet50-client
+      namespace: default
+    spec:
+      backoffLimit: 4
+      template:
+        metadata:
+          creationTimestamp: null
+        spec:
+          containers:
+            - args:
+                - delphin_client.py
+                - --model
+                - resnet50
+                - --printLog
+                - "True"
+              command:
+                - python3
+              env:
+                - name: TF_CPP_MIN_LOG_LEVEL
+                  value: "3"
+                - name: MODEL_NAME
+                  value: resnet50
+              image: kubedl/morphling-http-client
+              imagePullPolicy: IfNotPresent
+              name: pi
+              resources:
+                limits:
+                  cpu: "4"
+                requests:
+                  cpu: "4"
+          restartPolicy: Never
+  servicePodTemplate:
+    metadata:
+      creationTimestamp: null
+      name: resnet-pod
+      namespace: default
+    template:
+      metadata:
+        creationTimestamp: null
+      spec:
+        containers:
+          - env:
+              - name: MODEL_NAME
+                value: resnet50
+            image: kubedl/morphling-tf-model:resnet50
+            imagePullPolicy: IfNotPresent
+            name: resnet-container
+            ports:
+              - containerPort: 8500
+            resources:
+              limits:
+                cpu: "1"
+              requests:
+                cpu: "1"

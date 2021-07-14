@@ -1,0 +1,24 @@
+# permissions for end users to edit samplings.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: sampling-editor-role
+rules:
+- apiGroups:
+  - tuning.kubedl.io
+  resources:
+  - samplings
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - tuning.kubedl.io
+  resources:
+  - samplings/status
+  verbs:
+  - get

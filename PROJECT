@@ -1,0 +1,3 @@
+version: "2"
+domain: kubedl.io
+repo: github.com/alibaba/morphling

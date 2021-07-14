@@ -1,0 +1,28 @@
+kind: ConfigMap
+metadata:
+  name: morpgling-ui-config
+  namespace: morphling-system
+apiVersion: v1
+data:
+  namespace: morphling-system
+  http-client-image: kubedl/morphling-http-client
+  http-client.yaml: |-
+    metadata:
+      name: "resnet50-client"
+      namespace: "default"
+    spec:
+      template:
+        spec:
+          containers:
+          - image: kubedl/morphling-http-client
+            env:
+              - name: TF_CPP_MIN_LOG_LEVEL
+                value: "3"
+              - name: MODEL_NAME
+                value: "resnet50"
+            command: [ "python3" ]
+            args: ["morphling_client.py", "--model", "resnet50", "--printLog", "True"]
+            imagePullPolicy: IfNotPresent
+          restartPolicy: Never
+      backoffLimit: 4
+

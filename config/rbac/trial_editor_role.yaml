@@ -1,0 +1,24 @@
+# permissions for end users to edit trials.
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: trial-editor-role
+rules:
+- apiGroups:
+  - tuning.kubedl.io
+  resources:
+  - trials
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - tuning.kubedl.io
+  resources:
+  - trials/status
+  verbs:
+  - get
