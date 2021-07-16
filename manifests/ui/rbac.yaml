@@ -12,6 +12,8 @@ rules:
       - nodes
     verbs:
       - list
+      - watch
+      - get
   - apiGroups:
       - tuning.kubedl.io
     resources:
