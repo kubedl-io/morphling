@@ -57,7 +57,7 @@ func (handler *ExperimentHandler) GetExperimentList(query *utils.Query) ([]utils
 	for _, pe := range expList.Items {
 
 		// Time
-		if pe.Status.StartTime.Time.After(query.EndTime) || pe.Status.StartTime.Time.Before(query.StartTime) {
+		if pe.Status.StartTime != nil && (pe.Status.StartTime.Time.After(query.EndTime) || pe.Status.StartTime.Time.Before(query.StartTime)) {
 			continue
 		}
 
