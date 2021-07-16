@@ -20,7 +20,7 @@ spec:
         spec:
           containers:
           - name: pi
-            image: kubedl/morphling-http-client
+            image: kubedl/morphling-http-client:demo
             env:
               - name: TF_CPP_MIN_LOG_LEVEL
                 value: "3"

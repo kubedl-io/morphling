@@ -12,7 +12,7 @@ FROM golang:1.16.5 as backend-builder
 WORKDIR /workspace
 
 COPY . .
-
+RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go mod vendor
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -mod=vendor -a -o backend-server console/backend/main.go
 
 FROM alpine:latest
