@@ -337,7 +337,7 @@ class ExperimentDetail extends Component {
             }}
             search={false}
             columns={columns_optTrials}
-            dataSource={detail.currentOptimalTrial}
+            dataSource={detail.currentOptimalTrials}
             options={{
               fullScreen: true,
               setting: true,

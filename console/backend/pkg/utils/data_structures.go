@@ -65,6 +65,12 @@ type TrialSpec struct {
 	CreateTime       string            `json:"createTime"`
 }
 
+type CurrentOptimalTrial struct {
+	ObjectiveName    string            `json:"objectiveName"`
+	ObjectiveValue   string            `json:"objectiveValue"`
+	ParameterSamples map[string]string `json:"parameterSamples"`
+}
+
 type ProfilingExperimentDetail struct {
 	Name               string                                   `json:"name"`
 	ExperimentUserID   string                                   `json:"UserId,omitempty"`
@@ -75,14 +81,15 @@ type ProfilingExperimentDetail struct {
 	EndTime            string                                   `json:"endTime"`
 	DurationTime       string                                   `json:"durationTime"`
 
-	TrialsTotal     int32           `json:"trialsTotal"`
-	TrialsSucceeded int32           `json:"trialsSucceeded"`
-	AlgorithmName   string          `json:"algorithmName"`
-	MaxNumTrials    int32           `json:"maxNumTrials"`
-	Objective       string          `json:"objective"`
-	Parallelism     int32           `json:"parallelism"`
-	Parameters      []ParameterSpec `json:"parameters"`
-	Trials          []TrialSpec     `json:"trials"`
+	TrialsTotal          int32                 `json:"trialsTotal"`
+	TrialsSucceeded      int32                 `json:"trialsSucceeded"`
+	AlgorithmName        string                `json:"algorithmName"`
+	MaxNumTrials         int32                 `json:"maxNumTrials"`
+	Objective            string                `json:"objective"`
+	Parallelism          int32                 `json:"parallelism"`
+	Parameters           []ParameterSpec       `json:"parameters"`
+	Trials               []TrialSpec           `json:"trials"`
+	CurrentOptimalTrials []CurrentOptimalTrial `json:"currentOptimalTrials"`
 }
 
 type Query struct {

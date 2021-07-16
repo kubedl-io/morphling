@@ -8,8 +8,10 @@ rules:
     resources:
       - configmaps
       - namespaces
+      - pods
+      - nodes
     verbs:
-      - "*"
+      - list
   - apiGroups:
       - tuning.kubedl.io
     resources:

@@ -189,6 +189,14 @@ const TableForm = ({value, onChange}) => {
           return;
         }
       }
+      if (target.type === "discrete") {
+        if (!target.list.match(/^(\s*-?\d+(\.\d+)?)(\s*,\s*-?\d+(\.\d+)?)*$/) && !target.list.match(/^[a-zA-Z][a-zA-Z0-9_\-]+(,[a-zA-Z][a-zA-Z0-9_\-]+)*$/)) {
+          message.error(intl.formatMessage({id: 'morphling-dashboard-err-valid-par-discrete'}));
+          e.target.focus();
+          setLoading(false);
+          return;
+        }
+      }
 
       delete target.isNew;
       toggleEditable(e, key);

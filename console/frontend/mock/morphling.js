@@ -189,7 +189,7 @@ export default {
                 isOptimal: true,
               },
             ],
-            currentOptimalTrial: [{
+            currentOptimalTrials: [{
               objectiveName: "qps",
               objectiveValue: "6",
               parameterSamples: {CPU: 1, "Batch Size": 3},

@@ -554,6 +554,8 @@ export default {
   'morphling-dashboard-err-duplicate': "Please delete duplicated parameters",
   "morphling-dashboard-results": "Profiling Results",
   "morphling-dashboard-optimal": "Current Optimal Configuration",
+  'morphling-dashboard-err-valid-par-discrete': "Please enter valid list: number, letters, digits, '-', and '_'",
+
 
 
 

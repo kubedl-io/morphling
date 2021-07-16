@@ -2,7 +2,7 @@ import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/theme-sqlserver';
 import 'ace-builds/src-noconflict/mode-yaml';
 // import "ace-builds/src-noconflict/theme-github";
-import {Button, Card, Col, Form, Input, InputNumber, Row, Select} from "antd";
+import {Button, Card, Col, Form, Input, InputNumber, Row, Select, message} from "antd";
 import React, {useEffect, useState} from "react";
 import {connect} from "dva";
 import {PageHeaderWrapper} from "@ant-design/pro-layout";
@@ -136,7 +136,8 @@ const ExperimentCreate = ({globalConfig}) => {
   };
 
   const splitParameterList = (string) => {
-    return string.split(',')
+    // message.error(string.replace(/\s+/g, '').split(','));
+    return string.replace(/\s+/g, '').split(',')
   }
 
   const onFormSubmit = async form => {
@@ -232,6 +233,8 @@ const ExperimentCreate = ({globalConfig}) => {
       let ret = await submitPePars(data_all);
       if (ret.code === "200") {
         history.push("/pe-monitor");
+      } else{
+        message.error(ret.data);
       }
     } finally {
       setSubmitLoading(false);
@@ -244,6 +247,8 @@ const ExperimentCreate = ({globalConfig}) => {
       let ret = await submitPeYaml(peYaml);
       if (ret.code === "200") {
         history.push("/pe-monitor");
+      }else{
+        message.error(ret.data);
       }
     } finally {
       setSubmitLoading(false);

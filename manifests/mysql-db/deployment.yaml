@@ -22,6 +22,7 @@ spec:
       containers:
         - name: morphling-mysql
           image: kubedl/mysql
+          imagePullPolicy: IfNotPresent
           args:
             - --datadir
             - /var/lib/mysql/datadir
@@ -45,16 +46,16 @@ spec:
                 - "/bin/bash"
                 - "-c"
                 - "mysql -D ${MYSQL_DATABASE} -u root -p${MYSQL_ROOT_PASSWORD} -e 'SELECT 1'"
-            initialDelaySeconds: 5
-            periodSeconds: 10
-            timeoutSeconds: 1
+            initialDelaySeconds: 120
+            periodSeconds: 50
+            timeoutSeconds: 5
           livenessProbe:
             exec:
               command:
                 - "/bin/bash"
                 - "-c"
                 - "mysqladmin ping -u root -p${MYSQL_ROOT_PASSWORD}"
-            initialDelaySeconds: 30
+            initialDelaySeconds: 120
             periodSeconds: 10
             timeoutSeconds: 5
           volumeMounts:

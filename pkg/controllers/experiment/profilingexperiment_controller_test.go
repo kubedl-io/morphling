@@ -267,7 +267,7 @@ func newFakeInstance() *morphlingv1alpha1.ProfilingExperiment {
 									Name:    "clientJob-test",
 									Image:   "lwangbm/delphin-client:7",
 									Command: []string{"python3"},
-									Args:    []string{"resnet_grpc_with_db.py"},
+									Args:    []string{"morphling_client.py"},
 									Env: []corev1.EnvVar{
 										{
 											Name:  "TF_CPP_MIN_LOG_LEVEL",
