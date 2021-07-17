@@ -529,7 +529,7 @@ export default {
   'morphling-dashboard-err-valid-par-double': "Please enter doubles for parameters",
   'morphling-dashboard-err-valid-par-range': "Please enter valid parameter range",
   'morphling-dashboard-pe-parameter-min': "Min",
-  'morphling-dashboard-pe-parameter-max': "Max (exclude)",
+  'morphling-dashboard-pe-parameter-max': "Max",
   'morphling-dashboard-pe-parameter-step': "Step",
   'morphling-dashboard-pe-parameter-list': "Discrete List",
   'morphling-dashboard-pe-parameter-action': "Operation",

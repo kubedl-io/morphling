@@ -2,7 +2,7 @@ apiVersion: "tuning.kubedl.io/v1alpha1"
 kind: ProfilingExperiment
 metadata:
   namespace: morphling-system
-  name: mobilenet-experiment-random-3
+  name: mobilenet-experiment-random-1
 spec:
   objective:
     type: maximize
@@ -79,7 +79,7 @@ spec:
           name: "memory"
           feasibleSpace:
             list:
-              - "500Mi"
+              - "200Mi"
               - "1000Mi"
               - "2000Mi"
     - category: "env"

@@ -2,6 +2,10 @@ package handlers
 
 import (
 	"context"
+	"encoding/json"
+	"errors"
+	"flag"
+	"fmt"
 	clientmgr "github.com/alibaba/morphling/console/backend/pkg/client"
 	"github.com/alibaba/morphling/console/backend/pkg/constant"
 	"github.com/alibaba/morphling/console/backend/pkg/utils"
@@ -9,10 +13,19 @@ import (
 	"k8s.io/apimachinery/pkg/api/resource"
 	"k8s.io/apimachinery/pkg/fields"
 	"k8s.io/apimachinery/pkg/runtime"
+	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/klog"
 	resources "k8s.io/kubernetes/pkg/quota/v1"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sort"
+)
+
+func init() {
+	flag.StringVar(&configName, "config-name", "morphling-data-config", "morphling configmap name in morphling-system namespace.")
+}
+
+var (
+	configName string
 )
 
 func NewDataHandler(cmgr *clientmgr.ClientMgr) *DataHandler {
@@ -216,4 +229,36 @@ func (handler *DataHandler) GetNamespaces() ([]string, error) {
 		avaliable = append(avaliable, namespaces.Items[i].Name)
 	}
 	return avaliable, nil
+}
+
+// Get config from configMap
+func (handler *DataHandler) GetConfig() (utils.MorphlingConfig, error) {
+	if configName == "" {
+		return utils.MorphlingConfig{}, errors.New("empty morphling-data-config name")
+	}
+
+	cm := corev1.ConfigMap{}
+	err := handler.client.Get(context.Background(), types.NamespacedName{
+		Name:      configName,
+		Namespace: constant.UINameSpace,
+	}, &cm)
+	if err != nil {
+		return utils.MorphlingConfig{}, fmt.Errorf("failed to get morphling-data-config, err: %v", err)
+	}
+
+	config := cm.Data
+	dataConfig := utils.MorphlingConfig{
+		Namespace:       config["namespace"],
+		HttpClientImage: config["http-client-image"],
+		HsfClientImage:  config["hsf-client-image"],
+		HttpClientYaml:  config["http-client-yaml"],
+		HsfClientYaml:   config["hsf-client-yaml"],
+		HttpServiceYaml: config["http-service-yaml"],
+		HsfServiceYaml: config["hsf-service-yaml"],
+		//AlgorithmNames:  nil,
+	}
+	if err := json.Unmarshal([]byte(config["algorithm-names"]), &dataConfig.AlgorithmNames); err != nil {
+		return utils.MorphlingConfig{}, fmt.Errorf("failed to get algorithm-names from morphling-data-config, err: %v", err)
+	}
+	return dataConfig, nil
 }

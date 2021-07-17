@@ -5,6 +5,17 @@ import (
 	"time"
 )
 
+type MorphlingConfig struct {
+	Namespace       string   `json:"namespace"`
+	HttpClientImage string   `json:"http-client-image"`
+	HsfClientImage  string   `json:"hsf-client-image"`
+	HttpClientYaml  string   `json:"http-client-yaml"`
+	HsfClientYaml   string   `json:"hsf-client-yaml"`
+	HttpServiceYaml  string   `json:"http-service-yaml"`
+	HsfServiceYaml  string   `json:"hsf-service-yaml"`
+	AlgorithmNames  []string `json:"algorithm-names"`
+}
+
 type ClusterTotalResources struct {
 	TotalCPU    int64 `json:"totalCPU"`
 	TotalMemory int64 `json:"totalMemory"`

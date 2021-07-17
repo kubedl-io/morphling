@@ -24,6 +24,8 @@ func (ctrl *DataAPIsController) RegisterRoutes(routes *gin.RouterGroup) {
 	data.GET("/request/:podPhase", ctrl.getClusterRequest)
 	data.GET("/nodeInfos", ctrl.getClusterNodeInfos)
 	data.GET("/namespaces", ctrl.getNamespaces)
+	data.GET("/config", ctrl.getConfig)
+	//data.GET("/namespaces", ctrl.algorithmNames)
 
 }
 
@@ -65,4 +67,22 @@ func (ctrl *DataAPIsController) getNamespaces(c *gin.Context) {
 		return
 	}
 	utils.Succeed(c, namespaces)
+}
+
+//func (ctrl *DataAPIsController) getAlgorithmNames(c *gin.Context) {
+//	clusterTotal, err := ctrl.dataHandler.GetClusterTotalResource()
+//	if err != nil {
+//		handleErr(c, fmt.Sprintf("failed to getAlgorithmNames, err=%v", err))
+//		return
+//	}
+//	utils.Succeed(c, clusterTotal)
+//}
+
+func (ctrl *DataAPIsController) getConfig(c *gin.Context) {
+	morphlingCfg, err := ctrl.dataHandler.GetConfig()
+	if err != nil {
+		handleErr(c, fmt.Sprintf("failed to marshal common config, err: %v", err))
+		return
+	}
+	utils.Succeed(c, morphlingCfg)
 }

@@ -530,7 +530,7 @@ export default {
   'morphling-dashboard-err-valid-par-double': "参数类型为浮点数",
   'morphling-dashboard-err-valid-par-range': "参数上限应高于下限",
   'morphling-dashboard-pe-parameter-min': "最小值",
-  'morphling-dashboard-pe-parameter-max': "最大值（不含）",
+  'morphling-dashboard-pe-parameter-max': "最大值",
   'morphling-dashboard-pe-parameter-step': "步长",
   'morphling-dashboard-pe-parameter-list': "离散取值范围",
   'morphling-dashboard-pe-parameter-action': "操作",
