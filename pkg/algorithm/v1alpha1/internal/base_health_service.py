@@ -23,6 +23,8 @@ from api.v1alpha1.manager.health.python import health_pb2_grpc as _health_pb2_gr
 
 SERVICE_NAME = _health_pb2.DESCRIPTOR.services_by_name['Health'].full_name
 
+# https://grpc.github.io/grpc/python/grpc_health_checking.html
+
 
 class _Watcher:
     def __init__(self):

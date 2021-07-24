@@ -322,7 +322,7 @@ func (r *ProfilingExperimentReconciler) createTrialInstance(expInstance *morphli
 
 	// Init a new trial instance
 	trial := &morphlingv1alpha1.Trial{}
-	trial.Name = trialAssignment.Name // random id
+	trial.Name = trialAssignment.Name // grid id
 	trial.Namespace = expInstance.GetNamespace()
 	trial.Labels = util.TrialLabels(expInstance)
 	if err := controllerutil.SetControllerReference(expInstance, trial, r.Scheme); err != nil {

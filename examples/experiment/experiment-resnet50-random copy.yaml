@@ -2,7 +2,7 @@ apiVersion: "tuning.kubedl.io/v1alpha1"
 kind: ProfilingExperiment
 metadata:
   namespace: morphling-system
-  name: mobilenet-experiment-random-1
+  name: mobilenet-experiment-grid-1
 spec:
   objective:
     type: maximize

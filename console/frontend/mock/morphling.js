@@ -177,7 +177,7 @@ template:
       data: {
         "peInfos": [
           {
-            name: 'resnet50-experiment-random',
+            name: 'resnet50-experiment-grid',
             UserName: 'user-1',
             UserId: 123456789,
             peStatus: 'Created',
@@ -220,7 +220,7 @@ template:
             ],
             trials: [
               {
-                name: "resnet50-experiment-random-dpg9qlps",
+                name: "resnet50-experiment-grid-dpg9qlps",
                 Status: "Succeeded",
                 objectiveName: "qps",
                 objectiveValue: "3",
@@ -229,7 +229,7 @@ template:
                 isOptimal: false,
               },
               {
-                name: "resnet50-experiment-random-rer3frg4",
+                name: "resnet50-experiment-grid-rer3frg4",
                 Status: "Succeeded",
                 objectiveName: "qps",
                 objectiveValue: "4",
@@ -238,7 +238,7 @@ template:
                 isOptimal: false,
               },
               {
-                name: "resnet50-experiment-random-oemyu879",
+                name: "resnet50-experiment-grid-oemyu879",
                 Status: "Failed",
                 objectiveName: "qps",
                 objectiveValue: "6",

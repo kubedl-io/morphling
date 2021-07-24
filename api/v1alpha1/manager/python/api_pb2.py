@@ -16,16 +16,16 @@ _sym_db = _symbol_database.Default()
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='api.proto',
-  package='api.v1.alpha3',
+  package='api.v1alpha1.manager',
   syntax='proto3',
-  serialized_options=None,
+  serialized_options=b'Z\024api.v1alpha1.manager',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\tapi.proto\x12\rapi.v1.alpha3\"E\n\rFeasibleSpace\x12\x0b\n\x03max\x18\x01 \x01(\t\x12\x0b\n\x03min\x18\x02 \x01(\t\x12\x0c\n\x04list\x18\x03 \x03(\t\x12\x0c\n\x04step\x18\x04 \x01(\t\"\x89\x01\n\rParameterSpec\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x34\n\x0eparameter_type\x18\x02 \x01(\x0e\x32\x1c.api.v1.alpha3.ParameterType\x12\x34\n\x0e\x66\x65\x61sible_space\x18\x03 \x01(\x0b\x32\x1c.api.v1.alpha3.FeasibleSpace\"\x89\x01\n\rObjectiveSpec\x12*\n\x04type\x18\x01 \x01(\x0e\x32\x1c.api.v1.alpha3.ObjectiveType\x12\x0c\n\x04goal\x18\x02 \x01(\x01\x12\x1d\n\x15objective_metric_name\x18\x03 \x01(\t\x12\x1f\n\x17\x61\x64\x64itional_metric_names\x18\x04 \x03(\t\"/\n\x10\x41lgorithmSetting\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\"\x13\n\x11\x45\x61rlyStoppingSpec\"\xa2\x01\n\rAlgorithmSpec\x12\x16\n\x0e\x61lgorithm_name\x18\x01 \x01(\t\x12:\n\x11\x61lgorithm_setting\x18\x02 \x03(\x0b\x32\x1f.api.v1.alpha3.AlgorithmSetting\x12=\n\x13\x65\x61rly_stopping_spec\x18\x03 \x01(\x0b\x32 .api.v1.alpha3.EarlyStoppingSpec\"\xb1\x01\n\tNasConfig\x12\x30\n\x0cgraph_config\x18\x01 \x01(\x0b\x32\x1a.api.v1.alpha3.GraphConfig\x12\x37\n\noperations\x18\x02 \x01(\x0b\x32#.api.v1.alpha3.NasConfig.Operations\x1a\x39\n\nOperations\x12+\n\toperation\x18\x01 \x03(\x0b\x32\x18.api.v1.alpha3.Operation\"L\n\x0bGraphConfig\x12\x12\n\nnum_layers\x18\x01 \x01(\x05\x12\x13\n\x0binput_sizes\x18\x02 \x03(\x05\x12\x14\n\x0coutput_sizes\x18\x03 \x03(\x05\"\xa9\x01\n\tOperation\x12\x16\n\x0eoperation_type\x18\x01 \x01(\t\x12@\n\x0fparameter_specs\x18\x02 \x01(\x0b\x32\'.api.v1.alpha3.Operation.ParameterSpecs\x1a\x42\n\x0eParameterSpecs\x12\x30\n\nparameters\x18\x01 \x03(\x0b\x32\x1c.api.v1.alpha3.ParameterSpec\"\x9a\x03\n\x0e\x45xperimentSpec\x12\x45\n\x0fparameter_specs\x18\x01 \x01(\x0b\x32,.api.v1.alpha3.ExperimentSpec.ParameterSpecs\x12/\n\tobjective\x18\x02 \x01(\x0b\x32\x1c.api.v1.alpha3.ObjectiveSpec\x12/\n\talgorithm\x18\x03 \x01(\x0b\x32\x1c.api.v1.alpha3.AlgorithmSpec\x12\x16\n\x0etrial_template\x18\x04 \x01(\t\x12\x1e\n\x16metrics_collector_spec\x18\x05 \x01(\t\x12\x1c\n\x14parallel_trial_count\x18\x06 \x01(\x05\x12\x17\n\x0fmax_trial_count\x18\x07 \x01(\x05\x12,\n\nnas_config\x18\x08 \x01(\x0b\x32\x18.api.v1.alpha3.NasConfig\x1a\x42\n\x0eParameterSpecs\x12\x30\n\nparameters\x18\x01 \x03(\x0b\x32\x1c.api.v1.alpha3.ParameterSpec\"G\n\nExperiment\x12\x0c\n\x04name\x18\x01 \x01(\t\x12+\n\x04spec\x18\x02 \x01(\x0b\x32\x1d.api.v1.alpha3.ExperimentSpec\"2\n\x13ParameterAssignment\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\"%\n\x06Metric\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\"F\n\tMetricLog\x12\x12\n\ntime_stamp\x18\x01 \x01(\t\x12%\n\x06metric\x18\x02 \x01(\x0b\x32\x15.api.v1.alpha3.Metric\"5\n\x0bObservation\x12&\n\x07metrics\x18\x01 \x03(\x0b\x32\x15.api.v1.alpha3.Metric\"?\n\x0eObservationLog\x12-\n\x0bmetric_logs\x18\x01 \x03(\x0b\x32\x18.api.v1.alpha3.MetricLog\"\xa6\x02\n\tTrialSpec\x12\x17\n\x0f\x65xperiment_name\x18\x01 \x01(\t\x12/\n\tobjective\x18\x02 \x01(\x0b\x32\x1c.api.v1.alpha3.ObjectiveSpec\x12L\n\x15parameter_assignments\x18\x03 \x01(\x0b\x32-.api.v1.alpha3.TrialSpec.ParameterAssignments\x12\x10\n\x08run_spec\x18\x04 \x01(\t\x12\x1e\n\x16metrics_collector_spec\x18\x05 \x01(\t\x1aO\n\x14ParameterAssignments\x12\x37\n\x0b\x61ssignments\x18\x01 \x03(\x0b\x32\".api.v1.alpha3.ParameterAssignment\"\x91\x02\n\x0bTrialStatus\x12\x12\n\nstart_time\x18\x01 \x01(\t\x12\x17\n\x0f\x63ompletion_time\x18\x02 \x01(\t\x12@\n\tcondition\x18\x03 \x01(\x0e\x32-.api.v1.alpha3.TrialStatus.TrialConditionType\x12/\n\x0bobservation\x18\x04 \x01(\x0b\x32\x1a.api.v1.alpha3.Observation\"b\n\x12TrialConditionType\x12\x0b\n\x07\x43REATED\x10\x00\x12\x0b\n\x07RUNNING\x10\x01\x12\r\n\tSUCCEEDED\x10\x02\x12\n\n\x06KILLED\x10\x03\x12\n\n\x06\x46\x41ILED\x10\x04\x12\x0b\n\x07UNKNOWN\x10\x05\"i\n\x05Trial\x12\x0c\n\x04name\x18\x01 \x01(\t\x12&\n\x04spec\x18\x02 \x01(\x0b\x32\x18.api.v1.alpha3.TrialSpec\x12*\n\x06status\x18\x03 \x01(\x0b\x32\x1a.api.v1.alpha3.TrialStatus\"i\n\x1bReportObservationLogRequest\x12\x12\n\ntrial_name\x18\x01 \x01(\t\x12\x36\n\x0fobservation_log\x18\x02 \x01(\x0b\x32\x1d.api.v1.alpha3.ObservationLog\"\x1b\n\x19ReportObservationLogReply\"1\n\x1b\x44\x65leteObservationLogRequest\x12\x12\n\ntrial_name\x18\x01 \x01(\t\"\x1b\n\x19\x44\x65leteObservationLogReply\"i\n\x18GetObservationLogRequest\x12\x12\n\ntrial_name\x18\x01 \x01(\t\x12\x13\n\x0bmetric_name\x18\x02 \x01(\t\x12\x12\n\nstart_time\x18\x03 \x01(\t\x12\x10\n\x08\x65nd_time\x18\x04 \x01(\t\"P\n\x16GetObservationLogReply\x12\x36\n\x0fobservation_log\x18\x01 \x01(\x0b\x32\x1d.api.v1.alpha3.ObservationLog\"\x84\x01\n\x15GetSuggestionsRequest\x12-\n\nexperiment\x18\x01 \x01(\x0b\x32\x19.api.v1.alpha3.Experiment\x12$\n\x06trials\x18\x02 \x03(\x0b\x32\x14.api.v1.alpha3.Trial\x12\x16\n\x0erequest_number\x18\x03 \x01(\x05\"\xef\x01\n\x13GetSuggestionsReply\x12V\n\x15parameter_assignments\x18\x01 \x03(\x0b\x32\x37.api.v1.alpha3.GetSuggestionsReply.ParameterAssignments\x12/\n\talgorithm\x18\x02 \x01(\x0b\x32\x1c.api.v1.alpha3.AlgorithmSpec\x1aO\n\x14ParameterAssignments\x12\x37\n\x0b\x61ssignments\x18\x01 \x03(\x0b\x32\".api.v1.alpha3.ParameterAssignment\"Q\n ValidateAlgorithmSettingsRequest\x12-\n\nexperiment\x18\x01 \x01(\x0b\x32\x19.api.v1.alpha3.Experiment\" \n\x1eValidateAlgorithmSettingsReply*U\n\rParameterType\x12\x10\n\x0cUNKNOWN_TYPE\x10\x00\x12\n\n\x06\x44OUBLE\x10\x01\x12\x07\n\x03INT\x10\x02\x12\x0c\n\x08\x44ISCRETE\x10\x03\x12\x0f\n\x0b\x43\x41TEGORICAL\x10\x04*8\n\rObjectiveType\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0c\n\x08MINIMIZE\x10\x01\x12\x0c\n\x08MAXIMIZE\x10\x02\x32\xca\x02\n\x07Manager\x12l\n\x14ReportObservationLog\x12*.api.v1.alpha3.ReportObservationLogRequest\x1a(.api.v1.alpha3.ReportObservationLogReply\x12\x63\n\x11GetObservationLog\x12\'.api.v1.alpha3.GetObservationLogRequest\x1a%.api.v1.alpha3.GetObservationLogReply\x12l\n\x14\x44\x65leteObservationLog\x12*.api.v1.alpha3.DeleteObservationLogRequest\x1a(.api.v1.alpha3.DeleteObservationLogReply2\xe5\x01\n\nSuggestion\x12Z\n\x0eGetSuggestions\x12$.api.v1.alpha3.GetSuggestionsRequest\x1a\".api.v1.alpha3.GetSuggestionsReply\x12{\n\x19ValidateAlgorithmSettings\x12/.api.v1.alpha3.ValidateAlgorithmSettingsRequest\x1a-.api.v1.alpha3.ValidateAlgorithmSettingsReply2\x0f\n\rEarlyStoppingb\x06proto3'
+  serialized_pb=b'\n\tapi.proto\x12\x14\x61pi.v1alpha1.manager\"E\n\rFeasibleSpace\x12\x0b\n\x03max\x18\x01 \x01(\t\x12\x0b\n\x03min\x18\x02 \x01(\t\x12\x0c\n\x04list\x18\x03 \x03(\t\x12\x0c\n\x04step\x18\x04 \x01(\t\"\x97\x01\n\rParameterSpec\x12\x0c\n\x04name\x18\x01 \x01(\t\x12;\n\x0eparameter_type\x18\x02 \x01(\x0e\x32#.api.v1alpha1.manager.ParameterType\x12;\n\x0e\x66\x65\x61sible_space\x18\x03 \x01(\x0b\x32#.api.v1alpha1.manager.FeasibleSpace\"\x90\x01\n\rObjectiveSpec\x12\x31\n\x04type\x18\x01 \x01(\x0e\x32#.api.v1alpha1.manager.ObjectiveType\x12\x0c\n\x04goal\x18\x02 \x01(\x01\x12\x1d\n\x15objective_metric_name\x18\x03 \x01(\t\x12\x1f\n\x17\x61\x64\x64itional_metric_names\x18\x04 \x03(\t\"/\n\x10\x41lgorithmSetting\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\"\x13\n\x11\x45\x61rlyStoppingSpec\"\xb0\x01\n\rAlgorithmSpec\x12\x16\n\x0e\x61lgorithm_name\x18\x01 \x01(\t\x12\x41\n\x11\x61lgorithm_setting\x18\x02 \x03(\x0b\x32&.api.v1alpha1.manager.AlgorithmSetting\x12\x44\n\x13\x65\x61rly_stopping_spec\x18\x03 \x01(\x0b\x32\'.api.v1alpha1.manager.EarlyStoppingSpec\"\xc6\x01\n\tNasConfig\x12\x37\n\x0cgraph_config\x18\x01 \x01(\x0b\x32!.api.v1alpha1.manager.GraphConfig\x12>\n\noperations\x18\x02 \x01(\x0b\x32*.api.v1alpha1.manager.NasConfig.Operations\x1a@\n\nOperations\x12\x32\n\toperation\x18\x01 \x03(\x0b\x32\x1f.api.v1alpha1.manager.Operation\"L\n\x0bGraphConfig\x12\x12\n\nnum_layers\x18\x01 \x01(\x05\x12\x13\n\x0binput_sizes\x18\x02 \x03(\x05\x12\x14\n\x0coutput_sizes\x18\x03 \x03(\x05\"\xb7\x01\n\tOperation\x12\x16\n\x0eoperation_type\x18\x01 \x01(\t\x12G\n\x0fparameter_specs\x18\x02 \x01(\x0b\x32..api.v1alpha1.manager.Operation.ParameterSpecs\x1aI\n\x0eParameterSpecs\x12\x37\n\nparameters\x18\x01 \x03(\x0b\x32#.api.v1alpha1.manager.ParameterSpec\"\xbd\x03\n\x0e\x45xperimentSpec\x12L\n\x0fparameter_specs\x18\x01 \x01(\x0b\x32\x33.api.v1alpha1.manager.ExperimentSpec.ParameterSpecs\x12\x36\n\tobjective\x18\x02 \x01(\x0b\x32#.api.v1alpha1.manager.ObjectiveSpec\x12\x36\n\talgorithm\x18\x03 \x01(\x0b\x32#.api.v1alpha1.manager.AlgorithmSpec\x12\x16\n\x0etrial_template\x18\x04 \x01(\t\x12\x1e\n\x16metrics_collector_spec\x18\x05 \x01(\t\x12\x1c\n\x14parallel_trial_count\x18\x06 \x01(\x05\x12\x17\n\x0fmax_trial_count\x18\x07 \x01(\x05\x12\x33\n\nnas_config\x18\x08 \x01(\x0b\x32\x1f.api.v1alpha1.manager.NasConfig\x1aI\n\x0eParameterSpecs\x12\x37\n\nparameters\x18\x01 \x03(\x0b\x32#.api.v1alpha1.manager.ParameterSpec\"N\n\nExperiment\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x32\n\x04spec\x18\x02 \x01(\x0b\x32$.api.v1alpha1.manager.ExperimentSpec\"2\n\x13ParameterAssignment\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\"%\n\x06Metric\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\"M\n\tMetricLog\x12\x12\n\ntime_stamp\x18\x01 \x01(\t\x12,\n\x06metric\x18\x02 \x01(\x0b\x32\x1c.api.v1alpha1.manager.Metric\"<\n\x0bObservation\x12-\n\x07metrics\x18\x01 \x03(\x0b\x32\x1c.api.v1alpha1.manager.Metric\"F\n\x0eObservationLog\x12\x34\n\x0bmetric_logs\x18\x01 \x03(\x0b\x32\x1f.api.v1alpha1.manager.MetricLog\"\xbb\x02\n\tTrialSpec\x12\x17\n\x0f\x65xperiment_name\x18\x01 \x01(\t\x12\x36\n\tobjective\x18\x02 \x01(\x0b\x32#.api.v1alpha1.manager.ObjectiveSpec\x12S\n\x15parameter_assignments\x18\x03 \x01(\x0b\x32\x34.api.v1alpha1.manager.TrialSpec.ParameterAssignments\x12\x10\n\x08run_spec\x18\x04 \x01(\t\x12\x1e\n\x16metrics_collector_spec\x18\x05 \x01(\t\x1aV\n\x14ParameterAssignments\x12>\n\x0b\x61ssignments\x18\x01 \x03(\x0b\x32).api.v1alpha1.manager.ParameterAssignment\"\x9f\x02\n\x0bTrialStatus\x12\x12\n\nstart_time\x18\x01 \x01(\t\x12\x17\n\x0f\x63ompletion_time\x18\x02 \x01(\t\x12G\n\tcondition\x18\x03 \x01(\x0e\x32\x34.api.v1alpha1.manager.TrialStatus.TrialConditionType\x12\x36\n\x0bobservation\x18\x04 \x01(\x0b\x32!.api.v1alpha1.manager.Observation\"b\n\x12TrialConditionType\x12\x0b\n\x07\x43REATED\x10\x00\x12\x0b\n\x07RUNNING\x10\x01\x12\r\n\tSUCCEEDED\x10\x02\x12\n\n\x06KILLED\x10\x03\x12\n\n\x06\x46\x41ILED\x10\x04\x12\x0b\n\x07UNKNOWN\x10\x05\"w\n\x05Trial\x12\x0c\n\x04name\x18\x01 \x01(\t\x12-\n\x04spec\x18\x02 \x01(\x0b\x32\x1f.api.v1alpha1.manager.TrialSpec\x12\x31\n\x06status\x18\x03 \x01(\x0b\x32!.api.v1alpha1.manager.TrialStatus\"p\n\x1bReportObservationLogRequest\x12\x12\n\ntrial_name\x18\x01 \x01(\t\x12=\n\x0fobservation_log\x18\x02 \x01(\x0b\x32$.api.v1alpha1.manager.ObservationLog\"\x1b\n\x19ReportObservationLogReply\"1\n\x1b\x44\x65leteObservationLogRequest\x12\x12\n\ntrial_name\x18\x01 \x01(\t\"\x1b\n\x19\x44\x65leteObservationLogReply\"i\n\x18GetObservationLogRequest\x12\x12\n\ntrial_name\x18\x01 \x01(\t\x12\x13\n\x0bmetric_name\x18\x02 \x01(\t\x12\x12\n\nstart_time\x18\x03 \x01(\t\x12\x10\n\x08\x65nd_time\x18\x04 \x01(\t\"W\n\x16GetObservationLogReply\x12=\n\x0fobservation_log\x18\x01 \x01(\x0b\x32$.api.v1alpha1.manager.ObservationLog\"\x92\x01\n\x15GetSuggestionsRequest\x12\x34\n\nexperiment\x18\x01 \x01(\x0b\x32 .api.v1alpha1.manager.Experiment\x12+\n\x06trials\x18\x02 \x03(\x0b\x32\x1b.api.v1alpha1.manager.Trial\x12\x16\n\x0erequest_number\x18\x03 \x01(\x05\"\x84\x02\n\x13GetSuggestionsReply\x12]\n\x15parameter_assignments\x18\x01 \x03(\x0b\x32>.api.v1alpha1.manager.GetSuggestionsReply.ParameterAssignments\x12\x36\n\talgorithm\x18\x02 \x01(\x0b\x32#.api.v1alpha1.manager.AlgorithmSpec\x1aV\n\x14ParameterAssignments\x12>\n\x0b\x61ssignments\x18\x01 \x03(\x0b\x32).api.v1alpha1.manager.ParameterAssignment\"X\n ValidateAlgorithmSettingsRequest\x12\x34\n\nexperiment\x18\x01 \x01(\x0b\x32 .api.v1alpha1.manager.Experiment\" \n\x1eValidateAlgorithmSettingsReply*U\n\rParameterType\x12\x10\n\x0cUNKNOWN_TYPE\x10\x00\x12\n\n\x06\x44OUBLE\x10\x01\x12\x07\n\x03INT\x10\x02\x12\x0c\n\x08\x44ISCRETE\x10\x03\x12\x0f\n\x0b\x43\x41TEGORICAL\x10\x04*8\n\rObjectiveType\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0c\n\x08MINIMIZE\x10\x01\x12\x0c\n\x08MAXIMIZE\x10\x02\x32\xf4\x02\n\x07Manager\x12z\n\x14ReportObservationLog\x12\x31.api.v1alpha1.manager.ReportObservationLogRequest\x1a/.api.v1alpha1.manager.ReportObservationLogReply\x12q\n\x11GetObservationLog\x12..api.v1alpha1.manager.GetObservationLogRequest\x1a,.api.v1alpha1.manager.GetObservationLogReply\x12z\n\x14\x44\x65leteObservationLog\x12\x31.api.v1alpha1.manager.DeleteObservationLogRequest\x1a/.api.v1alpha1.manager.DeleteObservationLogReply2\x82\x02\n\nSuggestion\x12h\n\x0eGetSuggestions\x12+.api.v1alpha1.manager.GetSuggestionsRequest\x1a).api.v1alpha1.manager.GetSuggestionsReply\x12\x89\x01\n\x19ValidateAlgorithmSettings\x12\x36.api.v1alpha1.manager.ValidateAlgorithmSettingsRequest\x1a\x34.api.v1alpha1.manager.ValidateAlgorithmSettingsReply2\x0f\n\rEarlyStoppingB\x16Z\x14\x61pi.v1alpha1.managerb\x06proto3'
 )
 
 _PARAMETERTYPE = _descriptor.EnumDescriptor(
   name='ParameterType',
-  full_name='api.v1.alpha3.ParameterType',
+  full_name='api.v1alpha1.manager.ParameterType',
   filename=None,
   file=DESCRIPTOR,
   create_key=_descriptor._internal_create_key,
@@ -58,15 +58,15 @@ _PARAMETERTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=3392,
-  serialized_end=3477,
+  serialized_start=3637,
+  serialized_end=3722,
 )
 _sym_db.RegisterEnumDescriptor(_PARAMETERTYPE)
 
 ParameterType = enum_type_wrapper.EnumTypeWrapper(_PARAMETERTYPE)
 _OBJECTIVETYPE = _descriptor.EnumDescriptor(
   name='ObjectiveType',
-  full_name='api.v1.alpha3.ObjectiveType',
+  full_name='api.v1alpha1.manager.ObjectiveType',
   filename=None,
   file=DESCRIPTOR,
   create_key=_descriptor._internal_create_key,
@@ -89,8 +89,8 @@ _OBJECTIVETYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=3479,
-  serialized_end=3535,
+  serialized_start=3724,
+  serialized_end=3780,
 )
 _sym_db.RegisterEnumDescriptor(_OBJECTIVETYPE)
 
@@ -107,7 +107,7 @@ MAXIMIZE = 2
 
 _TRIALSTATUS_TRIALCONDITIONTYPE = _descriptor.EnumDescriptor(
   name='TrialConditionType',
-  full_name='api.v1.alpha3.TrialStatus.TrialConditionType',
+  full_name='api.v1alpha1.manager.TrialStatus.TrialConditionType',
   filename=None,
   file=DESCRIPTOR,
   create_key=_descriptor._internal_create_key,
@@ -145,43 +145,43 @@ _TRIALSTATUS_TRIALCONDITIONTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=2286,
-  serialized_end=2384,
+  serialized_start=2461,
+  serialized_end=2559,
 )
 _sym_db.RegisterEnumDescriptor(_TRIALSTATUS_TRIALCONDITIONTYPE)
 
 
 _FEASIBLESPACE = _descriptor.Descriptor(
   name='FeasibleSpace',
-  full_name='api.v1.alpha3.FeasibleSpace',
+  full_name='api.v1alpha1.manager.FeasibleSpace',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='max', full_name='api.v1.alpha3.FeasibleSpace.max', index=0,
+      name='max', full_name='api.v1alpha1.manager.FeasibleSpace.max', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='min', full_name='api.v1.alpha3.FeasibleSpace.min', index=1,
+      name='min', full_name='api.v1alpha1.manager.FeasibleSpace.min', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='list', full_name='api.v1.alpha3.FeasibleSpace.list', index=2,
+      name='list', full_name='api.v1alpha1.manager.FeasibleSpace.list', index=2,
       number=3, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='step', full_name='api.v1.alpha3.FeasibleSpace.step', index=3,
+      name='step', full_name='api.v1alpha1.manager.FeasibleSpace.step', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -199,35 +199,35 @@ _FEASIBLESPACE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=28,
-  serialized_end=97,
+  serialized_start=35,
+  serialized_end=104,
 )
 
 
 _PARAMETERSPEC = _descriptor.Descriptor(
   name='ParameterSpec',
-  full_name='api.v1.alpha3.ParameterSpec',
+  full_name='api.v1alpha1.manager.ParameterSpec',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name', full_name='api.v1.alpha3.ParameterSpec.name', index=0,
+      name='name', full_name='api.v1alpha1.manager.ParameterSpec.name', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='parameter_type', full_name='api.v1.alpha3.ParameterSpec.parameter_type', index=1,
+      name='parameter_type', full_name='api.v1alpha1.manager.ParameterSpec.parameter_type', index=1,
       number=2, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='feasible_space', full_name='api.v1.alpha3.ParameterSpec.feasible_space', index=2,
+      name='feasible_space', full_name='api.v1alpha1.manager.ParameterSpec.feasible_space', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -245,42 +245,42 @@ _PARAMETERSPEC = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=100,
-  serialized_end=237,
+  serialized_start=107,
+  serialized_end=258,
 )
 
 
 _OBJECTIVESPEC = _descriptor.Descriptor(
   name='ObjectiveSpec',
-  full_name='api.v1.alpha3.ObjectiveSpec',
+  full_name='api.v1alpha1.manager.ObjectiveSpec',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='type', full_name='api.v1.alpha3.ObjectiveSpec.type', index=0,
+      name='type', full_name='api.v1alpha1.manager.ObjectiveSpec.type', index=0,
       number=1, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='goal', full_name='api.v1.alpha3.ObjectiveSpec.goal', index=1,
+      name='goal', full_name='api.v1alpha1.manager.ObjectiveSpec.goal', index=1,
       number=2, type=1, cpp_type=5, label=1,
       has_default_value=False, default_value=float(0),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='objective_metric_name', full_name='api.v1.alpha3.ObjectiveSpec.objective_metric_name', index=2,
+      name='objective_metric_name', full_name='api.v1alpha1.manager.ObjectiveSpec.objective_metric_name', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='additional_metric_names', full_name='api.v1.alpha3.ObjectiveSpec.additional_metric_names', index=3,
+      name='additional_metric_names', full_name='api.v1alpha1.manager.ObjectiveSpec.additional_metric_names', index=3,
       number=4, type=9, cpp_type=9, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -298,28 +298,28 @@ _OBJECTIVESPEC = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=240,
-  serialized_end=377,
+  serialized_start=261,
+  serialized_end=405,
 )
 
 
 _ALGORITHMSETTING = _descriptor.Descriptor(
   name='AlgorithmSetting',
-  full_name='api.v1.alpha3.AlgorithmSetting',
+  full_name='api.v1alpha1.manager.AlgorithmSetting',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name', full_name='api.v1.alpha3.AlgorithmSetting.name', index=0,
+      name='name', full_name='api.v1alpha1.manager.AlgorithmSetting.name', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='value', full_name='api.v1.alpha3.AlgorithmSetting.value', index=1,
+      name='value', full_name='api.v1alpha1.manager.AlgorithmSetting.value', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -337,14 +337,14 @@ _ALGORITHMSETTING = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=379,
-  serialized_end=426,
+  serialized_start=407,
+  serialized_end=454,
 )
 
 
 _EARLYSTOPPINGSPEC = _descriptor.Descriptor(
   name='EarlyStoppingSpec',
-  full_name='api.v1.alpha3.EarlyStoppingSpec',
+  full_name='api.v1alpha1.manager.EarlyStoppingSpec',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
@@ -362,35 +362,35 @@ _EARLYSTOPPINGSPEC = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=428,
-  serialized_end=447,
+  serialized_start=456,
+  serialized_end=475,
 )
 
 
 _ALGORITHMSPEC = _descriptor.Descriptor(
   name='AlgorithmSpec',
-  full_name='api.v1.alpha3.AlgorithmSpec',
+  full_name='api.v1alpha1.manager.AlgorithmSpec',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='algorithm_name', full_name='api.v1.alpha3.AlgorithmSpec.algorithm_name', index=0,
+      name='algorithm_name', full_name='api.v1alpha1.manager.AlgorithmSpec.algorithm_name', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='algorithm_setting', full_name='api.v1.alpha3.AlgorithmSpec.algorithm_setting', index=1,
+      name='algorithm_setting', full_name='api.v1alpha1.manager.AlgorithmSpec.algorithm_setting', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='early_stopping_spec', full_name='api.v1.alpha3.AlgorithmSpec.early_stopping_spec', index=2,
+      name='early_stopping_spec', full_name='api.v1alpha1.manager.AlgorithmSpec.early_stopping_spec', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -408,21 +408,21 @@ _ALGORITHMSPEC = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=450,
-  serialized_end=612,
+  serialized_start=478,
+  serialized_end=654,
 )
 
 
 _NASCONFIG_OPERATIONS = _descriptor.Descriptor(
   name='Operations',
-  full_name='api.v1.alpha3.NasConfig.Operations',
+  full_name='api.v1alpha1.manager.NasConfig.Operations',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='operation', full_name='api.v1.alpha3.NasConfig.Operations.operation', index=0,
+      name='operation', full_name='api.v1alpha1.manager.NasConfig.Operations.operation', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -440,27 +440,27 @@ _NASCONFIG_OPERATIONS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=735,
-  serialized_end=792,
+  serialized_start=791,
+  serialized_end=855,
 )
 
 _NASCONFIG = _descriptor.Descriptor(
   name='NasConfig',
-  full_name='api.v1.alpha3.NasConfig',
+  full_name='api.v1alpha1.manager.NasConfig',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='graph_config', full_name='api.v1.alpha3.NasConfig.graph_config', index=0,
+      name='graph_config', full_name='api.v1alpha1.manager.NasConfig.graph_config', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='operations', full_name='api.v1.alpha3.NasConfig.operations', index=1,
+      name='operations', full_name='api.v1alpha1.manager.NasConfig.operations', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -478,35 +478,35 @@ _NASCONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=615,
-  serialized_end=792,
+  serialized_start=657,
+  serialized_end=855,
 )
 
 
 _GRAPHCONFIG = _descriptor.Descriptor(
   name='GraphConfig',
-  full_name='api.v1.alpha3.GraphConfig',
+  full_name='api.v1alpha1.manager.GraphConfig',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='num_layers', full_name='api.v1.alpha3.GraphConfig.num_layers', index=0,
+      name='num_layers', full_name='api.v1alpha1.manager.GraphConfig.num_layers', index=0,
       number=1, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='input_sizes', full_name='api.v1.alpha3.GraphConfig.input_sizes', index=1,
+      name='input_sizes', full_name='api.v1alpha1.manager.GraphConfig.input_sizes', index=1,
       number=2, type=5, cpp_type=1, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='output_sizes', full_name='api.v1.alpha3.GraphConfig.output_sizes', index=2,
+      name='output_sizes', full_name='api.v1alpha1.manager.GraphConfig.output_sizes', index=2,
       number=3, type=5, cpp_type=1, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -524,21 +524,21 @@ _GRAPHCONFIG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=794,
-  serialized_end=870,
+  serialized_start=857,
+  serialized_end=933,
 )
 
 
 _OPERATION_PARAMETERSPECS = _descriptor.Descriptor(
   name='ParameterSpecs',
-  full_name='api.v1.alpha3.Operation.ParameterSpecs',
+  full_name='api.v1alpha1.manager.Operation.ParameterSpecs',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='parameters', full_name='api.v1.alpha3.Operation.ParameterSpecs.parameters', index=0,
+      name='parameters', full_name='api.v1alpha1.manager.Operation.ParameterSpecs.parameters', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -556,27 +556,27 @@ _OPERATION_PARAMETERSPECS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=976,
-  serialized_end=1042,
+  serialized_start=1046,
+  serialized_end=1119,
 )
 
 _OPERATION = _descriptor.Descriptor(
   name='Operation',
-  full_name='api.v1.alpha3.Operation',
+  full_name='api.v1alpha1.manager.Operation',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='operation_type', full_name='api.v1.alpha3.Operation.operation_type', index=0,
+      name='operation_type', full_name='api.v1alpha1.manager.Operation.operation_type', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='parameter_specs', full_name='api.v1.alpha3.Operation.parameter_specs', index=1,
+      name='parameter_specs', full_name='api.v1alpha1.manager.Operation.parameter_specs', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -594,21 +594,21 @@ _OPERATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=873,
-  serialized_end=1042,
+  serialized_start=936,
+  serialized_end=1119,
 )
 
 
 _EXPERIMENTSPEC_PARAMETERSPECS = _descriptor.Descriptor(
   name='ParameterSpecs',
-  full_name='api.v1.alpha3.ExperimentSpec.ParameterSpecs',
+  full_name='api.v1alpha1.manager.ExperimentSpec.ParameterSpecs',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='parameters', full_name='api.v1.alpha3.ExperimentSpec.ParameterSpecs.parameters', index=0,
+      name='parameters', full_name='api.v1alpha1.manager.ExperimentSpec.ParameterSpecs.parameters', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -626,69 +626,69 @@ _EXPERIMENTSPEC_PARAMETERSPECS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=976,
-  serialized_end=1042,
+  serialized_start=1046,
+  serialized_end=1119,
 )
 
 _EXPERIMENTSPEC = _descriptor.Descriptor(
   name='ExperimentSpec',
-  full_name='api.v1.alpha3.ExperimentSpec',
+  full_name='api.v1alpha1.manager.ExperimentSpec',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='parameter_specs', full_name='api.v1.alpha3.ExperimentSpec.parameter_specs', index=0,
+      name='parameter_specs', full_name='api.v1alpha1.manager.ExperimentSpec.parameter_specs', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='objective', full_name='api.v1.alpha3.ExperimentSpec.objective', index=1,
+      name='objective', full_name='api.v1alpha1.manager.ExperimentSpec.objective', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='algorithm', full_name='api.v1.alpha3.ExperimentSpec.algorithm', index=2,
+      name='algorithm', full_name='api.v1alpha1.manager.ExperimentSpec.algorithm', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='trial_template', full_name='api.v1.alpha3.ExperimentSpec.trial_template', index=3,
+      name='trial_template', full_name='api.v1alpha1.manager.ExperimentSpec.trial_template', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='metrics_collector_spec', full_name='api.v1.alpha3.ExperimentSpec.metrics_collector_spec', index=4,
+      name='metrics_collector_spec', full_name='api.v1alpha1.manager.ExperimentSpec.metrics_collector_spec', index=4,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='parallel_trial_count', full_name='api.v1.alpha3.ExperimentSpec.parallel_trial_count', index=5,
+      name='parallel_trial_count', full_name='api.v1alpha1.manager.ExperimentSpec.parallel_trial_count', index=5,
       number=6, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='max_trial_count', full_name='api.v1.alpha3.ExperimentSpec.max_trial_count', index=6,
+      name='max_trial_count', full_name='api.v1alpha1.manager.ExperimentSpec.max_trial_count', index=6,
       number=7, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='nas_config', full_name='api.v1.alpha3.ExperimentSpec.nas_config', index=7,
+      name='nas_config', full_name='api.v1alpha1.manager.ExperimentSpec.nas_config', index=7,
       number=8, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -706,28 +706,28 @@ _EXPERIMENTSPEC = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1045,
-  serialized_end=1455,
+  serialized_start=1122,
+  serialized_end=1567,
 )
 
 
 _EXPERIMENT = _descriptor.Descriptor(
   name='Experiment',
-  full_name='api.v1.alpha3.Experiment',
+  full_name='api.v1alpha1.manager.Experiment',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name', full_name='api.v1.alpha3.Experiment.name', index=0,
+      name='name', full_name='api.v1alpha1.manager.Experiment.name', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='spec', full_name='api.v1.alpha3.Experiment.spec', index=1,
+      name='spec', full_name='api.v1alpha1.manager.Experiment.spec', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -745,28 +745,28 @@ _EXPERIMENT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1457,
-  serialized_end=1528,
+  serialized_start=1569,
+  serialized_end=1647,
 )
 
 
 _PARAMETERASSIGNMENT = _descriptor.Descriptor(
   name='ParameterAssignment',
-  full_name='api.v1.alpha3.ParameterAssignment',
+  full_name='api.v1alpha1.manager.ParameterAssignment',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name', full_name='api.v1.alpha3.ParameterAssignment.name', index=0,
+      name='name', full_name='api.v1alpha1.manager.ParameterAssignment.name', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='value', full_name='api.v1.alpha3.ParameterAssignment.value', index=1,
+      name='value', full_name='api.v1alpha1.manager.ParameterAssignment.value', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -784,28 +784,28 @@ _PARAMETERASSIGNMENT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1530,
-  serialized_end=1580,
+  serialized_start=1649,
+  serialized_end=1699,
 )
 
 
 _METRIC = _descriptor.Descriptor(
   name='Metric',
-  full_name='api.v1.alpha3.Metric',
+  full_name='api.v1alpha1.manager.Metric',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name', full_name='api.v1.alpha3.Metric.name', index=0,
+      name='name', full_name='api.v1alpha1.manager.Metric.name', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='value', full_name='api.v1.alpha3.Metric.value', index=1,
+      name='value', full_name='api.v1alpha1.manager.Metric.value', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -823,28 +823,28 @@ _METRIC = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1582,
-  serialized_end=1619,
+  serialized_start=1701,
+  serialized_end=1738,
 )
 
 
 _METRICLOG = _descriptor.Descriptor(
   name='MetricLog',
-  full_name='api.v1.alpha3.MetricLog',
+  full_name='api.v1alpha1.manager.MetricLog',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='time_stamp', full_name='api.v1.alpha3.MetricLog.time_stamp', index=0,
+      name='time_stamp', full_name='api.v1alpha1.manager.MetricLog.time_stamp', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='metric', full_name='api.v1.alpha3.MetricLog.metric', index=1,
+      name='metric', full_name='api.v1alpha1.manager.MetricLog.metric', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -862,21 +862,21 @@ _METRICLOG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1621,
-  serialized_end=1691,
+  serialized_start=1740,
+  serialized_end=1817,
 )
 
 
 _OBSERVATION = _descriptor.Descriptor(
   name='Observation',
-  full_name='api.v1.alpha3.Observation',
+  full_name='api.v1alpha1.manager.Observation',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='metrics', full_name='api.v1.alpha3.Observation.metrics', index=0,
+      name='metrics', full_name='api.v1alpha1.manager.Observation.metrics', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -894,21 +894,21 @@ _OBSERVATION = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1693,
-  serialized_end=1746,
+  serialized_start=1819,
+  serialized_end=1879,
 )
 
 
 _OBSERVATIONLOG = _descriptor.Descriptor(
   name='ObservationLog',
-  full_name='api.v1.alpha3.ObservationLog',
+  full_name='api.v1alpha1.manager.ObservationLog',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='metric_logs', full_name='api.v1.alpha3.ObservationLog.metric_logs', index=0,
+      name='metric_logs', full_name='api.v1alpha1.manager.ObservationLog.metric_logs', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -926,21 +926,21 @@ _OBSERVATIONLOG = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1748,
-  serialized_end=1811,
+  serialized_start=1881,
+  serialized_end=1951,
 )
 
 
 _TRIALSPEC_PARAMETERASSIGNMENTS = _descriptor.Descriptor(
   name='ParameterAssignments',
-  full_name='api.v1.alpha3.TrialSpec.ParameterAssignments',
+  full_name='api.v1alpha1.manager.TrialSpec.ParameterAssignments',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='assignments', full_name='api.v1.alpha3.TrialSpec.ParameterAssignments.assignments', index=0,
+      name='assignments', full_name='api.v1alpha1.manager.TrialSpec.ParameterAssignments.assignments', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -958,48 +958,48 @@ _TRIALSPEC_PARAMETERASSIGNMENTS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2029,
-  serialized_end=2108,
+  serialized_start=2183,
+  serialized_end=2269,
 )
 
 _TRIALSPEC = _descriptor.Descriptor(
   name='TrialSpec',
-  full_name='api.v1.alpha3.TrialSpec',
+  full_name='api.v1alpha1.manager.TrialSpec',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='experiment_name', full_name='api.v1.alpha3.TrialSpec.experiment_name', index=0,
+      name='experiment_name', full_name='api.v1alpha1.manager.TrialSpec.experiment_name', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='objective', full_name='api.v1.alpha3.TrialSpec.objective', index=1,
+      name='objective', full_name='api.v1alpha1.manager.TrialSpec.objective', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='parameter_assignments', full_name='api.v1.alpha3.TrialSpec.parameter_assignments', index=2,
+      name='parameter_assignments', full_name='api.v1alpha1.manager.TrialSpec.parameter_assignments', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='run_spec', full_name='api.v1.alpha3.TrialSpec.run_spec', index=3,
+      name='run_spec', full_name='api.v1alpha1.manager.TrialSpec.run_spec', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='metrics_collector_spec', full_name='api.v1.alpha3.TrialSpec.metrics_collector_spec', index=4,
+      name='metrics_collector_spec', full_name='api.v1alpha1.manager.TrialSpec.metrics_collector_spec', index=4,
       number=5, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -1017,42 +1017,42 @@ _TRIALSPEC = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1814,
-  serialized_end=2108,
+  serialized_start=1954,
+  serialized_end=2269,
 )
 
 
 _TRIALSTATUS = _descriptor.Descriptor(
   name='TrialStatus',
-  full_name='api.v1.alpha3.TrialStatus',
+  full_name='api.v1alpha1.manager.TrialStatus',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='start_time', full_name='api.v1.alpha3.TrialStatus.start_time', index=0,
+      name='start_time', full_name='api.v1alpha1.manager.TrialStatus.start_time', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='completion_time', full_name='api.v1.alpha3.TrialStatus.completion_time', index=1,
+      name='completion_time', full_name='api.v1alpha1.manager.TrialStatus.completion_time', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='condition', full_name='api.v1.alpha3.TrialStatus.condition', index=2,
+      name='condition', full_name='api.v1alpha1.manager.TrialStatus.condition', index=2,
       number=3, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='observation', full_name='api.v1.alpha3.TrialStatus.observation', index=3,
+      name='observation', full_name='api.v1alpha1.manager.TrialStatus.observation', index=3,
       number=4, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -1071,35 +1071,35 @@ _TRIALSTATUS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2111,
-  serialized_end=2384,
+  serialized_start=2272,
+  serialized_end=2559,
 )
 
 
 _TRIAL = _descriptor.Descriptor(
   name='Trial',
-  full_name='api.v1.alpha3.Trial',
+  full_name='api.v1alpha1.manager.Trial',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='name', full_name='api.v1.alpha3.Trial.name', index=0,
+      name='name', full_name='api.v1alpha1.manager.Trial.name', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='spec', full_name='api.v1.alpha3.Trial.spec', index=1,
+      name='spec', full_name='api.v1alpha1.manager.Trial.spec', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='status', full_name='api.v1.alpha3.Trial.status', index=2,
+      name='status', full_name='api.v1alpha1.manager.Trial.status', index=2,
       number=3, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -1117,28 +1117,28 @@ _TRIAL = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2386,
-  serialized_end=2491,
+  serialized_start=2561,
+  serialized_end=2680,
 )
 
 
 _REPORTOBSERVATIONLOGREQUEST = _descriptor.Descriptor(
   name='ReportObservationLogRequest',
-  full_name='api.v1.alpha3.ReportObservationLogRequest',
+  full_name='api.v1alpha1.manager.ReportObservationLogRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='trial_name', full_name='api.v1.alpha3.ReportObservationLogRequest.trial_name', index=0,
+      name='trial_name', full_name='api.v1alpha1.manager.ReportObservationLogRequest.trial_name', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='observation_log', full_name='api.v1.alpha3.ReportObservationLogRequest.observation_log', index=1,
+      name='observation_log', full_name='api.v1alpha1.manager.ReportObservationLogRequest.observation_log', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -1156,14 +1156,14 @@ _REPORTOBSERVATIONLOGREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2493,
-  serialized_end=2598,
+  serialized_start=2682,
+  serialized_end=2794,
 )
 
 
 _REPORTOBSERVATIONLOGREPLY = _descriptor.Descriptor(
   name='ReportObservationLogReply',
-  full_name='api.v1.alpha3.ReportObservationLogReply',
+  full_name='api.v1alpha1.manager.ReportObservationLogReply',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
@@ -1181,21 +1181,21 @@ _REPORTOBSERVATIONLOGREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2600,
-  serialized_end=2627,
+  serialized_start=2796,
+  serialized_end=2823,
 )
 
 
 _DELETEOBSERVATIONLOGREQUEST = _descriptor.Descriptor(
   name='DeleteObservationLogRequest',
-  full_name='api.v1.alpha3.DeleteObservationLogRequest',
+  full_name='api.v1alpha1.manager.DeleteObservationLogRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='trial_name', full_name='api.v1.alpha3.DeleteObservationLogRequest.trial_name', index=0,
+      name='trial_name', full_name='api.v1alpha1.manager.DeleteObservationLogRequest.trial_name', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -1213,14 +1213,14 @@ _DELETEOBSERVATIONLOGREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2629,
-  serialized_end=2678,
+  serialized_start=2825,
+  serialized_end=2874,
 )
 
 
 _DELETEOBSERVATIONLOGREPLY = _descriptor.Descriptor(
   name='DeleteObservationLogReply',
-  full_name='api.v1.alpha3.DeleteObservationLogReply',
+  full_name='api.v1alpha1.manager.DeleteObservationLogReply',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
@@ -1238,42 +1238,42 @@ _DELETEOBSERVATIONLOGREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2680,
-  serialized_end=2707,
+  serialized_start=2876,
+  serialized_end=2903,
 )
 
 
 _GETOBSERVATIONLOGREQUEST = _descriptor.Descriptor(
   name='GetObservationLogRequest',
-  full_name='api.v1.alpha3.GetObservationLogRequest',
+  full_name='api.v1alpha1.manager.GetObservationLogRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='trial_name', full_name='api.v1.alpha3.GetObservationLogRequest.trial_name', index=0,
+      name='trial_name', full_name='api.v1alpha1.manager.GetObservationLogRequest.trial_name', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='metric_name', full_name='api.v1.alpha3.GetObservationLogRequest.metric_name', index=1,
+      name='metric_name', full_name='api.v1alpha1.manager.GetObservationLogRequest.metric_name', index=1,
       number=2, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='start_time', full_name='api.v1.alpha3.GetObservationLogRequest.start_time', index=2,
+      name='start_time', full_name='api.v1alpha1.manager.GetObservationLogRequest.start_time', index=2,
       number=3, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='end_time', full_name='api.v1.alpha3.GetObservationLogRequest.end_time', index=3,
+      name='end_time', full_name='api.v1alpha1.manager.GetObservationLogRequest.end_time', index=3,
       number=4, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=b"".decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -1291,21 +1291,21 @@ _GETOBSERVATIONLOGREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2709,
-  serialized_end=2814,
+  serialized_start=2905,
+  serialized_end=3010,
 )
 
 
 _GETOBSERVATIONLOGREPLY = _descriptor.Descriptor(
   name='GetObservationLogReply',
-  full_name='api.v1.alpha3.GetObservationLogReply',
+  full_name='api.v1alpha1.manager.GetObservationLogReply',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='observation_log', full_name='api.v1.alpha3.GetObservationLogReply.observation_log', index=0,
+      name='observation_log', full_name='api.v1alpha1.manager.GetObservationLogReply.observation_log', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -1323,35 +1323,35 @@ _GETOBSERVATIONLOGREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2816,
-  serialized_end=2896,
+  serialized_start=3012,
+  serialized_end=3099,
 )
 
 
 _GETSUGGESTIONSREQUEST = _descriptor.Descriptor(
   name='GetSuggestionsRequest',
-  full_name='api.v1.alpha3.GetSuggestionsRequest',
+  full_name='api.v1alpha1.manager.GetSuggestionsRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='experiment', full_name='api.v1.alpha3.GetSuggestionsRequest.experiment', index=0,
+      name='experiment', full_name='api.v1alpha1.manager.GetSuggestionsRequest.experiment', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='trials', full_name='api.v1.alpha3.GetSuggestionsRequest.trials', index=1,
+      name='trials', full_name='api.v1alpha1.manager.GetSuggestionsRequest.trials', index=1,
       number=2, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='request_number', full_name='api.v1.alpha3.GetSuggestionsRequest.request_number', index=2,
+      name='request_number', full_name='api.v1alpha1.manager.GetSuggestionsRequest.request_number', index=2,
       number=3, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -1369,21 +1369,21 @@ _GETSUGGESTIONSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2899,
-  serialized_end=3031,
+  serialized_start=3102,
+  serialized_end=3248,
 )
 
 
 _GETSUGGESTIONSREPLY_PARAMETERASSIGNMENTS = _descriptor.Descriptor(
   name='ParameterAssignments',
-  full_name='api.v1.alpha3.GetSuggestionsReply.ParameterAssignments',
+  full_name='api.v1alpha1.manager.GetSuggestionsReply.ParameterAssignments',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='assignments', full_name='api.v1.alpha3.GetSuggestionsReply.ParameterAssignments.assignments', index=0,
+      name='assignments', full_name='api.v1alpha1.manager.GetSuggestionsReply.ParameterAssignments.assignments', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -1401,27 +1401,27 @@ _GETSUGGESTIONSREPLY_PARAMETERASSIGNMENTS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=2029,
-  serialized_end=2108,
+  serialized_start=2183,
+  serialized_end=2269,
 )
 
 _GETSUGGESTIONSREPLY = _descriptor.Descriptor(
   name='GetSuggestionsReply',
-  full_name='api.v1.alpha3.GetSuggestionsReply',
+  full_name='api.v1alpha1.manager.GetSuggestionsReply',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='parameter_assignments', full_name='api.v1.alpha3.GetSuggestionsReply.parameter_assignments', index=0,
+      name='parameter_assignments', full_name='api.v1alpha1.manager.GetSuggestionsReply.parameter_assignments', index=0,
       number=1, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='algorithm', full_name='api.v1.alpha3.GetSuggestionsReply.algorithm', index=1,
+      name='algorithm', full_name='api.v1alpha1.manager.GetSuggestionsReply.algorithm', index=1,
       number=2, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -1439,21 +1439,21 @@ _GETSUGGESTIONSREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3034,
-  serialized_end=3273,
+  serialized_start=3251,
+  serialized_end=3511,
 )
 
 
 _VALIDATEALGORITHMSETTINGSREQUEST = _descriptor.Descriptor(
   name='ValidateAlgorithmSettingsRequest',
-  full_name='api.v1.alpha3.ValidateAlgorithmSettingsRequest',
+  full_name='api.v1alpha1.manager.ValidateAlgorithmSettingsRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   create_key=_descriptor._internal_create_key,
   fields=[
     _descriptor.FieldDescriptor(
-      name='experiment', full_name='api.v1.alpha3.ValidateAlgorithmSettingsRequest.experiment', index=0,
+      name='experiment', full_name='api.v1alpha1.manager.ValidateAlgorithmSettingsRequest.experiment', index=0,
       number=1, type=11, cpp_type=10, label=1,
       has_default_value=False, default_value=None,
       message_type=None, enum_type=None, containing_type=None,
@@ -1471,14 +1471,14 @@ _VALIDATEALGORITHMSETTINGSREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3275,
-  serialized_end=3356,
+  serialized_start=3513,
+  serialized_end=3601,
 )
 
 
 _VALIDATEALGORITHMSETTINGSREPLY = _descriptor.Descriptor(
   name='ValidateAlgorithmSettingsReply',
-  full_name='api.v1.alpha3.ValidateAlgorithmSettingsReply',
+  full_name='api.v1alpha1.manager.ValidateAlgorithmSettingsReply',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
@@ -1496,8 +1496,8 @@ _VALIDATEALGORITHMSETTINGSREPLY = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=3358,
-  serialized_end=3390,
+  serialized_start=3603,
+  serialized_end=3635,
 )
 
 _PARAMETERSPEC.fields_by_name['parameter_type'].enum_type = _PARAMETERTYPE
@@ -1576,42 +1576,42 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 FeasibleSpace = _reflection.GeneratedProtocolMessageType('FeasibleSpace', (_message.Message,), {
   'DESCRIPTOR' : _FEASIBLESPACE,
   '__module__' : 'api_pb2'
-  # @@protoc_insertion_point(class_scope:api.v1.alpha3.FeasibleSpace)
+  # @@protoc_insertion_point(class_scope:api.v1alpha1.manager.FeasibleSpace)
   })
 _sym_db.RegisterMessage(FeasibleSpace)
 
 ParameterSpec = _reflection.GeneratedProtocolMessageType('ParameterSpec', (_message.Message,), {
   'DESCRIPTOR' : _PARAMETERSPEC,
   '__module__' : 'api_pb2'
-  # @@protoc_insertion_point(class_scope:api.v1.alpha3.ParameterSpec)
+  # @@protoc_insertion_point(class_scope:api.v1alpha1.manager.ParameterSpec)
   })
 _sym_db.RegisterMessage(ParameterSpec)
 
 ObjectiveSpec = _reflection.GeneratedProtocolMessageType('ObjectiveSpec', (_message.Message,), {
   'DESCRIPTOR' : _OBJECTIVESPEC,
   '__module__' : 'api_pb2'
-  # @@protoc_insertion_point(class_scope:api.v1.alpha3.ObjectiveSpec)
+  # @@protoc_insertion_point(class_scope:api.v1alpha1.manager.ObjectiveSpec)
   })
 _sym_db.RegisterMessage(ObjectiveSpec)
 
 AlgorithmSetting = _reflection.GeneratedProtocolMessageType('AlgorithmSetting', (_message.Message,), {
   'DESCRIPTOR' : _ALGORITHMSETTING,
   '__module__' : 'api_pb2'
-  # @@protoc_insertion_point(class_scope:api.v1.alpha3.AlgorithmSetting)
+  # @@protoc_insertion_point(class_scope:api.v1alpha1.manager.AlgorithmSetting)
   })
 _sym_db.RegisterMessage(AlgorithmSetting)
 
 EarlyStoppingSpec = _reflection.GeneratedProtocolMessageType('EarlyStoppingSpec', (_message.Message,), {
   'DESCRIPTOR' : _EARLYSTOPPINGSPEC,
   '__module__' : 'api_pb2'
-  # @@protoc_insertion_point(class_scope:api.v1.alpha3.EarlyStoppingSpec)
+  # @@protoc_insertion_point(class_scope:api.v1alpha1.manager.EarlyStoppingSpec)
   })
 _sym_db.RegisterMessage(EarlyStoppingSpec)
 
 AlgorithmSpec = _reflection.GeneratedProtocolMessageType('AlgorithmSpec', (_message.Message,), {
   'DESCRIPTOR' : _ALGORITHMSPEC,
   '__module__' : 'api_pb2'
-  # @@protoc_insertion_point(class_scope:api.v1.alpha3.AlgorithmSpec)
+  # @@protoc_insertion_point(class_scope:api.v1alpha1.manager.AlgorithmSpec)
   })
 _sym_db.RegisterMessage(AlgorithmSpec)
 
@@ -1620,12 +1620,12 @@ NasConfig = _reflection.GeneratedProtocolMessageType('NasConfig', (_message.Mess
   'Operations' : _reflection.GeneratedProtocolMessageType('Operations', (_message.Message,), {
     'DESCRIPTOR' : _NASCONFIG_OPERATIONS,
     '__module__' : 'api_pb2'
-    # @@protoc_insertion_point(class_scope:api.v1.alpha3.NasConfig.Operations)
+    # @@protoc_insertion_point(class_scope:api.v1alpha1.manager.NasConfig.Operations)
     })
   ,
   'DESCRIPTOR' : _NASCONFIG,
   '__module__' : 'api_pb2'
-  # @@protoc_insertion_point(class_scope:api.v1.alpha3.NasConfig)
+  # @@protoc_insertion_point(class_scope:api.v1alpha1.manager.NasConfig)
   })
 _sym_db.RegisterMessage(NasConfig)
 _sym_db.RegisterMessage(NasConfig.Operations)
@@ -1633,7 +1633,7 @@ _sym_db.RegisterMessage(NasConfig.Operations)
 GraphConfig = _reflection.GeneratedProtocolMessageType('GraphConfig', (_message.Message,), {
   'DESCRIPTOR' : _GRAPHCONFIG,
   '__module__' : 'api_pb2'
-  # @@protoc_insertion_point(class_scope:api.v1.alpha3.GraphConfig)
+  # @@protoc_insertion_point(class_scope:api.v1alpha1.manager.GraphConfig)
   })
 _sym_db.RegisterMessage(GraphConfig)
 
@@ -1642,12 +1642,12 @@ Operation = _reflection.GeneratedProtocolMessageType('Operation', (_message.Mess
   'ParameterSpecs' : _reflection.GeneratedProtocolMessageType('ParameterSpecs', (_message.Message,), {
     'DESCRIPTOR' : _OPERATION_PARAMETERSPECS,
     '__module__' : 'api_pb2'
-    # @@protoc_insertion_point(class_scope:api.v1.alpha3.Operation.ParameterSpecs)
+    # @@protoc_insertion_point(class_scope:api.v1alpha1.manager.Operation.ParameterSpecs)
     })
   ,
   'DESCRIPTOR' : _OPERATION,
   '__module__' : 'api_pb2'
-  # @@protoc_insertion_point(class_scope:api.v1.alpha3.Operation)
+  # @@protoc_insertion_point(class_scope:api.v1alpha1.manager.Operation)
   })
 _sym_db.RegisterMessage(Operation)
 _sym_db.RegisterMessage(Operation.ParameterSpecs)
@@ -1657,12 +1657,12 @@ ExperimentSpec = _reflection.GeneratedProtocolMessageType('ExperimentSpec', (_me
   'ParameterSpecs' : _reflection.GeneratedProtocolMessageType('ParameterSpecs', (_message.Message,), {
     'DESCRIPTOR' : _EXPERIMENTSPEC_PARAMETERSPECS,
     '__module__' : 'api_pb2'
-    # @@protoc_insertion_point(class_scope:api.v1.alpha3.ExperimentSpec.ParameterSpecs)
+    # @@protoc_insertion_point(class_scope:api.v1alpha1.manager.ExperimentSpec.ParameterSpecs)
     })
   ,
   'DESCRIPTOR' : _EXPERIMENTSPEC,
   '__module__' : 'api_pb2'
-  # @@protoc_insertion_point(class_scope:api.v1.alpha3.ExperimentSpec)
+  # @@protoc_insertion_point(class_scope:api.v1alpha1.manager.ExperimentSpec)
   })
 _sym_db.RegisterMessage(ExperimentSpec)
 _sym_db.RegisterMessage(ExperimentSpec.ParameterSpecs)
@@ -1670,42 +1670,42 @@ _sym_db.RegisterMessage(ExperimentSpec.ParameterSpecs)
 Experiment = _reflection.GeneratedProtocolMessageType('Experiment', (_message.Message,), {
   'DESCRIPTOR' : _EXPERIMENT,
   '__module__' : 'api_pb2'
-  # @@protoc_insertion_point(class_scope:api.v1.alpha3.Experiment)
+  # @@protoc_insertion_point(class_scope:api.v1alpha1.manager.Experiment)
   })
 _sym_db.RegisterMessage(Experiment)
 
 ParameterAssignment = _reflection.GeneratedProtocolMessageType('ParameterAssignment', (_message.Message,), {
   'DESCRIPTOR' : _PARAMETERASSIGNMENT,
   '__module__' : 'api_pb2'
-  # @@protoc_insertion_point(class_scope:api.v1.alpha3.ParameterAssignment)
+  # @@protoc_insertion_point(class_scope:api.v1alpha1.manager.ParameterAssignment)
   })
 _sym_db.RegisterMessage(ParameterAssignment)
 
 Metric = _reflection.GeneratedProtocolMessageType('Metric', (_message.Message,), {
   'DESCRIPTOR' : _METRIC,
   '__module__' : 'api_pb2'
-  # @@protoc_insertion_point(class_scope:api.v1.alpha3.Metric)
+  # @@protoc_insertion_point(class_scope:api.v1alpha1.manager.Metric)
   })
 _sym_db.RegisterMessage(Metric)
 
 MetricLog = _reflection.GeneratedProtocolMessageType('MetricLog', (_message.Message,), {
   'DESCRIPTOR' : _METRICLOG,
   '__module__' : 'api_pb2'
-  # @@protoc_insertion_point(class_scope:api.v1.alpha3.MetricLog)
+  # @@protoc_insertion_point(class_scope:api.v1alpha1.manager.MetricLog)
   })
 _sym_db.RegisterMessage(MetricLog)
 
 Observation = _reflection.GeneratedProtocolMessageType('Observation', (_message.Message,), {
   'DESCRIPTOR' : _OBSERVATION,
   '__module__' : 'api_pb2'
-  # @@protoc_insertion_point(class_scope:api.v1.alpha3.Observation)
+  # @@protoc_insertion_point(class_scope:api.v1alpha1.manager.Observation)
   })
 _sym_db.RegisterMessage(Observation)
 
 ObservationLog = _reflection.GeneratedProtocolMessageType('ObservationLog', (_message.Message,), {
   'DESCRIPTOR' : _OBSERVATIONLOG,
   '__module__' : 'api_pb2'
-  # @@protoc_insertion_point(class_scope:api.v1.alpha3.ObservationLog)
+  # @@protoc_insertion_point(class_scope:api.v1alpha1.manager.ObservationLog)
   })
 _sym_db.RegisterMessage(ObservationLog)
 
@@ -1714,12 +1714,12 @@ TrialSpec = _reflection.GeneratedProtocolMessageType('TrialSpec', (_message.Mess
   'ParameterAssignments' : _reflection.GeneratedProtocolMessageType('ParameterAssignments', (_message.Message,), {
     'DESCRIPTOR' : _TRIALSPEC_PARAMETERASSIGNMENTS,
     '__module__' : 'api_pb2'
-    # @@protoc_insertion_point(class_scope:api.v1.alpha3.TrialSpec.ParameterAssignments)
+    # @@protoc_insertion_point(class_scope:api.v1alpha1.manager.TrialSpec.ParameterAssignments)
     })
   ,
   'DESCRIPTOR' : _TRIALSPEC,
   '__module__' : 'api_pb2'
-  # @@protoc_insertion_point(class_scope:api.v1.alpha3.TrialSpec)
+  # @@protoc_insertion_point(class_scope:api.v1alpha1.manager.TrialSpec)
   })
 _sym_db.RegisterMessage(TrialSpec)
 _sym_db.RegisterMessage(TrialSpec.ParameterAssignments)
@@ -1727,63 +1727,63 @@ _sym_db.RegisterMessage(TrialSpec.ParameterAssignments)
 TrialStatus = _reflection.GeneratedProtocolMessageType('TrialStatus', (_message.Message,), {
   'DESCRIPTOR' : _TRIALSTATUS,
   '__module__' : 'api_pb2'
-  # @@protoc_insertion_point(class_scope:api.v1.alpha3.TrialStatus)
+  # @@protoc_insertion_point(class_scope:api.v1alpha1.manager.TrialStatus)
   })
 _sym_db.RegisterMessage(TrialStatus)
 
 Trial = _reflection.GeneratedProtocolMessageType('Trial', (_message.Message,), {
   'DESCRIPTOR' : _TRIAL,
   '__module__' : 'api_pb2'
-  # @@protoc_insertion_point(class_scope:api.v1.alpha3.Trial)
+  # @@protoc_insertion_point(class_scope:api.v1alpha1.manager.Trial)
   })
 _sym_db.RegisterMessage(Trial)
 
 ReportObservationLogRequest = _reflection.GeneratedProtocolMessageType('ReportObservationLogRequest', (_message.Message,), {
   'DESCRIPTOR' : _REPORTOBSERVATIONLOGREQUEST,
   '__module__' : 'api_pb2'
-  # @@protoc_insertion_point(class_scope:api.v1.alpha3.ReportObservationLogRequest)
+  # @@protoc_insertion_point(class_scope:api.v1alpha1.manager.ReportObservationLogRequest)
   })
 _sym_db.RegisterMessage(ReportObservationLogRequest)
 
 ReportObservationLogReply = _reflection.GeneratedProtocolMessageType('ReportObservationLogReply', (_message.Message,), {
   'DESCRIPTOR' : _REPORTOBSERVATIONLOGREPLY,
   '__module__' : 'api_pb2'
-  # @@protoc_insertion_point(class_scope:api.v1.alpha3.ReportObservationLogReply)
+  # @@protoc_insertion_point(class_scope:api.v1alpha1.manager.ReportObservationLogReply)
   })
 _sym_db.RegisterMessage(ReportObservationLogReply)
 
 DeleteObservationLogRequest = _reflection.GeneratedProtocolMessageType('DeleteObservationLogRequest', (_message.Message,), {
   'DESCRIPTOR' : _DELETEOBSERVATIONLOGREQUEST,
   '__module__' : 'api_pb2'
-  # @@protoc_insertion_point(class_scope:api.v1.alpha3.DeleteObservationLogRequest)
+  # @@protoc_insertion_point(class_scope:api.v1alpha1.manager.DeleteObservationLogRequest)
   })
 _sym_db.RegisterMessage(DeleteObservationLogRequest)
 
 DeleteObservationLogReply = _reflection.GeneratedProtocolMessageType('DeleteObservationLogReply', (_message.Message,), {
   'DESCRIPTOR' : _DELETEOBSERVATIONLOGREPLY,
   '__module__' : 'api_pb2'
-  # @@protoc_insertion_point(class_scope:api.v1.alpha3.DeleteObservationLogReply)
+  # @@protoc_insertion_point(class_scope:api.v1alpha1.manager.DeleteObservationLogReply)
   })
 _sym_db.RegisterMessage(DeleteObservationLogReply)
 
 GetObservationLogRequest = _reflection.GeneratedProtocolMessageType('GetObservationLogRequest', (_message.Message,), {
   'DESCRIPTOR' : _GETOBSERVATIONLOGREQUEST,
   '__module__' : 'api_pb2'
-  # @@protoc_insertion_point(class_scope:api.v1.alpha3.GetObservationLogRequest)
+  # @@protoc_insertion_point(class_scope:api.v1alpha1.manager.GetObservationLogRequest)
   })
 _sym_db.RegisterMessage(GetObservationLogRequest)
 
 GetObservationLogReply = _reflection.GeneratedProtocolMessageType('GetObservationLogReply', (_message.Message,), {
   'DESCRIPTOR' : _GETOBSERVATIONLOGREPLY,
   '__module__' : 'api_pb2'
-  # @@protoc_insertion_point(class_scope:api.v1.alpha3.GetObservationLogReply)
+  # @@protoc_insertion_point(class_scope:api.v1alpha1.manager.GetObservationLogReply)
   })
 _sym_db.RegisterMessage(GetObservationLogReply)
 
 GetSuggestionsRequest = _reflection.GeneratedProtocolMessageType('GetSuggestionsRequest', (_message.Message,), {
   'DESCRIPTOR' : _GETSUGGESTIONSREQUEST,
   '__module__' : 'api_pb2'
-  # @@protoc_insertion_point(class_scope:api.v1.alpha3.GetSuggestionsRequest)
+  # @@protoc_insertion_point(class_scope:api.v1alpha1.manager.GetSuggestionsRequest)
   })
 _sym_db.RegisterMessage(GetSuggestionsRequest)
 
@@ -1792,12 +1792,12 @@ GetSuggestionsReply = _reflection.GeneratedProtocolMessageType('GetSuggestionsRe
   'ParameterAssignments' : _reflection.GeneratedProtocolMessageType('ParameterAssignments', (_message.Message,), {
     'DESCRIPTOR' : _GETSUGGESTIONSREPLY_PARAMETERASSIGNMENTS,
     '__module__' : 'api_pb2'
-    # @@protoc_insertion_point(class_scope:api.v1.alpha3.GetSuggestionsReply.ParameterAssignments)
+    # @@protoc_insertion_point(class_scope:api.v1alpha1.manager.GetSuggestionsReply.ParameterAssignments)
     })
   ,
   'DESCRIPTOR' : _GETSUGGESTIONSREPLY,
   '__module__' : 'api_pb2'
-  # @@protoc_insertion_point(class_scope:api.v1.alpha3.GetSuggestionsReply)
+  # @@protoc_insertion_point(class_scope:api.v1alpha1.manager.GetSuggestionsReply)
   })
 _sym_db.RegisterMessage(GetSuggestionsReply)
 _sym_db.RegisterMessage(GetSuggestionsReply.ParameterAssignments)
@@ -1805,32 +1805,33 @@ _sym_db.RegisterMessage(GetSuggestionsReply.ParameterAssignments)
 ValidateAlgorithmSettingsRequest = _reflection.GeneratedProtocolMessageType('ValidateAlgorithmSettingsRequest', (_message.Message,), {
   'DESCRIPTOR' : _VALIDATEALGORITHMSETTINGSREQUEST,
   '__module__' : 'api_pb2'
-  # @@protoc_insertion_point(class_scope:api.v1.alpha3.ValidateAlgorithmSettingsRequest)
+  # @@protoc_insertion_point(class_scope:api.v1alpha1.manager.ValidateAlgorithmSettingsRequest)
   })
 _sym_db.RegisterMessage(ValidateAlgorithmSettingsRequest)
 
 ValidateAlgorithmSettingsReply = _reflection.GeneratedProtocolMessageType('ValidateAlgorithmSettingsReply', (_message.Message,), {
   'DESCRIPTOR' : _VALIDATEALGORITHMSETTINGSREPLY,
   '__module__' : 'api_pb2'
-  # @@protoc_insertion_point(class_scope:api.v1.alpha3.ValidateAlgorithmSettingsReply)
+  # @@protoc_insertion_point(class_scope:api.v1alpha1.manager.ValidateAlgorithmSettingsReply)
   })
 _sym_db.RegisterMessage(ValidateAlgorithmSettingsReply)
 
 
+DESCRIPTOR._options = None
 
 _MANAGER = _descriptor.ServiceDescriptor(
   name='Manager',
-  full_name='api.v1.alpha3.Manager',
+  full_name='api.v1alpha1.manager.Manager',
   file=DESCRIPTOR,
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=3538,
-  serialized_end=3868,
+  serialized_start=3783,
+  serialized_end=4155,
   methods=[
   _descriptor.MethodDescriptor(
     name='ReportObservationLog',
-    full_name='api.v1.alpha3.Manager.ReportObservationLog',
+    full_name='api.v1alpha1.manager.Manager.ReportObservationLog',
     index=0,
     containing_service=None,
     input_type=_REPORTOBSERVATIONLOGREQUEST,
@@ -1840,7 +1841,7 @@ _MANAGER = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='GetObservationLog',
-    full_name='api.v1.alpha3.Manager.GetObservationLog',
+    full_name='api.v1alpha1.manager.Manager.GetObservationLog',
     index=1,
     containing_service=None,
     input_type=_GETOBSERVATIONLOGREQUEST,
@@ -1850,7 +1851,7 @@ _MANAGER = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='DeleteObservationLog',
-    full_name='api.v1.alpha3.Manager.DeleteObservationLog',
+    full_name='api.v1alpha1.manager.Manager.DeleteObservationLog',
     index=2,
     containing_service=None,
     input_type=_DELETEOBSERVATIONLOGREQUEST,
@@ -1866,17 +1867,17 @@ DESCRIPTOR.services_by_name['Manager'] = _MANAGER
 
 _SUGGESTION = _descriptor.ServiceDescriptor(
   name='Suggestion',
-  full_name='api.v1.alpha3.Suggestion',
+  full_name='api.v1alpha1.manager.Suggestion',
   file=DESCRIPTOR,
   index=1,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=3871,
-  serialized_end=4100,
+  serialized_start=4158,
+  serialized_end=4416,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetSuggestions',
-    full_name='api.v1.alpha3.Suggestion.GetSuggestions',
+    full_name='api.v1alpha1.manager.Suggestion.GetSuggestions',
     index=0,
     containing_service=None,
     input_type=_GETSUGGESTIONSREQUEST,
@@ -1886,7 +1887,7 @@ _SUGGESTION = _descriptor.ServiceDescriptor(
   ),
   _descriptor.MethodDescriptor(
     name='ValidateAlgorithmSettings',
-    full_name='api.v1.alpha3.Suggestion.ValidateAlgorithmSettings',
+    full_name='api.v1alpha1.manager.Suggestion.ValidateAlgorithmSettings',
     index=1,
     containing_service=None,
     input_type=_VALIDATEALGORITHMSETTINGSREQUEST,
@@ -1902,13 +1903,13 @@ DESCRIPTOR.services_by_name['Suggestion'] = _SUGGESTION
 
 _EARLYSTOPPING = _descriptor.ServiceDescriptor(
   name='EarlyStopping',
-  full_name='api.v1.alpha3.EarlyStopping',
+  full_name='api.v1alpha1.manager.EarlyStopping',
   file=DESCRIPTOR,
   index=2,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=4102,
-  serialized_end=4117,
+  serialized_start=4418,
+  serialized_end=4433,
   methods=[
 ])
 _sym_db.RegisterServiceDescriptor(_EARLYSTOPPING)

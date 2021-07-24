@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: random
+  name: grid
   namespace: morphling-system
 spec:
   replicas: 1

@@ -1,9 +1,23 @@
+# Copyright 2021 The Kubeflow Authors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import hyperopt
 import numpy as np
 import logging
 
-from pkg.algorithm.v1alpha1.internal.constant import INTEGER, DOUBLE, CATEGORICAL, DISCRETE, MAX_GOAL
-from pkg.algorithm.v1alpha1.internal.trial import Assignment
+from pkg.suggestion.v1beta1.internal.constant import INTEGER, DOUBLE, CATEGORICAL, DISCRETE, MAX_GOAL
+from pkg.suggestion.v1beta1.internal.trial import Assignment
 
 logger = logging.getLogger(__name__)
 
@@ -181,6 +195,9 @@ class BaseHyperoptService(object):
         # Produce new request_number ids to make new Suggestion
         hyperopt_trial_new_ids = self.fmin.trials.new_trial_ids(request_number)
         random_state = self.fmin.rstate.randint(2**31 - 1)
+
+        # Trial list that must be deployed
+        new_trials = []
         if self.algorithm_name == RANDOM_ALGORITHM_NAME:
             new_trials = self.hyperopt_algorithm(
                 new_ids=hyperopt_trial_new_ids,
@@ -203,7 +220,6 @@ class BaseHyperoptService(object):
                     **self.algorithm_conf)
                 self.is_first_run = False
             else:
-                new_trials = []
                 for i in range(request_number):
                     # hyperopt_algorithm always returns one new Trial
                     new_trials.append(self.hyperopt_algorithm(
@@ -216,9 +232,13 @@ class BaseHyperoptService(object):
 
         # Construct return advisor Trials from new hyperopt Trials
         list_of_assignments = []
-        for i in range(request_number):
-            vals = new_trials[i]['misc']['vals']
+        for trial in new_trials:
+            vals = trial['misc']['vals']
             list_of_assignments.append(BaseHyperoptService.convert(self.search_space, vals))
+
+        if len(list_of_assignments) > 0:
+            logger.info("GetSuggestions returns {} new Trial\n".format(len(new_trials)))
+
         return list_of_assignments
 
     @staticmethod

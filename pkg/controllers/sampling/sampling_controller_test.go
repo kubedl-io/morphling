@@ -49,7 +49,7 @@ import (
 var c client.Client
 
 var expectedRequest = reconcile.Request{NamespacedName: types.NamespacedName{Name: "foo", Namespace: "default"}}
-var depKey = types.NamespacedName{Name: "foo-random", Namespace: "default"}
+var depKey = types.NamespacedName{Name: "foo-grid", Namespace: "default"}
 
 const timeout = time.Second * 50
 
@@ -110,7 +110,7 @@ func TestReconcile(t *testing.T) {
 		},
 		Spec: morphlingv1alpha1.SamplingSpec{
 			Algorithm: morphlingv1alpha1.AlgorithmSpec{
-				AlgorithmName:     "random",
+				AlgorithmName:     "grid",
 				AlgorithmSettings: []morphlingv1alpha1.AlgorithmSetting{morphlingv1alpha1.AlgorithmSetting{Name: "initpoints", Value: "5"}},
 			},
 			//Objective: morphlingv1alpha1.ObjectiveSpec{
@@ -165,13 +165,13 @@ func TestReconcile(t *testing.T) {
 
 	// Manually delete Deployment since GC isn't enabled in the test control plane
 	g.Eventually(func() error { return c.Delete(context.TODO(), deploy) }, timeout).
-		Should(gomega.MatchError("deployments.apps \"foo-random\" not found"))
+		Should(gomega.MatchError("deployments.apps \"foo-grid\" not found"))
 
 }
 
 func newConfigMapInstance() *corev1.ConfigMap {
 	samplingConfig := map[string]map[string]string{
-		"random": {"image": consts.ImageSamplingAlgorithmRandom},
+		"grid": {"image": consts.ImageSamplingAlgorithmRandom},
 	}
 	b, _ := json.Marshal(samplingConfig)
 	return &corev1.ConfigMap{

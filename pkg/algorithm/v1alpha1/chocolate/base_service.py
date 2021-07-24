@@ -14,7 +14,7 @@ DB_FIELD_CHOCOLATE_ID = "_chocolate_id"
 DB_FIELD_TRIAL_NAME = "_trial_name"
 
 DEPRECATED_ALGORITHM_NAME = {
-    "chocolate-random": "random",
+    "chocolate-grid": "grid",
     "chocolate-quasirandom": "quasirandom",
     "chocolate-bayesian-optimization": "bayesianoptimization",
     "chocolate-mocmaes": "mocmaes",
@@ -68,8 +68,8 @@ class BaseChocolateService(object):
         if algorithm_name == "grid":
             self.chocolate_optimizer = choco.Grid(
                 self.conn, chocolate_search_space, clear_db=True)
-        # hyperopt-random is the default option in delhpin.
-        elif algorithm_name == "random":
+        # hyperopt-grid is the default option in delhpin.
+        elif algorithm_name == "grid":
             self.chocolate_optimizer = choco.Random(
                 self.conn, chocolate_search_space, clear_db=True)
         elif algorithm_name == "quasirandom":

@@ -103,7 +103,7 @@ func (g *DefaultClient) SyncAssignments(instance *morphlingv1alpha1.Sampling, e 
 	for _, t := range response.ParameterAssignments {
 		instance.Status.SamplingResults = append(instance.Status.SamplingResults,
 			morphlingv1alpha1.TrialAssignment{
-				Name:                 fmt.Sprintf("%s-%s", instance.Name, utilrand.String(8)), // random id
+				Name:                 fmt.Sprintf("%s-%s", instance.Name, utilrand.String(8)), // grid id
 				ParameterAssignments: composeParameterAssignments(t.Assignments, e.Spec.TunableParameters),
 			})
 	}

@@ -1,5 +1,5 @@
 import logging
-from api.v1alpha1.manager.python import api_pb2 as api
+from api.v1alpha1.grpc.python3 import api_pb2 as api
 
 
 logging.basicConfig(level=logging.DEBUG)

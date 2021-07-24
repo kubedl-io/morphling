@@ -1,11 +1,27 @@
+# Copyright 2021 The Kubeflow Authors.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#    http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
 import logging
 import grpc
-from api.v1alpha1.manager.python import api_pb2
-from api.v1alpha1.manager.python import api_pb2_grpc
-from pkg.algorithm.v1alpha1.internal.search_space import HyperParameterSearchSpace
-from pkg.algorithm.v1alpha1.internal.trial import Trial, Assignment
-from pkg.algorithm.v1alpha1.hyperopt.base_service import BaseHyperoptService
-from pkg.algorithm.v1alpha1.internal.base_health_service import HealthServicer
+
+from pkg.apis.manager.v1beta1.python import api_pb2
+from pkg.apis.manager.v1beta1.python import api_pb2_grpc
+
+from pkg.suggestion.v1beta1.internal.search_space import HyperParameterSearchSpace
+from pkg.suggestion.v1beta1.internal.trial import Trial, Assignment
+from pkg.suggestion.v1beta1.hyperopt.base_service import BaseHyperoptService
+from pkg.suggestion.v1beta1.internal.base_health_service import HealthServicer
 
 logger = logging.getLogger(__name__)
 
@@ -30,7 +46,7 @@ class HyperoptService(api_pb2_grpc.SuggestionServicer, HealthServicer):
                 algorithm_name=name,
                 algorithm_conf=config,
                 search_space=search_space)
-            # self.is_first_run = False
+            self.is_first_run = False
 
         trials = Trial.convert(request.trials)
         new_assignments = self.base_service.getSuggestions(trials, request.request_number)
@@ -65,7 +81,7 @@ class OptimizerConfiguration:
     def convert_algorithm_spec(cls, algorithm_spec):
         ret = {}
         setting_schema = cls.__conversion_dict[algorithm_spec.algorithm_name]
-        for s in algorithm_spec.algorithm_setting:
+        for s in algorithm_spec.algorithm_settings:
             if s.name in setting_schema:
                 ret[s.name] = setting_schema[s.name](s.value)
 
@@ -75,9 +91,9 @@ class OptimizerConfiguration:
     def validate_algorithm_spec(cls, algorithm_spec):
         algo_name = algorithm_spec.algorithm_name
         if algo_name == 'tpe':
-            return cls._validate_tpe_setting(algorithm_spec.algorithm_setting)
+            return cls._validate_tpe_setting(algorithm_spec.algorithm_settings)
         elif algo_name == 'random':
-            return cls._validate_random_setting(algorithm_spec.algorithm_setting)
+            return cls._validate_random_setting(algorithm_spec.algorithm_settings)
         else:
             return False, "unknown algorithm name {}".format(algo_name)
 

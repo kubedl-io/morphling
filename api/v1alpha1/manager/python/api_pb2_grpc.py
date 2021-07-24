@@ -2,13 +2,11 @@
 """Client and server classes corresponding to protobuf-defined services."""
 import grpc
 
-import api.v1alpha1.manager.python.api_pb2 as api__pb2
+from . import api_pb2 as api__pb2
 
 
 class ManagerStub(object):
-    """import "google/api/annotations.proto";
-
-    """
+    """Missing associated documentation comment in .proto file."""
 
     def __init__(self, channel):
         """Constructor.
@@ -17,26 +15,24 @@ class ManagerStub(object):
             channel: A grpc.Channel.
         """
         self.ReportObservationLog = channel.unary_unary(
-                '/api.v1.alpha3.Manager/ReportObservationLog',
+                '/api.v1alpha1.manager.Manager/ReportObservationLog',
                 request_serializer=api__pb2.ReportObservationLogRequest.SerializeToString,
                 response_deserializer=api__pb2.ReportObservationLogReply.FromString,
                 )
         self.GetObservationLog = channel.unary_unary(
-                '/api.v1.alpha3.Manager/GetObservationLog',
+                '/api.v1alpha1.manager.Manager/GetObservationLog',
                 request_serializer=api__pb2.GetObservationLogRequest.SerializeToString,
                 response_deserializer=api__pb2.GetObservationLogReply.FromString,
                 )
         self.DeleteObservationLog = channel.unary_unary(
-                '/api.v1.alpha3.Manager/DeleteObservationLog',
+                '/api.v1alpha1.manager.Manager/DeleteObservationLog',
                 request_serializer=api__pb2.DeleteObservationLogRequest.SerializeToString,
                 response_deserializer=api__pb2.DeleteObservationLogReply.FromString,
                 )
 
 
 class ManagerServicer(object):
-    """import "google/api/annotations.proto";
-
-    """
+    """Missing associated documentation comment in .proto file."""
 
     def ReportObservationLog(self, request, context):
         """*
@@ -85,15 +81,13 @@ def add_ManagerServicer_to_server(servicer, server):
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'api.v1.alpha3.Manager', rpc_method_handlers)
+            'api.v1alpha1.manager.Manager', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
  # This class is part of an EXPERIMENTAL API.
 class Manager(object):
-    """import "google/api/annotations.proto";
-
-    """
+    """Missing associated documentation comment in .proto file."""
 
     @staticmethod
     def ReportObservationLog(request,
@@ -106,7 +100,7 @@ class Manager(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/api.v1.alpha3.Manager/ReportObservationLog',
+        return grpc.experimental.unary_unary(request, target, '/api.v1alpha1.manager.Manager/ReportObservationLog',
             api__pb2.ReportObservationLogRequest.SerializeToString,
             api__pb2.ReportObservationLogReply.FromString,
             options, channel_credentials,
@@ -123,7 +117,7 @@ class Manager(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/api.v1.alpha3.Manager/GetObservationLog',
+        return grpc.experimental.unary_unary(request, target, '/api.v1alpha1.manager.Manager/GetObservationLog',
             api__pb2.GetObservationLogRequest.SerializeToString,
             api__pb2.GetObservationLogReply.FromString,
             options, channel_credentials,
@@ -140,7 +134,7 @@ class Manager(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/api.v1.alpha3.Manager/DeleteObservationLog',
+        return grpc.experimental.unary_unary(request, target, '/api.v1alpha1.manager.Manager/DeleteObservationLog',
             api__pb2.DeleteObservationLogRequest.SerializeToString,
             api__pb2.DeleteObservationLogReply.FromString,
             options, channel_credentials,
@@ -157,12 +151,12 @@ class SuggestionStub(object):
             channel: A grpc.Channel.
         """
         self.GetSuggestions = channel.unary_unary(
-                '/api.v1.alpha3.Suggestion/GetSuggestions',
+                '/api.v1alpha1.manager.Suggestion/GetSuggestions',
                 request_serializer=api__pb2.GetSuggestionsRequest.SerializeToString,
                 response_deserializer=api__pb2.GetSuggestionsReply.FromString,
                 )
         self.ValidateAlgorithmSettings = channel.unary_unary(
-                '/api.v1.alpha3.Suggestion/ValidateAlgorithmSettings',
+                '/api.v1alpha1.manager.Suggestion/ValidateAlgorithmSettings',
                 request_serializer=api__pb2.ValidateAlgorithmSettingsRequest.SerializeToString,
                 response_deserializer=api__pb2.ValidateAlgorithmSettingsReply.FromString,
                 )
@@ -198,7 +192,7 @@ def add_SuggestionServicer_to_server(servicer, server):
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'api.v1.alpha3.Suggestion', rpc_method_handlers)
+            'api.v1alpha1.manager.Suggestion', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
@@ -217,7 +211,7 @@ class Suggestion(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/api.v1.alpha3.Suggestion/GetSuggestions',
+        return grpc.experimental.unary_unary(request, target, '/api.v1alpha1.manager.Suggestion/GetSuggestions',
             api__pb2.GetSuggestionsRequest.SerializeToString,
             api__pb2.GetSuggestionsReply.FromString,
             options, channel_credentials,
@@ -234,7 +228,7 @@ class Suggestion(object):
             wait_for_ready=None,
             timeout=None,
             metadata=None):
-        return grpc.experimental.unary_unary(request, target, '/api.v1.alpha3.Suggestion/ValidateAlgorithmSettings',
+        return grpc.experimental.unary_unary(request, target, '/api.v1alpha1.manager.Suggestion/ValidateAlgorithmSettings',
             api__pb2.ValidateAlgorithmSettingsRequest.SerializeToString,
             api__pb2.ValidateAlgorithmSettingsReply.FromString,
             options, channel_credentials,
@@ -262,7 +256,7 @@ def add_EarlyStoppingServicer_to_server(servicer, server):
     rpc_method_handlers = {
     }
     generic_handler = grpc.method_handlers_generic_handler(
-            'api.v1.alpha3.EarlyStopping', rpc_method_handlers)
+            'api.v1alpha1.manager.EarlyStopping', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
