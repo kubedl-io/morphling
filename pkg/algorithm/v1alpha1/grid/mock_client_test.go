@@ -153,18 +153,18 @@ func newSamplingRequest() *suggestionapi.SamplingRequest {
 		FeasibleSpace: []string{"10G", "20G", "05G"},
 	})
 	request.Parameters = pars
-	
+
 	existingTrials := make([]*suggestionapi.TrialResult, 0)
 	trial1 := &suggestionapi.TrialResult{
 		ParameterAssignments: []*suggestionapi.KeyValue{{
 			Key:   "cpu",
 			Value: "0.5",
 		},
-		{
-			Key:   "memory",
-			Value: "05G",
-		}},
-		ObjectValue:          0,
+			{
+				Key:   "memory",
+				Value: "05G",
+			}},
+		ObjectValue: 0,
 	}
 	existingTrials = append(existingTrials, trial1)
 	request.ExistingResults = existingTrials

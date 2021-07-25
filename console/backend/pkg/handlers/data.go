@@ -254,7 +254,7 @@ func (handler *DataHandler) GetConfig() (utils.MorphlingConfig, error) {
 		HttpClientYaml:  config["http-client-yaml"],
 		HsfClientYaml:   config["hsf-client-yaml"],
 		HttpServiceYaml: config["http-service-yaml"],
-		HsfServiceYaml: config["hsf-service-yaml"],
+		HsfServiceYaml:  config["hsf-service-yaml"],
 		//AlgorithmNames:  nil,
 	}
 	if err := json.Unmarshal([]byte(config["algorithm-names"]), &dataConfig.AlgorithmNames); err != nil {

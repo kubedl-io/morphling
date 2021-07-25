@@ -168,8 +168,8 @@ func (handler *ExperimentHandler) GetExperimentDetail(query *utils.Query) (utils
 	// CurrentOptimalTrial
 	if pe.Status.CurrentOptimalTrial.TunableParameters != nil {
 		peInfo.CurrentOptimalTrials = append(peInfo.CurrentOptimalTrials, utils.CurrentOptimalTrial{
-			ObjectiveName:    pe.Status.CurrentOptimalTrial.ObjectiveMetricsObserved[0].Name,
-			ObjectiveValue:   pe.Status.CurrentOptimalTrial.ObjectiveMetricsObserved[0].Value,
+			ObjectiveName:  pe.Status.CurrentOptimalTrial.ObjectiveMetricsObserved[0].Name,
+			ObjectiveValue: pe.Status.CurrentOptimalTrial.ObjectiveMetricsObserved[0].Value,
 		})
 
 		parameterSamples := map[string]string{}

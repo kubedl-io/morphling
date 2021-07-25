@@ -19,31 +19,8 @@ package util
 import (
 	"fmt"
 
-	morphlingv1alpha1 "github.com/alibaba/morphling/api/v1alpha1"
 	"github.com/alibaba/morphling/pkg/controllers/consts"
 )
-
-func GetAlgorithmDeploymentName(s *morphlingv1alpha1.Sampling) string {
-	// TODO: We comment the following parts, as we are using long-running algorithm server
-	return s.Name + "-" + string(s.Spec.Algorithm.AlgorithmName) //s.Name + "-" +
-}
-
-// Todo delete this func
-func GetAlgorithmServiceName(s *morphlingv1alpha1.Sampling) string {
-	// TODO: We comment the following parts, as we are using long-running algorithm server
-	return s.Name + "-" + string(s.Spec.Algorithm.AlgorithmName) //s.Name + "-" +
-}
-
-// GetAlgorithmEndpoint returns the endpoint of the algorithm service.
-// Todo delete this func
-func GetAlgorithmEndpoint(s *morphlingv1alpha1.Sampling) string {
-
-	serviceName := GetAlgorithmServiceName(s) //"127.0.0.1" //
-	return fmt.Sprintf("%s:%d",
-		serviceName,
-		//s.Namespace,
-		consts.DefaultSamplingPort)
-}
 
 func GetAlgorithmServerEndpoint() string {
 

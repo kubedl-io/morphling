@@ -113,18 +113,6 @@ func addWatch(c controller.Controller) error {
 		return err
 	}
 
-	// Watch for samplings for the experiments
-	err = c.Watch(
-		&source.Kind{Type: &morphlingv1alpha1.Sampling{}},
-		&handler.EnqueueRequestForOwner{
-			IsController: true,
-			OwnerType:    &morphlingv1alpha1.ProfilingExperiment{},
-		})
-	if err != nil {
-		log.Error(err, "Sampling watch failed")
-		return err
-	}
-
 	return nil
 }
 
@@ -164,12 +152,12 @@ func (r *ProfilingExperimentReconciler) Reconcile(req ctrl.Request) (ctrl.Result
 
 	// Cleanup upon completion
 	if util.IsCompletedExperiment(instance) {
-		// Terminate sampling, but not delete it
-		err := r.terminateSuggestion(instance)
-		if err != nil {
-			logger.Error(err, "Terminate Suggestion error")
-			return reconcile.Result{}, err
-		}
+		//// Terminate sampling, but not delete it
+		//err := r.terminateSuggestion(instance)
+		//if err != nil {
+		//	logger.Error(err, "Terminate Suggestion error")
+		//	return reconcile.Result{}, err
+		//}
 		// If experiment is completed with no running trials, stop reconcile
 		if !util.HasRunningTrials(instance) {
 			return reconcile.Result{}, nil
@@ -357,79 +345,9 @@ func (r *ProfilingExperimentReconciler) createTrialInstance(expInstance *morphli
 
 }
 
-// ReconcileSamplings gets or creates the sampling if needed.
-func (r *ProfilingExperimentReconciler) ReconcileSamplings(instance *morphlingv1alpha1.ProfilingExperiment, currentCount, addCount int32) ([]morphlingv1alpha1.TrialAssignment, error) {
-	logger := log.WithValues("Experiment", types.NamespacedName{Name: instance.GetName(), Namespace: instance.GetNamespace()})
-
-	// Calculate the number of new samplings needed
-	var assignments []morphlingv1alpha1.TrialAssignment
-	samplingRequestsCount := currentCount + addCount
-	logger.Info("GetOrCreateSampling", "Instance name", instance.Name, "samplingRequestsCount", samplingRequestsCount)
-
-	// Get the sampling instance
-	original, err := r.GetOrCreateSampling(samplingRequestsCount, instance, &instance.Spec.Objective)
-	if err != nil {
-		logger.Error(err, "GetOrCreateSampling failed", "instance", instance.Name, "samplingRequestsCount", samplingRequestsCount)
-		return nil, err
-	} else {
-		if original != nil {
-			if util.IsFailedSampling(original) {
-				msg := "Sampling has failed"
-				util.MarkExperimentStatusFailed(instance, msg)
-			} else {
-				samplingInstance := original.DeepCopy()
-				if len(samplingInstance.Status.SamplingResults) > int(currentCount) {
-					// Once the length of Sampling results is longer than the length of Trial list,
-					// (meaning additional sampling results are provided by the sampling algorithm)
-					// get these added results as assignments
-					samplingResults := samplingInstance.Status.SamplingResults
-					assignments = samplingResults[currentCount:]
-				}
-				if samplingInstance.Spec.NumSamplingsRequested != samplingRequestsCount {
-					// Change the samplingInstance.Spec.Requests as a new value (samplingRequestsCount),
-					// notifying Sampling controller to calculating new tunable parameters
-					samplingInstance.Spec.NumSamplingsRequested = samplingRequestsCount
-					if err := r.UpdateSampling(samplingInstance); err != nil {
-						return nil, err
-					}
-				}
-
-			}
-		}
-	}
-	return assignments, nil
-}
-
 func (r *ProfilingExperimentReconciler) updateStatus(instance *morphlingv1alpha1.ProfilingExperiment) error {
 	err := r.Update(context.TODO(), instance)
 	if err != nil {
-		return err
-	}
-	return nil
-}
-
-func (r *ProfilingExperimentReconciler) terminateSuggestion(instance *morphlingv1alpha1.ProfilingExperiment) error {
-	// Fetch Sampling instance
-	original := &morphlingv1alpha1.Sampling{}
-	err := r.Get(context.TODO(), types.NamespacedName{Namespace: instance.GetNamespace(), Name: instance.GetName()}, original)
-	if err != nil {
-		if errors.IsNotFound(err) {
-			return nil
-		}
-		return err
-	}
-
-	// If Suggestion is failed or Suggestion is Succeeded, not needed to terminate Suggestion
-	if util.IsFailedSampling(original) || util.IsSucceededSampling(original) {
-		return nil
-	}
-	log.Info("Start terminating sampling")
-	suggestion := original.DeepCopy()
-	msg := "Suggestion is succeeded"
-	util.MarkSamplingStatusSucceeded(suggestion, msg)
-	log.Info("Mark suggestion succeeded")
-
-	if err := r.UpdateSamplingStatus(suggestion); err != nil {
 		return err
 	}
 	return nil

@@ -21,9 +21,8 @@ import (
 	"fmt"
 	morphlingv1alpha1 "github.com/alibaba/morphling/api/v1alpha1"
 	"github.com/alibaba/morphling/pkg/controllers/consts"
-	samplingclient"github.com/alibaba/morphling/pkg/controllers/experiment/sampling"
+	samplingclient "github.com/alibaba/morphling/pkg/controllers/experiment/sampling"
 	"github.com/alibaba/morphling/pkg/controllers/util"
-	samplingmock "github.com/alibaba/morphling/pkg/mock/profilingexperiment/sampling"
 	. "github.com/alibaba/morphling/pkg/test_util"
 	"github.com/golang/mock/gomock"
 	"github.com/onsi/gomega"
@@ -58,8 +57,7 @@ func init() {
 
 func TestMain(m *testing.M) {
 	testEnv := &envtest.Environment{
-		CRDDirectoryPaths: []string{CrdPath,
-		},
+		CRDDirectoryPaths: []string{CrdPath},
 	}
 	var err error
 	if err = morphlingv1alpha1.AddToScheme(scheme.Scheme); err != nil {
@@ -93,9 +91,7 @@ func TestReconcileExperiment(t *testing.T) {
 	}})
 	g.Expect(err).NotTo(gomega.HaveOccurred())
 
-	sampling := samplingmock.NewMockSampling(mockCtrl)
-	sampling.EXPECT().GetOrCreateSampling(gomock.Any(), gomock.Any(), gomock.Any()).Return(newFakeSampling(), nil).AnyTimes()
-	sampling.EXPECT().UpdateSampling(gomock.Any()).Return(nil).AnyTimes()
+	//sampling := samplingmock.NewMockSampling(mockCtrl)
 
 	r := &ProfilingExperimentReconciler{
 		Client:   mgr.GetClient(),
@@ -157,7 +153,7 @@ func TestSetParameterSpace(t *testing.T) {
 	testCases := map[string]struct {
 		parSpec        morphlingv1alpha1.ParameterSpec
 		expectedOutput []string
-		err error
+		err            error
 	}{
 		"int correct": {
 			morphlingv1alpha1.ParameterSpec{
@@ -201,15 +197,15 @@ func TestSetParameterSpace(t *testing.T) {
 		},
 		"int incorrect (min not int)": {
 			morphlingv1alpha1.ParameterSpec{
-			Name:          "cpu",
-			ParameterType: morphlingv1alpha1.ParameterTypeInt,
-			FeasibleSpace: morphlingv1alpha1.FeasibleSpace{
-				Max:  "10",
-				Min:  "1.1",
-				List: nil,
-				Step: "1",
+				Name:          "cpu",
+				ParameterType: morphlingv1alpha1.ParameterTypeInt,
+				FeasibleSpace: morphlingv1alpha1.FeasibleSpace{
+					Max:  "10",
+					Min:  "1.1",
+					List: nil,
+					Step: "1",
+				},
 			},
-		},
 			nil,
 			&strconv.NumError{
 				Func: "ParseInt",
@@ -238,35 +234,12 @@ func TestSetParameterSpace(t *testing.T) {
 			feasibleSpace, err := samplingclient.ConvertFeasibleSpace(tc.parSpec.FeasibleSpace, tc.parSpec.ParameterType)
 			if tc.expectedOutput != nil {
 				assert.Equal(t, feasibleSpace, tc.expectedOutput)
-			}else {
+			} else {
 				assert.NotNil(t, err)
 				fmt.Println(err)
 			}
 
 		})
-	}
-}
-
-func newFakeSampling() *morphlingv1alpha1.Sampling {
-	return &morphlingv1alpha1.Sampling{
-		ObjectMeta: metav1.ObjectMeta{
-			Name:      ExperimentName,
-			Namespace: Namespace,
-		},
-		Status: morphlingv1alpha1.SamplingStatus{
-			SamplingResults: []morphlingv1alpha1.TrialAssignment{
-				{
-					Name: TrialName,
-					ParameterAssignments: []morphlingv1alpha1.ParameterAssignment{
-						{
-							Name:     "CPU",
-							Value:    "0.5",
-							Category: morphlingv1alpha1.CategoryResource,
-						},
-					},
-				},
-			},
-		},
 	}
 }
 
@@ -287,8 +260,8 @@ func newFakeInstance() *morphlingv1alpha1.ProfilingExperiment {
 							Name:          "cpu",
 							ParameterType: morphlingv1alpha1.ParameterType("int"),
 							FeasibleSpace: morphlingv1alpha1.FeasibleSpace{
-								Min: "1",
-								Max: "2",
+								Min:  "1",
+								Max:  "2",
 								Step: "1",
 							},
 						},

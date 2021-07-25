@@ -21,19 +21,6 @@ import (
 	"github.com/alibaba/morphling/pkg/controllers/consts"
 )
 
-// SamplingLabels returns the expected sampling labels.
-func SamplingLabels(instance *morphlingv1alpha1.Sampling) map[string]string {
-	res := make(map[string]string)
-	for k, v := range instance.Labels {
-		res[k] = v
-	}
-	res[consts.LabelDeploymentName] = GetAlgorithmDeploymentName(instance)
-	res[consts.LabelExperimentName] = instance.Name
-	res[consts.LabelSamplingName] = instance.Name
-
-	return res
-}
-
 // TrialLabels returns the expected trial labels.
 func TrialLabels(instance *morphlingv1alpha1.ProfilingExperiment) map[string]string {
 	res := make(map[string]string)

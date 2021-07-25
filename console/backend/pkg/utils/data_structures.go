@@ -11,7 +11,7 @@ type MorphlingConfig struct {
 	HsfClientImage  string   `json:"hsf-client-image"`
 	HttpClientYaml  string   `json:"http-client-yaml"`
 	HsfClientYaml   string   `json:"hsf-client-yaml"`
-	HttpServiceYaml  string   `json:"http-service-yaml"`
+	HttpServiceYaml string   `json:"http-service-yaml"`
 	HsfServiceYaml  string   `json:"hsf-service-yaml"`
 	AlgorithmNames  []string `json:"algorithm-names"`
 }

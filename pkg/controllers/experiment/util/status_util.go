@@ -22,9 +22,9 @@ import (
 	logf "sigs.k8s.io/controller-runtime/pkg/runtime/log"
 
 	morphlingv1alpha1 "github.com/alibaba/morphling/api/v1alpha1"
+	samplingClient "github.com/alibaba/morphling/pkg/controllers/experiment/sampling"
 	"github.com/alibaba/morphling/pkg/controllers/util"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
-	samplingClient "github.com/alibaba/morphling/pkg/controllers/experiment/sampling"
 )
 
 var log = logf.Log.WithName("experiment-status-util")

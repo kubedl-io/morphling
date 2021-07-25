@@ -128,6 +128,15 @@ type TrialResult struct {
 	ObjectiveMetricsObserved []Metric `json:"objectiveMetricsObserved,omitempty"`
 }
 
+// TrialAssignment is the assignment for one trial.
+type TrialAssignment struct {
+	// Sampling results
+	ParameterAssignments []ParameterAssignment `json:"parameterAssignments,omitempty"`
+
+	//Name of the sampling sampling result, used to start a trial
+	Name string `json:"name,omitempty"`
+}
+
 type Metric struct {
 	Name  string `json:"name,omitempty"`
 	Value string `json:"value,omitempty"`

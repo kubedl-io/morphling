@@ -17,50 +17,28 @@ limitations under the License.
 package consts
 
 import (
-	"github.com/alibaba/morphling/pkg/util/env"
+	"os"
 )
 
 const (
-	// ConfigExperimentSamplingName is the config name of the
-	// sampling client implementation in experiment controller.
-	ConfigExperimentSamplingName = "experiment-sampling-name"
-	// ConfigCertLocalFS is the config name which indicates if we
-	// should store the cert in file system.
-	ConfigCertLocalFS = "cert-local-filesystem"
-	// ConfigInjectSecurityContext is the config name which indicates
-	// if we should inject the security context into the metrics collector
-	// sidecar.
-	ConfigInjectSecurityContext = "inject-security-context"
-	// ConfigEnableGRPCProbeInSampling is the config name which indicates
-	// if we should set GRPC probe in sampling deployments.
 	ConfigEnableGRPCProbeInSampling = "enable-grpc-probe-in-sampling"
 
 	// LabelExperimentName is the label of experiment name.
 	LabelExperimentName = "experiment"
 	// LabelTrialName is the label of trial name.
 	LabelTrialName = "trial"
-	// LabelSamplingName is the label of sampling name.
-	LabelSamplingName = "sampling"
 	// LabelDeploymentName is the label of deployment name.
 	LabelDeploymentName = "deployment"
-
-	// ContainerSampling is the container name in Sampling.
-	ContainerSampling = "sampling"
 
 	// DefaultSamplingPort is the default port of sampling service.
 	DefaultServicePort = 8500
 	// DefaultSamplingPortName is the default port name of sampling service.
-	DefaultServicePortName = "ml-service"
+	DefaultServicePortName = "profile-service"
 
 	// DefaultSamplingPort is the default port of sampling service.
 	DefaultSamplingPort = 9996 //6789
 
 	DefaultSamplingService = "morphling-algorithm-server"
-	// DefaultSamplingPortName is the default port name of sampling service.
-	DefaultSamplingPortName = "morphling-api"
-	// DefaultGRPCService is the default service name in Sampling,
-	// which is used to run healthz check using grpc probe.
-	DefaultGRPCService = "algorithm.probe"
 
 	// DefaultMorphlingNamespaceEnvName is the default env name of morphling namespace
 	DefaultMorphlingNamespaceEnvName = "MORPHLING_CORE_NAMESPACE"
@@ -129,48 +107,27 @@ const (
 	LabelMetricsCollectorDiskRequestTag = "diskRequest"
 	// LabelMetricsCollectorImagePullPolicy is the name of metrics collector image pull policy in configmap.
 	LabelMetricsCollectorImagePullPolicy = "imagePullPolicy"
-
-	// ReconcileErrorReason is the reason when there is a reconcile error.
-	ReconcileErrorReason = "ReconcileError"
-
-	// JobKindJob is the kind of the Kubernetes Job.
-	JobKindJob = "Job"
-	// JobKindTF is the kind of TFJob.
-	JobKindTF = "TFJob"
-	// JobKindPyTorch is the kind of PyTorchJob.
-	JobKindPyTorch = "PyTorchJob"
-
-	// built-in JobRoles
-	JobRole        = "job-role"
-	JobRoleTF      = "tf-job-role"
-	JobRolePyTorch = "pytorch-job-role"
-
-	// AnnotationIstioSidecarInjectName is the annotation of Istio Sidecar
-	AnnotationIstioSidecarInjectName = "sidecar.istio.io/inject"
-
-	// AnnotationIstioSidecarInjectValue is the value of Istio Sidecar annotation
-	AnnotationIstioSidecarInjectValue = "false"
-
 	// LabelTrialTemplateConfigMapName is the label name for the Trial templates configMap
 	LabelTrialTemplateConfigMapName = "app"
 	// LabelTrialTemplateConfigMapValue is the label value for the Trial templates configMap
 	LabelTrialTemplateConfigMapValue = "morphling-trial-templates"
-
-	ImageSamplingAlgorithmRandom = "gcr.io/kubeflow-images-public/Morphling/v1alpha3/suggestion-hyperopt"
 )
+
+func GetEnvOrDefault(key string, fallback string) string {
+	if value, ok := os.LookupEnv(key); ok {
+		return value
+	}
+	return fallback
+}
 
 //
 var (
 	// DefaultMorphlingNamespace is the default namespace of Morphling deployment.
-	DefaultMorphlingNamespace = env.GetEnvOrDefault(DefaultMorphlingNamespaceEnvName, "morphling-system")
-	// DefaultComposer is the default composer of Morphling sampling.
-	// TODO: namespace
-	DefaultComposer = env.GetEnvOrDefault(DefaultMorphlingComposerEnvName, "General")
-
+	DefaultMorphlingNamespace = GetEnvOrDefault(DefaultMorphlingNamespaceEnvName, "morphling-system")
 	// DefaultMorphlingDBManagerServiceNamespace is the default namespace of Morphling DB Manager
-	DefaultMorphlingDBManagerServiceNamespace = env.GetEnvOrDefault(DefaultMorphlingDBManagerServiceNamespaceEnvName, DefaultMorphlingNamespace)
+	DefaultMorphlingDBManagerServiceNamespace = GetEnvOrDefault(DefaultMorphlingDBManagerServiceNamespaceEnvName, DefaultMorphlingNamespace)
 	// DefaultMorphlingDBManagerServiceIP is the default IP of Morphling DB Manager
-	DefaultMorphlingDBManagerServiceIP = env.GetEnvOrDefault(DefaultMorphlingDBManagerServiceIPEnvName, "morphling-db-manager")
+	DefaultMorphlingDBManagerServiceIP = GetEnvOrDefault(DefaultMorphlingDBManagerServiceIPEnvName, "morphling-db-manager")
 	// DefaultMorphlingDBManagerServicePort is the default Port of Morphling DB Manager
-	DefaultMorphlingDBManagerServicePort = env.GetEnvOrDefault(DefaultMorphlingDBManagerServicePortEnvName, "6799")
+	DefaultMorphlingDBManagerServicePort = GetEnvOrDefault(DefaultMorphlingDBManagerServicePortEnvName, "6799")
 )
