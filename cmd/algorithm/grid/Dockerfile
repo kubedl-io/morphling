@@ -2,6 +2,7 @@ FROM python:3.6
 
 ENV TARGET_DIR /morphling
 ENV SUGGESTION_DIR cmd/algorithm/grid
+ENV PYTHONUNBUFFERED 0
 
 RUN if [ "$(uname -m)" = "ppc64le" ] || [ "$(uname -m)" = "aarch64" ]; then \
     apt-get -y update && \
