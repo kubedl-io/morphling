@@ -27,7 +27,7 @@ spec:
               command:
                 - /bin/grpc_health_probe
                 - -addr=:9996
-                - -service=manager.v1alpha3.Suggestion
+                - -service=algorithm.probe
             failureThreshold: 12
             initialDelaySeconds: 10
             periodSeconds: 120
@@ -43,7 +43,7 @@ spec:
               command:
                 - /bin/grpc_health_probe
                 - -addr=:9996
-                - -service=manager.v1alpha3.Suggestion
+                - -service=algorithm.probe
             failureThreshold: 3
             initialDelaySeconds: 10
             periodSeconds: 10

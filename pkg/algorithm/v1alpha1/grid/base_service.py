@@ -49,6 +49,7 @@ class BaseSamplingService(object):
         logger.info("-" * 100 + "\n")
         print("-" * 100 + "\n")
         logger.info("New getSuggestions call\n")
+        print("New getSuggestions call\n")
         if request.algorithm_name == "grid":
             return self.get_assignment_grid(request)
         elif request.algorithm_name == "random":

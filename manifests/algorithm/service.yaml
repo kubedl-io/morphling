@@ -6,7 +6,6 @@ metadata:
 spec:
   ports:
     - name: morphling-api
-#      nodePort: 6789
       port: 9996
       protocol: TCP
       targetPort: 9996

@@ -60,7 +60,7 @@ const (
 	DefaultSamplingPortName = "morphling-api"
 	// DefaultGRPCService is the default service name in Sampling,
 	// which is used to run healthz check using grpc probe.
-	DefaultGRPCService = "manager.v1alpha3.Suggestion"
+	DefaultGRPCService = "algorithm.probe"
 
 	// DefaultMorphlingNamespaceEnvName is the default env name of morphling namespace
 	DefaultMorphlingNamespaceEnvName = "MORPHLING_CORE_NAMESPACE"
