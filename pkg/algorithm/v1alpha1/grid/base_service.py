@@ -3,7 +3,6 @@ import logging
 import operator
 import numpy as np
 from api.v1alpha1.grpc.python3 import api_pb2
-
 logger = logging.getLogger(__name__)
 
 
@@ -48,6 +47,7 @@ class BaseSamplingService(object):
 
     def get_assignment(self, request):
         logger.info("-" * 100 + "\n")
+        print("-" * 100 + "\n")
         logger.info("New getSuggestions call\n")
         if request.algorithm_name == "grid":
             return self.get_assignment_grid(request)
@@ -87,6 +87,7 @@ class BaseSamplingService(object):
             next_assignment_index += 1
             for assignment in assignments:
                 logger.info("Name = {}, Value = {}, ".format(assignment.key, assignment.value))
+                print("Name = {}, Value = {}, ".format(assignment.key, assignment.value))
             logger.info("\n")
         return assignments_set
 
@@ -97,6 +98,7 @@ class BaseSamplingService(object):
             assignments_set.append(api_pb2.ParameterAssignments(key_values=assignments))
             for assignment in assignments:
                 logger.info("Name = {}, Value = {}, ".format(assignment.key, assignment.value))
+                print("Name = {}, Value = {}, ".format(assignment.key, assignment.value))
             logger.info("\n")
         return assignments_set
 

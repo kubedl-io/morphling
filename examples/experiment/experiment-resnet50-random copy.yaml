@@ -72,15 +72,15 @@ spec:
           name: "cpu"
           feasibleSpace:
             list:
-              - "500m"
-              - "1500m"
+#              - "500m"
+#              - "1500m"
               - "2000m"
         - parameterType: discrete
           name: "memory"
           feasibleSpace:
             list:
-              - "200Mi"
-              - "1000Mi"
+#              - "200Mi"
+#              - "1000Mi"
               - "2000Mi"
     - category: "env"
       parameters:

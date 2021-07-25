@@ -298,18 +298,20 @@ func (r *ProfilingExperimentReconciler) ReconcileTrials(instance *morphlingv1alp
 func (r *ProfilingExperimentReconciler) createTrials(instance *morphlingv1alpha1.ProfilingExperiment, trialList []morphlingv1alpha1.Trial, addCount int32) error {
 	logger := log.WithValues("Experiment", types.NamespacedName{Name: instance.GetName(), Namespace: instance.GetNamespace()})
 
-	// Fetch sampling results
+	//// Fetch sampling results
 	currentCount := int32(len(trialList))
-	trials, err := r.ReconcileSamplings(instance, currentCount, addCount)
+	//trials, err := r.ReconcileSamplings(instance, currentCount, addCount)
+	assignments, err := r.GetSamplings(addCount, instance, currentCount, trialList)
+
 	if err != nil {
 		logger.Error(err, "Get samplings error")
 		return err
 	}
 
 	// Create new trials w.r.t. sampling results
-	for _, trial := range trials {
-		if err = r.createTrialInstance(instance, &trial); err != nil {
-			logger.Error(err, "Create trial instance error", "trial", trial)
+	for _, assignment := range assignments {
+		if err = r.createTrialInstance(instance, &assignment); err != nil {
+			logger.Error(err, "Create trial instance error", "trial", assignment)
 			continue
 		}
 	}

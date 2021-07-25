@@ -5,11 +5,9 @@
 package mock_sampling
 
 import (
-	reflect "reflect"
-
+	v1alpha1 "github.com/alibaba/morphling/api/v1alpha1"
 	gomock "github.com/golang/mock/gomock"
-
-	morphlingv1alpha1 "github.com/alibaba/morphling/api/v1alpha1"
+	reflect "reflect"
 )
 
 // MockSampling is a mock of Sampling interface
@@ -36,10 +34,10 @@ func (m *MockSampling) EXPECT() *MockSamplingMockRecorder {
 }
 
 // GetOrCreateSampling mocks base method
-func (m *MockSampling) GetOrCreateSampling(suggestionRequests int32, instance *morphlingv1alpha1.ProfilingExperiment, samplingRequests *morphlingv1alpha1.ObjectiveSpec) (*morphlingv1alpha1.Sampling, error) {
+func (m *MockSampling) GetOrCreateSampling(suggestionRequests int32, instance *v1alpha1.ProfilingExperiment, samplingRequests *v1alpha1.ObjectiveSpec) (*v1alpha1.Sampling, error) {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "GetOrCreateSampling", suggestionRequests, instance, samplingRequests)
-	ret0, _ := ret[0].(*morphlingv1alpha1.Sampling)
+	ret0, _ := ret[0].(*v1alpha1.Sampling)
 	ret1, _ := ret[1].(error)
 	return ret0, ret1
 }
@@ -51,7 +49,7 @@ func (mr *MockSamplingMockRecorder) GetOrCreateSampling(suggestionRequests, inst
 }
 
 // UpdateSampling mocks base method
-func (m *MockSampling) UpdateSampling(sampling *morphlingv1alpha1.Sampling) error {
+func (m *MockSampling) UpdateSampling(sampling *v1alpha1.Sampling) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateSampling", sampling)
 	ret0, _ := ret[0].(error)
@@ -65,7 +63,7 @@ func (mr *MockSamplingMockRecorder) UpdateSampling(sampling interface{}) *gomock
 }
 
 // UpdateSamplingStatus mocks base method
-func (m *MockSampling) UpdateSamplingStatus(sampling *morphlingv1alpha1.Sampling) error {
+func (m *MockSampling) UpdateSamplingStatus(sampling *v1alpha1.Sampling) error {
 	m.ctrl.T.Helper()
 	ret := m.ctrl.Call(m, "UpdateSamplingStatus", sampling)
 	ret0, _ := ret[0].(error)
@@ -76,4 +74,19 @@ func (m *MockSampling) UpdateSamplingStatus(sampling *morphlingv1alpha1.Sampling
 func (mr *MockSamplingMockRecorder) UpdateSamplingStatus(sampling interface{}) *gomock.Call {
 	mr.mock.ctrl.T.Helper()
 	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "UpdateSamplingStatus", reflect.TypeOf((*MockSampling)(nil).UpdateSamplingStatus), sampling)
+}
+
+// GetSamplings mocks base method
+func (m *MockSampling) GetSamplings(numRequests int32, instance *v1alpha1.ProfilingExperiment, currentCount int32, trials []v1alpha1.Trial) ([]v1alpha1.TrialAssignment, error) {
+	m.ctrl.T.Helper()
+	ret := m.ctrl.Call(m, "GetSamplings", numRequests, instance, currentCount, trials)
+	ret0, _ := ret[0].([]v1alpha1.TrialAssignment)
+	ret1, _ := ret[1].(error)
+	return ret0, ret1
+}
+
+// GetSamplings indicates an expected call of GetSamplings
+func (mr *MockSamplingMockRecorder) GetSamplings(numRequests, instance, currentCount, trials interface{}) *gomock.Call {
+	mr.mock.ctrl.T.Helper()
+	return mr.mock.ctrl.RecordCallWithMethodType(mr.mock, "GetSamplings", reflect.TypeOf((*MockSampling)(nil).GetSamplings), numRequests, instance, currentCount, trials)
 }

@@ -24,6 +24,7 @@ import (
 	morphlingv1alpha1 "github.com/alibaba/morphling/api/v1alpha1"
 	"github.com/alibaba/morphling/pkg/controllers/util"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
+	samplingClient "github.com/alibaba/morphling/pkg/controllers/experiment/sampling"
 )
 
 var log = logf.Log.WithName("experiment-status-util")
@@ -141,6 +142,14 @@ func UpdateExperimentStatusCondition(instance *morphlingv1alpha1.ProfilingExperi
 		return
 	}
 
+	if (CalculateMaximumSearchSpace(instance) > 0) && (int(completedTrialsCount) >= CalculateMaximumSearchSpace(instance)) {
+		msg := "Experiment has succeeded because maximum search space has reached"
+		util.MarkExperimentStatusSucceeded(instance, msg)
+		instance.Status.CompletionTime = &now
+		//collector.IncreaseExperimentsSucceededCount(instance.Namespace)
+		return
+	}
+
 	// Then Check if MaxTrialCount is succeeded.
 	if getSamplingDone && activeTrialsCount == 0 {
 		msg := "Experiment has succeeded because sampling service has reached the end"
@@ -152,4 +161,23 @@ func UpdateExperimentStatusCondition(instance *morphlingv1alpha1.ProfilingExperi
 
 	msg := "Experiment is running"
 	util.MarkExperimentStatusRunning(instance, msg)
+}
+
+func CalculateMaximumSearchSpace(instance *morphlingv1alpha1.ProfilingExperiment) int {
+	space := int(1)
+	for _, cat := range instance.Spec.TunableParameters {
+		for _, p := range cat.Parameters {
+			feasibleSpace, err := samplingClient.ConvertFeasibleSpace(p.FeasibleSpace, p.ParameterType)
+			if err != nil {
+				log.Error(err, "failed to calculate maximum search space")
+				return 0
+			}
+			if int(len(feasibleSpace)) <= 0 {
+				log.Error(err, "failed to calculate maximum search space")
+				return 0
+			}
+			space *= int(len(feasibleSpace))
+		}
+	}
+	return space
 }

@@ -216,8 +216,8 @@ type AlgorithmName string
 
 const (
 	BayesianOpt  AlgorithmName = "BayesianOpt"
-	RandomSearch AlgorithmName = "RandomSearch"
-	GridSearch   AlgorithmName = "GridSearch"
+	RandomSearch AlgorithmName = "random"
+	GridSearch   AlgorithmName = "grid"
 )
 
 // Specification of the Opt. algorithm

@@ -6,7 +6,6 @@ from api.v1alpha1.grpc.python3 import api_pb2
 from api.v1alpha1.grpc.python3 import api_pb2_grpc
 from pkg.algorithm.v1alpha1.grid.base_service import BaseSamplingService
 from pkg.algorithm.v1alpha1.internal.base_health_service import HealthServicer
-
 logger = logging.getLogger(__name__)
 
 support_algorithms = ["grid", "random"]
@@ -16,6 +15,7 @@ def _set_validate_context_error(context, error_message):
     context.set_code(grpc.StatusCode.INVALID_ARGUMENT)
     context.set_details(error_message)
     logger.info(error_message)
+    print(error_message)
     return api_pb2.SamplingValidationResponse()
 
 

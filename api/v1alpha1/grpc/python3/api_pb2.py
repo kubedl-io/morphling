@@ -20,7 +20,7 @@ DESCRIPTOR = _descriptor.FileDescriptor(
   syntax='proto3',
   serialized_options=b'Z\n../grpc/go',
   create_key=_descriptor._internal_create_key,
-  serialized_pb=b'\n\tapi.proto\x12\x0e\x61pi.suggestion\"&\n\x08KeyValue\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\"C\n\x15\x41lgorithmExtraSetting\x12*\n\x08settings\x18\x01 \x03(\x0b\x32\x18.api.suggestion.KeyValue\"D\n\x14ParameterAssignments\x12,\n\nkey_values\x18\x01 \x03(\x0b\x32\x18.api.suggestion.KeyValue\"\\\n\x0bTrialResult\x12\x37\n\x15parameter_assignments\x18\x01 \x03(\x0b\x32\x18.api.suggestion.KeyValue\x12\x14\n\x0cobject_value\x18\x02 \x01(\x02\"l\n\rParameterSpec\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x35\n\x0eparameter_type\x18\x02 \x01(\x0e\x32\x1d.api.suggestion.ParameterType\x12\x16\n\x0e\x66\x65\x61sible_space\x18\x03 \x03(\t\"\xeb\x02\n\x0fSamplingRequest\x12\x18\n\x10is_first_request\x18\x01 \x01(\x08\x12\x16\n\x0e\x61lgorithm_name\x18\x02 \x01(\t\x12G\n\x18\x61lgorithm_extra_settings\x18\x03 \x01(\x0b\x32%.api.suggestion.AlgorithmExtraSetting\x12!\n\x19sampling_number_specified\x18\x04 \x01(\x05\x12 \n\x18sampling_number_existing\x18\x05 \x01(\x05\x12\x19\n\x11required_sampling\x18\x06 \x01(\x05\x12\x13\n\x0bis_maximize\x18\x07 \x01(\x08\x12\x35\n\x10\x65xisting_results\x18\x08 \x03(\x0b\x32\x1b.api.suggestion.TrialResult\x12\x31\n\nparameters\x18\t \x03(\x0b\x32\x1d.api.suggestion.ParameterSpec\"Q\n\x10SamplingResponse\x12=\n\x0f\x61ssignments_set\x18\x01 \x03(\x0b\x32$.api.suggestion.ParameterAssignments\"\xe7\x01\n\x19SamplingValidationRequest\x12\x16\n\x0e\x61lgorithm_name\x18\x01 \x01(\t\x12G\n\x18\x61lgorithm_extra_settings\x18\x02 \x01(\x0b\x32%.api.suggestion.AlgorithmExtraSetting\x12!\n\x19sampling_number_specified\x18\x03 \x01(\x05\x12\x13\n\x0bis_maximize\x18\x04 \x01(\x08\x12\x31\n\nparameters\x18\x05 \x03(\x0b\x32\x1d.api.suggestion.ParameterSpec\"\x1c\n\x1aSamplingValidationResponse*U\n\rParameterType\x12\x10\n\x0cUNKNOWN_TYPE\x10\x00\x12\n\n\x06\x44OUBLE\x10\x01\x12\x07\n\x03INT\x10\x02\x12\x0c\n\x08\x44ISCRETE\x10\x03\x12\x0f\n\x0b\x43\x41TEGORICAL\x10\x04\x32\xd5\x01\n\nSuggestion\x12S\n\x0eGetSuggestions\x12\x1f.api.suggestion.SamplingRequest\x1a .api.suggestion.SamplingResponse\x12r\n\x19ValidateAlgorithmSettings\x12).api.suggestion.SamplingValidationRequest\x1a*.api.suggestion.SamplingValidationResponseB\x0cZ\n../grpc/gob\x06proto3'
+  serialized_pb=b'\n\tapi.proto\x12\x0e\x61pi.suggestion\"&\n\x08KeyValue\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t\"D\n\x14ParameterAssignments\x12,\n\nkey_values\x18\x01 \x03(\x0b\x32\x18.api.suggestion.KeyValue\"\\\n\x0bTrialResult\x12\x37\n\x15parameter_assignments\x18\x01 \x03(\x0b\x32\x18.api.suggestion.KeyValue\x12\x14\n\x0cobject_value\x18\x02 \x01(\x02\"l\n\rParameterSpec\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x35\n\x0eparameter_type\x18\x02 \x01(\x0e\x32\x1d.api.suggestion.ParameterType\x12\x16\n\x0e\x66\x65\x61sible_space\x18\x03 \x03(\t\"\xbc\x02\n\x0fSamplingRequest\x12\x18\n\x10is_first_request\x18\x01 \x01(\x08\x12\x16\n\x0e\x61lgorithm_name\x18\x02 \x01(\t\x12:\n\x18\x61lgorithm_extra_settings\x18\x03 \x03(\x0b\x32\x18.api.suggestion.KeyValue\x12!\n\x19sampling_number_specified\x18\x04 \x01(\x05\x12\x19\n\x11required_sampling\x18\x06 \x01(\x05\x12\x13\n\x0bis_maximize\x18\x07 \x01(\x08\x12\x35\n\x10\x65xisting_results\x18\x08 \x03(\x0b\x32\x1b.api.suggestion.TrialResult\x12\x31\n\nparameters\x18\t \x03(\x0b\x32\x1d.api.suggestion.ParameterSpec\"Q\n\x10SamplingResponse\x12=\n\x0f\x61ssignments_set\x18\x01 \x03(\x0b\x32$.api.suggestion.ParameterAssignments\"\xda\x01\n\x19SamplingValidationRequest\x12\x16\n\x0e\x61lgorithm_name\x18\x01 \x01(\t\x12:\n\x18\x61lgorithm_extra_settings\x18\x02 \x03(\x0b\x32\x18.api.suggestion.KeyValue\x12!\n\x19sampling_number_specified\x18\x03 \x01(\x05\x12\x13\n\x0bis_maximize\x18\x04 \x01(\x08\x12\x31\n\nparameters\x18\x05 \x03(\x0b\x32\x1d.api.suggestion.ParameterSpec\"\x1c\n\x1aSamplingValidationResponse*U\n\rParameterType\x12\x10\n\x0cUNKNOWN_TYPE\x10\x00\x12\n\n\x06\x44OUBLE\x10\x01\x12\x07\n\x03INT\x10\x02\x12\x0c\n\x08\x44ISCRETE\x10\x03\x12\x0f\n\x0b\x43\x41TEGORICAL\x10\x04\x32\xd5\x01\n\nSuggestion\x12S\n\x0eGetSuggestions\x12\x1f.api.suggestion.SamplingRequest\x1a .api.suggestion.SamplingResponse\x12r\n\x19ValidateAlgorithmSettings\x12).api.suggestion.SamplingValidationRequest\x1a*.api.suggestion.SamplingValidationResponseB\x0cZ\n../grpc/gob\x06proto3'
 )
 
 _PARAMETERTYPE = _descriptor.EnumDescriptor(
@@ -58,8 +58,8 @@ _PARAMETERTYPE = _descriptor.EnumDescriptor(
   ],
   containing_type=None,
   serialized_options=None,
-  serialized_start=1125,
-  serialized_end=1210,
+  serialized_start=996,
+  serialized_end=1081,
 )
 _sym_db.RegisterEnumDescriptor(_PARAMETERTYPE)
 
@@ -111,38 +111,6 @@ _KEYVALUE = _descriptor.Descriptor(
 )
 
 
-_ALGORITHMEXTRASETTING = _descriptor.Descriptor(
-  name='AlgorithmExtraSetting',
-  full_name='api.suggestion.AlgorithmExtraSetting',
-  filename=None,
-  file=DESCRIPTOR,
-  containing_type=None,
-  create_key=_descriptor._internal_create_key,
-  fields=[
-    _descriptor.FieldDescriptor(
-      name='settings', full_name='api.suggestion.AlgorithmExtraSetting.settings', index=0,
-      number=1, type=11, cpp_type=10, label=3,
-      has_default_value=False, default_value=[],
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-  ],
-  extensions=[
-  ],
-  nested_types=[],
-  enum_types=[
-  ],
-  serialized_options=None,
-  is_extendable=False,
-  syntax='proto3',
-  extension_ranges=[],
-  oneofs=[
-  ],
-  serialized_start=69,
-  serialized_end=136,
-)
-
-
 _PARAMETERASSIGNMENTS = _descriptor.Descriptor(
   name='ParameterAssignments',
   full_name='api.suggestion.ParameterAssignments',
@@ -170,8 +138,8 @@ _PARAMETERASSIGNMENTS = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=138,
-  serialized_end=206,
+  serialized_start=69,
+  serialized_end=137,
 )
 
 
@@ -209,8 +177,8 @@ _TRIALRESULT = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=208,
-  serialized_end=300,
+  serialized_start=139,
+  serialized_end=231,
 )
 
 
@@ -255,8 +223,8 @@ _PARAMETERSPEC = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=302,
-  serialized_end=410,
+  serialized_start=233,
+  serialized_end=341,
 )
 
 
@@ -284,8 +252,8 @@ _SAMPLINGREQUEST = _descriptor.Descriptor(
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='algorithm_extra_settings', full_name='api.suggestion.SamplingRequest.algorithm_extra_settings', index=2,
-      number=3, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
+      number=3, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
@@ -297,35 +265,28 @@ _SAMPLINGREQUEST = _descriptor.Descriptor(
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='sampling_number_existing', full_name='api.suggestion.SamplingRequest.sampling_number_existing', index=4,
-      number=5, type=5, cpp_type=1, label=1,
-      has_default_value=False, default_value=0,
-      message_type=None, enum_type=None, containing_type=None,
-      is_extension=False, extension_scope=None,
-      serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
-    _descriptor.FieldDescriptor(
-      name='required_sampling', full_name='api.suggestion.SamplingRequest.required_sampling', index=5,
+      name='required_sampling', full_name='api.suggestion.SamplingRequest.required_sampling', index=4,
       number=6, type=5, cpp_type=1, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='is_maximize', full_name='api.suggestion.SamplingRequest.is_maximize', index=6,
+      name='is_maximize', full_name='api.suggestion.SamplingRequest.is_maximize', index=5,
       number=7, type=8, cpp_type=7, label=1,
       has_default_value=False, default_value=False,
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='existing_results', full_name='api.suggestion.SamplingRequest.existing_results', index=7,
+      name='existing_results', full_name='api.suggestion.SamplingRequest.existing_results', index=6,
       number=8, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
-      name='parameters', full_name='api.suggestion.SamplingRequest.parameters', index=8,
+      name='parameters', full_name='api.suggestion.SamplingRequest.parameters', index=7,
       number=9, type=11, cpp_type=10, label=3,
       has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
@@ -343,8 +304,8 @@ _SAMPLINGREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=413,
-  serialized_end=776,
+  serialized_start=344,
+  serialized_end=660,
 )
 
 
@@ -375,8 +336,8 @@ _SAMPLINGRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=778,
-  serialized_end=859,
+  serialized_start=662,
+  serialized_end=743,
 )
 
 
@@ -397,8 +358,8 @@ _SAMPLINGVALIDATIONREQUEST = _descriptor.Descriptor(
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
     _descriptor.FieldDescriptor(
       name='algorithm_extra_settings', full_name='api.suggestion.SamplingValidationRequest.algorithm_extra_settings', index=1,
-      number=2, type=11, cpp_type=10, label=1,
-      has_default_value=False, default_value=None,
+      number=2, type=11, cpp_type=10, label=3,
+      has_default_value=False, default_value=[],
       message_type=None, enum_type=None, containing_type=None,
       is_extension=False, extension_scope=None,
       serialized_options=None, file=DESCRIPTOR,  create_key=_descriptor._internal_create_key),
@@ -435,8 +396,8 @@ _SAMPLINGVALIDATIONREQUEST = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=862,
-  serialized_end=1093,
+  serialized_start=746,
+  serialized_end=964,
 )
 
 
@@ -460,22 +421,20 @@ _SAMPLINGVALIDATIONRESPONSE = _descriptor.Descriptor(
   extension_ranges=[],
   oneofs=[
   ],
-  serialized_start=1095,
-  serialized_end=1123,
+  serialized_start=966,
+  serialized_end=994,
 )
 
-_ALGORITHMEXTRASETTING.fields_by_name['settings'].message_type = _KEYVALUE
 _PARAMETERASSIGNMENTS.fields_by_name['key_values'].message_type = _KEYVALUE
 _TRIALRESULT.fields_by_name['parameter_assignments'].message_type = _KEYVALUE
 _PARAMETERSPEC.fields_by_name['parameter_type'].enum_type = _PARAMETERTYPE
-_SAMPLINGREQUEST.fields_by_name['algorithm_extra_settings'].message_type = _ALGORITHMEXTRASETTING
+_SAMPLINGREQUEST.fields_by_name['algorithm_extra_settings'].message_type = _KEYVALUE
 _SAMPLINGREQUEST.fields_by_name['existing_results'].message_type = _TRIALRESULT
 _SAMPLINGREQUEST.fields_by_name['parameters'].message_type = _PARAMETERSPEC
 _SAMPLINGRESPONSE.fields_by_name['assignments_set'].message_type = _PARAMETERASSIGNMENTS
-_SAMPLINGVALIDATIONREQUEST.fields_by_name['algorithm_extra_settings'].message_type = _ALGORITHMEXTRASETTING
+_SAMPLINGVALIDATIONREQUEST.fields_by_name['algorithm_extra_settings'].message_type = _KEYVALUE
 _SAMPLINGVALIDATIONREQUEST.fields_by_name['parameters'].message_type = _PARAMETERSPEC
 DESCRIPTOR.message_types_by_name['KeyValue'] = _KEYVALUE
-DESCRIPTOR.message_types_by_name['AlgorithmExtraSetting'] = _ALGORITHMEXTRASETTING
 DESCRIPTOR.message_types_by_name['ParameterAssignments'] = _PARAMETERASSIGNMENTS
 DESCRIPTOR.message_types_by_name['TrialResult'] = _TRIALRESULT
 DESCRIPTOR.message_types_by_name['ParameterSpec'] = _PARAMETERSPEC
@@ -492,13 +451,6 @@ KeyValue = _reflection.GeneratedProtocolMessageType('KeyValue', (_message.Messag
   # @@protoc_insertion_point(class_scope:api.suggestion.KeyValue)
   })
 _sym_db.RegisterMessage(KeyValue)
-
-AlgorithmExtraSetting = _reflection.GeneratedProtocolMessageType('AlgorithmExtraSetting', (_message.Message,), {
-  'DESCRIPTOR' : _ALGORITHMEXTRASETTING,
-  '__module__' : 'api_pb2'
-  # @@protoc_insertion_point(class_scope:api.suggestion.AlgorithmExtraSetting)
-  })
-_sym_db.RegisterMessage(AlgorithmExtraSetting)
 
 ParameterAssignments = _reflection.GeneratedProtocolMessageType('ParameterAssignments', (_message.Message,), {
   'DESCRIPTOR' : _PARAMETERASSIGNMENTS,
@@ -559,8 +511,8 @@ _SUGGESTION = _descriptor.ServiceDescriptor(
   index=0,
   serialized_options=None,
   create_key=_descriptor._internal_create_key,
-  serialized_start=1213,
-  serialized_end=1426,
+  serialized_start=1084,
+  serialized_end=1297,
   methods=[
   _descriptor.MethodDescriptor(
     name='GetSuggestions',

@@ -137,7 +137,6 @@ func newSamplingRequest() *suggestionapi.SamplingRequest {
 		AlgorithmName:           "grid",
 		AlgorithmExtraSettings:  nil,
 		SamplingNumberSpecified: 10,
-		SamplingNumberExisting:  0,
 		RequiredSampling:        3,
 		IsMaximize:              false,
 		//ExistingResults:         nil,

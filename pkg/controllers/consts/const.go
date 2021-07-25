@@ -53,7 +53,9 @@ const (
 	DefaultServicePortName = "ml-service"
 
 	// DefaultSamplingPort is the default port of sampling service.
-	DefaultSamplingPort = 6789
+	DefaultSamplingPort = 9996 //6789
+
+	DefaultSamplingService = "morphling-algorithm-server"
 	// DefaultSamplingPortName is the default port name of sampling service.
 	DefaultSamplingPortName = "morphling-api"
 	// DefaultGRPCService is the default service name in Sampling,
