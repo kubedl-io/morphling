@@ -1,6 +1,6 @@
 FROM python:3.6
 
-ENV TARGET_DIR /opt/katib
+ENV TARGET_DIR /morphling
 ENV SUGGESTION_DIR cmd/algorithm/grid
 
 RUN if [ "$(uname -m)" = "ppc64le" ] || [ "$(uname -m)" = "aarch64" ]; then \
@@ -19,6 +19,7 @@ RUN GRPC_HEALTH_PROBE_VERSION=v0.3.1 && \
     chmod +x /bin/grpc_health_probe
 
 ADD ./pkg/ ${TARGET_DIR}/pkg/
+ADD ./api/ ${TARGET_DIR}/api/
 ADD ./${SUGGESTION_DIR}/ ${TARGET_DIR}/${SUGGESTION_DIR}/
 WORKDIR  ${TARGET_DIR}/${SUGGESTION_DIR}
 RUN pip install --no-cache-dir -r requirements.txt
