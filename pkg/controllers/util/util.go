@@ -69,6 +69,10 @@ func IsSucceededExperiment(exp *morphlingv1alpha1.ProfilingExperiment) bool {
 	return hasConditionExperiment(exp, morphlingv1alpha1.ProfilingSucceeded)
 }
 
+func IsRunningExperiment(exp *morphlingv1alpha1.ProfilingExperiment) bool {
+	return hasConditionExperiment(exp, morphlingv1alpha1.ProfilingRunning)
+}
+
 func IsFailedExperiment(exp *morphlingv1alpha1.ProfilingExperiment) bool {
 	return hasConditionExperiment(exp, morphlingv1alpha1.ProfilingFailed)
 }
