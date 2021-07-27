@@ -1,0 +1,36 @@
+syntax = "proto3";
+package api.storage;
+option go_package = "../grpc_storage/go";
+
+service DB {
+  rpc SaveResult(SaveResultRequest) returns (SaveResultReply);
+  rpc GetResult(GetResultRequest) returns (GetResultReply);
+}
+
+message KeyValue {
+  string key = 1;
+  string value = 2;
+}
+
+message SaveResultReply {
+}
+
+message SaveResultRequest {
+  string namespace = 1;
+  string trial_name = 2;
+//  string experiment_name = 3;
+  repeated KeyValue results = 4;
+}
+
+message GetResultRequest {
+  string namespace = 1;
+  string trial_name = 2;
+//  string experiment_name = 3;
+}
+
+message GetResultReply {
+  string namespace = 1;
+  string trial_name = 2;
+//  string experiment_name = 3;
+  repeated KeyValue results = 4;
+}

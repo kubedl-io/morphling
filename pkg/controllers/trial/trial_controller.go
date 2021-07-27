@@ -609,6 +609,7 @@ func AppendJobEnv(t *morphlingv1alpha1.Trial, env []corev1.EnvVar) []corev1.EnvV
 	env = append(env, corev1.EnvVar{Name: "RequestTemplate", Value: fmt.Sprintf(t.Spec.RequestTemplate)})
 	env = append(env, corev1.EnvVar{Name: "ServiceName", Value: util.GetServiceEndpoint(t)}) //fmt.Sprintf(t.Spec.ServiceName)}
 	env = append(env, corev1.EnvVar{Name: "TrialName", Value: fmt.Sprintf(t.Name)})
+	env = append(env, corev1.EnvVar{Name: "Namespace", Value: fmt.Sprintf(t.Namespace)})
 	for _, cat := range t.Spec.SamplingResult {
 		if cat.Category == morphlingv1alpha1.CategoryEnv && (cat.Name == "BATCH_SIZE" || cat.Name == "MODEL_NAME") {
 			env = append(env, corev1.EnvVar{Name: cat.Name, Value: fmt.Sprintf(cat.Value)})

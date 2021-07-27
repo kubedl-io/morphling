@@ -52,6 +52,9 @@ const (
 	// DefaultMorphlingDBManagerServicePortEnvName is the env name of morphling DB Manager Port
 	DefaultMorphlingDBManagerServicePortEnvName = "MORPHLING_DB_MANAGER_SERVICE_PORT"
 
+	DefaultMorphlingMySqlServiceName = "morphling-mysql"
+	DefaultMorphlingMySqlServicePort = "3306"
+
 	// MorphlingConfigMapName is the config map constants
 	// Configmap name which includes Morphling's configuration
 	MorphlingConfigMapName = "morphling-config"

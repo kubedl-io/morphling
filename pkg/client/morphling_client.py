@@ -1,49 +1,48 @@
 from __future__ import print_function
 
-import tensorflow as tf
-import threading
-from tensorflow_serving.apis import predict_pb2
-from tensorflow_serving.apis import prediction_service_pb2_grpc
-import os
-import grpc
-import api_pb2
-import api_pb2_grpc
-import rfc3339
-import time
 import math
-import numpy as np
+import os
+import threading
+import time
 from queue import Queue
 
+import grpc
+import numpy as np
+import tensorflow as tf
+from tensorflow_serving.apis import predict_pb2
+from tensorflow_serving.apis import prediction_service_pb2_grpc
+
+from . import api_pb2
+from . import api_pb2_grpc
 
 models = {
-    'densenet121': [224,224],
-    'densenet169': [224,224],
-    'densenet201': [224,224],
-    'efficientnetb0': [224,224],
-    'efficientnetb1': [240,240],
-    'efficientnetb2': [260,260],
-    'efficientnetb3': [300,300],
-    'efficientnetb4': [380,380],
-    'efficientnetb5': [456,456],
-    'efficientnetb6': [528,528],
-    'efficientnetb7': [600,600],
-    'inceptionresnetv2': [299,299],
-    'inceptionv3': [299,299],
-    'mobilenet': [224,224],
-    'mobilenetv2': [224,224],
-    'nasnetlarge': [331,331],
-    'nasnetmobile': [224,224],
-    'resnet101': [224,224],
-    'resnet152': [224,224],
-    'resnet50': [224,224],
-    'resnet101v2': [224,224],
-    'resnet152v2': [224,224],
-    'resnet50v2': [224,224],
-    'vgg16': [224,224],
-    'vgg19': [224,224],
-    'xception': [299,299]
+    'densenet121': [224, 224],
+    'densenet169': [224, 224],
+    'densenet201': [224, 224],
+    'efficientnetb0': [224, 224],
+    'efficientnetb1': [240, 240],
+    'efficientnetb2': [260, 260],
+    'efficientnetb3': [300, 300],
+    'efficientnetb4': [380, 380],
+    'efficientnetb5': [456, 456],
+    'efficientnetb6': [528, 528],
+    'efficientnetb7': [600, 600],
+    'inceptionresnetv2': [299, 299],
+    'inceptionv3': [299, 299],
+    'mobilenet': [224, 224],
+    'mobilenetv2': [224, 224],
+    'nasnetlarge': [331, 331],
+    'nasnetmobile': [224, 224],
+    'resnet101': [224, 224],
+    'resnet152': [224, 224],
+    'resnet50': [224, 224],
+    'resnet101v2': [224, 224],
+    'resnet152v2': [224, 224],
+    'resnet50v2': [224, 224],
+    'vgg16': [224, 224],
+    'vgg19': [224, 224],
+    'xception': [299, 299]
 }
-
 
 with tf.device("/cpu:0"):
     tf.get_logger().setLevel('ERROR')
@@ -182,8 +181,6 @@ with tf.device("/cpu:0"):
 
         Args:
             qps: Expected queries per second
-            hostport: Host:port address of the PredictionService.
-            concurrency: Maximum number of concurrent requests.
             num_tests: Number of test images to use.
 
         Returns:
@@ -273,21 +270,14 @@ with tf.device("/cpu:0"):
         print(qps_previous)
 
         mls = []
-        ml = api_pb2.MetricLog(
-            time_stamp=rfc3339.rfc3339(time.time()),
-            metric=api_pb2.Metric(
-                name='qps',
-                value=str(qps_previous)
-            )
-        )
+        ml = api_pb2.KeyValue(key='qps', value=str(qps_previous))
         mls.append(ml)
 
-        observation_log = api_pb2.ObservationLog(metric_logs=mls)
-
-        stub = api_pb2_grpc.ManagerStub(channel_manager)
-        result = stub.ReportObservationLog(api_pb2.ReportObservationLogRequest(
+        stub_ = api_pb2_grpc.DBStub(channel_manager)
+        result = stub_.SaveResult(api_pb2.SaveResultRequest(
             trial_name=os.environ['TrialName'],
-            observation_log=observation_log
+            namespace=os.environ['Namespace'],
+            results=mls
         ), timeout=timeout_in_seconds)
         if FLAGS.printLog:
             print(result)

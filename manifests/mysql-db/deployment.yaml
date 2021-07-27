@@ -29,10 +29,6 @@ spec:
           env:
             - name: MYSQL_ROOT_PASSWORD
               value: "morphling"
-            #            valueFrom:
-            #              secretKeyRef:
-            #                name: morphling-mysql-secrets
-            #                key: MYSQL_ROOT_PASSWORD
             - name: MYSQL_ALLOW_EMPTY_PASSWORD
               value: "true"
             - name: MYSQL_DATABASE
