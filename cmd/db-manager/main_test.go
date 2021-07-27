@@ -13,27 +13,27 @@ import (
 )
 
 var testCases = map[string]struct {
-	addRequest   api_pb.SaveResultRequest
-	queryRequest api_pb.GetResultRequest
-	queryReply   api_pb.GetResultReply
+	addRequest   *api_pb.SaveResultRequest
+	queryRequest *api_pb.GetResultRequest
+	queryReply   *api_pb.GetResultReply
 }{
 	"result_1": {
-		addRequest: api_pb.SaveResultRequest{
-			Namespace:      "morphling-system",
-			TrialName:      "test-trial-1",
+		addRequest: &api_pb.SaveResultRequest{
+			Namespace: "morphling-system",
+			TrialName: "test-trial-1",
 			//ExperimentName: "test-pe",
-			Results:        []*api_pb.KeyValue{{Key: "qps", Value: "120"}},
+			Results: []*api_pb.KeyValue{{Key: "qps", Value: "120"}},
 		},
-		queryRequest: api_pb.GetResultRequest{
-			Namespace:      "morphling-system",
-			TrialName:      "test-trial-1",
+		queryRequest: &api_pb.GetResultRequest{
+			Namespace: "morphling-system",
+			TrialName: "test-trial-1",
 			//ExperimentName: "test-pe",
 		},
-		queryReply: api_pb.GetResultReply{
-			Namespace:      "morphling-system",
-			TrialName:      "test-trial-1",
+		queryReply: &api_pb.GetResultReply{
+			Namespace: "morphling-system",
+			TrialName: "test-trial-1",
 			//ExperimentName: "test-pe",
-			Results:        []*api_pb.KeyValue{{Key: "qps", Value: "120"}},
+			Results: []*api_pb.KeyValue{{Key: "qps", Value: "120"}},
 		},
 	},
 }
@@ -46,8 +46,8 @@ func TestSaveResults(t *testing.T) {
 	dbIf = mockDB
 	for name, tc := range testCases {
 		t.Run(fmt.Sprintf("%s", name), func(t *testing.T) {
-			mockDB.EXPECT().SaveTrialResult(&tc.addRequest).Return(nil)
-			_, err := s.SaveResult(context.Background(), &tc.addRequest)
+			mockDB.EXPECT().SaveTrialResult(tc.addRequest).Return(nil)
+			_, err := s.SaveResult(context.Background(), tc.addRequest)
 			if err != nil {
 				t.Fatalf("SaveResults Error %v", err)
 			}
@@ -66,8 +66,8 @@ func TestGetObservationLog(t *testing.T) {
 	for name, tc := range testCases {
 		t.Run(fmt.Sprintf("%s", name), func(t *testing.T) {
 
-			mockDB.EXPECT().GetTrialResult(&tc.queryRequest).Return(&tc.queryReply, nil)
-			reply, err := s.GetResult(context.Background(), &tc.queryRequest)
+			mockDB.EXPECT().GetTrialResult(tc.queryRequest).Return(tc.queryReply, nil)
+			reply, err := s.GetResult(context.Background(), tc.queryRequest)
 			if err != nil {
 				t.Fatalf("GetResult Error %v", err)
 			}

@@ -58,19 +58,19 @@ func TestGetDbName(t *testing.T) {
 func TestAddToDB(t *testing.T) {
 
 	testCases := map[string]struct {
-		addRequest   api_pb.SaveResultRequest
-		queryRequest api_pb.GetResultRequest
+		addRequest   *api_pb.SaveResultRequest
+		queryRequest *api_pb.GetResultRequest
 	}{
 		"result_1": {
-			addRequest: api_pb.SaveResultRequest{
-				Namespace:      "morphling-system",
-				TrialName:      "test-trial-1",
+			addRequest: &api_pb.SaveResultRequest{
+				Namespace: "morphling-system",
+				TrialName: "test-trial-1",
 				//ExperimentName: "test-pe",
-				Results:        []*api_pb.KeyValue{{Key: "qps", Value: "120"}},
+				Results: []*api_pb.KeyValue{{Key: "qps", Value: "120"}},
 			},
-			queryRequest: api_pb.GetResultRequest{
-				Namespace:      "morphling-system",
-				TrialName:      "test-trial-1",
+			queryRequest: &api_pb.GetResultRequest{
+				Namespace: "morphling-system",
+				TrialName: "test-trial-1",
 				//ExperimentName: "test-pe",
 			},
 		},
@@ -80,12 +80,12 @@ func TestAddToDB(t *testing.T) {
 	var err error
 	for name, tc := range testCases {
 		t.Run(fmt.Sprintf("%s", name), func(t *testing.T) {
-			err = dbInterface.SaveTrialResult(&tc.addRequest)
+			err = dbInterface.SaveTrialResult(tc.addRequest)
 			if err != nil {
 				fmt.Println(err)
 			}
 
-			result, err := dbInterface.GetTrialResult(&tc.queryRequest)
+			result, err := dbInterface.GetTrialResult(tc.queryRequest)
 			if err != nil {
 				fmt.Println(err)
 			}

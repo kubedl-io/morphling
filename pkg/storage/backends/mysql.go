@@ -84,8 +84,8 @@ func (b *MysqlBackend) SaveTrialResult(request *api_pb.SaveResultRequest) error 
 
 	existingResult := TrialResult{}
 	saveQuery := &TrialResult{
-		Namespace:      request.Namespace,
-		TrialName:      request.TrialName,
+		Namespace: request.Namespace,
+		TrialName: request.TrialName,
 		//ExperimentName: request.ExperimentName,
 	}
 
@@ -109,7 +109,7 @@ func (b *MysqlBackend) SaveTrialResult(request *api_pb.SaveResultRequest) error 
 
 func (b *MysqlBackend) createNewResult(newResult *TrialResult) error {
 	err := b.db.Create(newResult).Error
-	if err != nil{
+	if err != nil {
 		klog.Errorf("saveTrialResult error: %v", err)
 	}
 	return err
@@ -117,8 +117,8 @@ func (b *MysqlBackend) createNewResult(newResult *TrialResult) error {
 
 func (b *MysqlBackend) updateNewResult(newResult *TrialResult) error {
 	result := b.db.Model(&TrialResult{}).Where(&TrialResult{
-		Namespace:      newResult.Namespace,
-		TrialName:      newResult.TrialName,
+		Namespace: newResult.Namespace,
+		TrialName: newResult.TrialName,
 		//ExperimentName: newResult.ExperimentName,
 	}).Updates(newResult)
 	if result.Error != nil {
@@ -131,8 +131,8 @@ func (b *MysqlBackend) GetTrialResult(request *api_pb.GetResultRequest) (*api_pb
 	klog.V(5).Infof("[mysql.GetTrialResult] namespace: %s, trial: %s", request.Namespace, request.TrialName)
 	existingResult := TrialResult{}
 	getQuery := &TrialResult{
-		Namespace:      request.Namespace,
-		TrialName:      request.TrialName,
+		Namespace: request.Namespace,
+		TrialName: request.TrialName,
 		//ExperimentName: request.ExperimentName,
 	}
 
@@ -142,10 +142,10 @@ func (b *MysqlBackend) GetTrialResult(request *api_pb.GetResultRequest) (*api_pb
 	}
 
 	reply := &api_pb.GetResultReply{
-		Namespace:      existingResult.Namespace,
-		TrialName:      existingResult.TrialName,
+		Namespace: existingResult.Namespace,
+		TrialName: existingResult.TrialName,
 		//ExperimentName: existingResult.ExperimentName,
-		Results:        []*api_pb.KeyValue{{Key: existingResult.Key, Value: existingResult.Value}},
+		Results: []*api_pb.KeyValue{{Key: existingResult.Key, Value: existingResult.Value}},
 	}
 
 	return reply, nil

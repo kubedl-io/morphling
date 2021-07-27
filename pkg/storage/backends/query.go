@@ -22,11 +22,11 @@ import (
 
 type TrialResult struct {
 	//gorm.Model
-	Namespace      string    `gorm:"type:varchar(128);column:namespace" json:"namespace"`
-	TrialName      string    `gorm:"type:varchar(128);column:trial_name" json:"trial_name"`
+	Namespace string `gorm:"type:varchar(128);column:namespace" json:"namespace"`
+	TrialName string `gorm:"type:varchar(128);column:trial_name" json:"trial_name"`
 	//ExperimentName string    `gorm:"type:varchar(128);column:experiment_name" json:"experiment_name"`
-	Key            string    `gorm:"type:varchar(128);column:key" json:"key"`
-	Value          string    `gorm:"type:varchar(128);column:value" json:"value"`
+	Key   string `gorm:"type:varchar(128);column:key" json:"key"`
+	Value string `gorm:"type:varchar(128);column:value" json:"value"`
 	//GmtModified    time.Time `gorm:"type:datetime;column:gmt_modified" json:"gmt_modified"`
 }
 
