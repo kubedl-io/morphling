@@ -79,7 +79,7 @@ spec:
           name: "memory"
           feasibleSpace:
             list:
-#              - "200Mi"
+              - "200Mi"
 #              - "1000Mi"
               - "2000Mi"
     - category: "env"

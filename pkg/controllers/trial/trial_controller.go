@@ -52,6 +52,7 @@ import (
 
 const (
 	ControllerName = "trial-controller"
+	defaultMetricValue = "0.0"
 )
 
 var (
@@ -318,6 +319,27 @@ func (r *ReconcileTrial) reconcileTrial(instance *morphlingv1alpha1.Trial) error
 				logger.Error(err, "Update trial status observation error")
 				return err
 			}
+		}
+
+		if util.IsJobFailed(jobCondition) {
+			logger.Info("Client Job is Failed", "name", desiredJob.GetName())
+			instance.Status.TrialResult = &morphlingv1alpha1.TrialResult{
+				TunableParameters:        nil,
+				ObjectiveMetricsObserved: nil,
+			}
+
+			instance.Status.TrialResult.TunableParameters = make([]morphlingv1alpha1.ParameterAssignment, 0)
+			for _, assignment := range instance.Spec.SamplingResult {
+				instance.Status.TrialResult.TunableParameters = append(instance.Status.TrialResult.TunableParameters, morphlingv1alpha1.ParameterAssignment{
+					Name:     assignment.Name,
+					Value:    assignment.Value,
+					Category: assignment.Category,
+				})
+			}
+			instance.Status.TrialResult.ObjectiveMetricsObserved = append(instance.Status.TrialResult.ObjectiveMetricsObserved, morphlingv1alpha1.Metric{
+				Name:  instance.Spec.Objective.ObjectiveMetricName,
+				Value: defaultMetricValue,
+			})
 		}
 
 		// Update Trial condition. If Service Pod is ready, the trail condition depends on the Client Job

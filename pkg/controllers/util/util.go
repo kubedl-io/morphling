@@ -273,6 +273,15 @@ func IsJobSucceeded(jobCondition []batchv1.JobCondition) bool {
 	return false
 }
 
+func IsJobFailed(jobCondition []batchv1.JobCondition) bool {
+	for _, condition := range jobCondition {
+		if condition.Type == batchv1.JobFailed {
+			return true
+		}
+	}
+	return false
+}
+
 func IsServiceDeplomentReady(podConditions []appsv1.DeploymentCondition) bool {
 	for _, condition := range podConditions {
 		if condition.Type == appsv1.DeploymentAvailable && condition.Status == corev1.ConditionTrue {
