@@ -12,8 +12,8 @@ import tensorflow as tf
 from tensorflow_serving.apis import predict_pb2
 from tensorflow_serving.apis import prediction_service_pb2_grpc
 
-from . import api_pb2
-from . import api_pb2_grpc
+import api_pb2
+import api_pb2_grpc
 
 models = {
     'densenet121': [224, 224],
