@@ -17,6 +17,8 @@ RUN GRPC_HEALTH_PROBE_VERSION=v0.3.1 && \
 
 ADD . /workspace
 WORKDIR /workspace
-RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --no-cache-dir -r requirements.txt
+#RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
+
 ENV BATCH_SIZE 1
 ENTRYPOINT ["/bin/sh", "-c", "sleep 100000"]
