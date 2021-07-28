@@ -22,7 +22,7 @@ spec:
       containers:
         - name: morphling-db-manager
           image: kubedl/morphling-database-manager
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           env:
             - name : DB_NAME
               value: "mysql"
