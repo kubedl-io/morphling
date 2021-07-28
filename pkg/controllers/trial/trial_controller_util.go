@@ -33,7 +33,7 @@ import (
 
 type updateStatusFunc func(instance *morphlingv1alpha1.Trial) error
 
-func (r *TrialReconciler) updateStatus(instance *morphlingv1alpha1.Trial) error {
+func (r *ReconcileTrial) updateStatus(instance *morphlingv1alpha1.Trial) error {
 	err := r.Update(context.TODO(), instance)
 	if err != nil {
 		return err
@@ -41,7 +41,7 @@ func (r *TrialReconciler) updateStatus(instance *morphlingv1alpha1.Trial) error 
 	return nil
 }
 
-func (r *TrialReconciler) UpdateTrialStatusCondition(instance *morphlingv1alpha1.Trial, deployedJob *batchv1.Job, jobCondition []batchv1.JobCondition) {
+func (r *ReconcileTrial) UpdateTrialStatusCondition(instance *morphlingv1alpha1.Trial, deployedJob *batchv1.Job, jobCondition []batchv1.JobCondition) {
 	if jobCondition == nil || instance == nil || deployedJob == nil {
 		msg := "Trial is running"
 		util.MarkTrialStatusRunning(instance, msg)
@@ -81,7 +81,7 @@ func (r *TrialReconciler) UpdateTrialStatusCondition(instance *morphlingv1alpha1
 	return
 }
 
-func (r *TrialReconciler) FindPodAssociatedWithServiceDeployment(instance *morphlingv1alpha1.Trial, deploy *appsv1.Deployment) (*corev1.PodList, error) {
+func (r *ReconcileTrial) FindPodAssociatedWithServiceDeployment(instance *morphlingv1alpha1.Trial, deploy *appsv1.Deployment) (*corev1.PodList, error) {
 
 	jobPod := &corev1.PodList{}
 
@@ -103,7 +103,7 @@ func (r *TrialReconciler) FindPodAssociatedWithServiceDeployment(instance *morph
 	return jobPod, nil
 }
 
-func (r *TrialReconciler) UpdateTrialStatusObservation(instance *morphlingv1alpha1.Trial) error {
+func (r *ReconcileTrial) UpdateTrialStatusObservation(instance *morphlingv1alpha1.Trial) error {
 	if &instance.Spec.Objective == nil || &instance.Spec.Objective.ObjectiveMetricName == nil || r.DBClient == nil {
 		return nil
 	}

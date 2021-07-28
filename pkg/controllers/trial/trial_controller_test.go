@@ -123,7 +123,7 @@ func TestCreateTrial(t *testing.T) {
 	g.Expect(err).NotTo(gomega.HaveOccurred())
 	c := mgr.GetClient()
 
-	recFn := SetupTestReconcile(&TrialReconciler{
+	recFn := SetupTestReconcile(&ReconcileTrial{
 		Client:   mgr.GetClient(),
 		Scheme:   mgr.GetScheme(),
 		DBClient: mc,
@@ -179,7 +179,7 @@ func TestReconcileTrial(t *testing.T) {
 	g.Expect(err).NotTo(gomega.HaveOccurred())
 	c := mgr.GetClient()
 
-	r := &TrialReconciler{
+	r := &ReconcileTrial{
 		Client:   mgr.GetClient(),
 		Scheme:   mgr.GetScheme(),
 		DBClient: mc,

@@ -51,7 +51,6 @@ import (
 )
 
 const (
-	// ControllerName is the controller name.
 	ControllerName = "trial-controller"
 )
 
@@ -64,9 +63,9 @@ func Add(mgr manager.Manager) error {
 	return add(mgr, newReconciler(mgr))
 }
 
-// newReconciler returns a new reconcile.Reconciler
+// newReconciler returns a new reconcile.ReconcileTrial
 func newReconciler(mgr manager.Manager) reconcile.Reconciler {
-	r := &TrialReconciler{
+	r := &ReconcileTrial{
 		Client:   mgr.GetClient(),
 		Scheme:   mgr.GetScheme(),
 		DBClient: dbclient.NewTrialDBClient(),
@@ -78,7 +77,7 @@ func newReconciler(mgr manager.Manager) reconcile.Reconciler {
 	return r
 }
 
-// add adds a new Controller to mgr with r as the reconcile.Reconciler
+// add adds a new Controller to mgr with r as the reconcile.ReconcileTrial
 func add(mgr manager.Manager, r reconcile.Reconciler) error {
 	// Create a new controller
 	c, err := controller.New("trial-controller", mgr, controller.Options{Reconciler: r})
@@ -143,7 +142,7 @@ func add(mgr manager.Manager, r reconcile.Reconciler) error {
 }
 
 // TrialReconciler reconciles a Trial object
-type TrialReconciler struct {
+type ReconcileTrial struct {
 	client.Client
 	Log      logr.Logger
 	Scheme   *runtime.Scheme
@@ -158,7 +157,7 @@ type TrialReconciler struct {
 // +kubebuilder:rbac:groups=apps,resources=deployments,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=apps,resources=deployments/status,verbs=get;update;patch
 
-func (r *TrialReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
+func (r *ReconcileTrial) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 	logger := r.Log.WithValues("trial", req.NamespacedName)
 
 	// Fetch the trial instance
@@ -210,7 +209,7 @@ func (r *TrialReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 }
 
 // reconcileServiceDeployment reconciles a service deployment
-func (r *TrialReconciler) reconcileServiceDeployment(instance *morphlingv1alpha1.Trial, deploy *appsv1.Deployment) (*appsv1.Deployment, error) {
+func (r *ReconcileTrial) reconcileServiceDeployment(instance *morphlingv1alpha1.Trial, deploy *appsv1.Deployment) (*appsv1.Deployment, error) {
 	logger := log.WithValues("Trial", types.NamespacedName{Name: instance.GetName(), Namespace: instance.GetNamespace()})
 
 	// Get service deploy
@@ -254,7 +253,7 @@ func (r *TrialReconciler) reconcileServiceDeployment(instance *morphlingv1alpha1
 }
 
 //reconcileTrial reconcile the trial with core functions
-func (r *TrialReconciler) reconcileTrial(instance *morphlingv1alpha1.Trial) error {
+func (r *ReconcileTrial) reconcileTrial(instance *morphlingv1alpha1.Trial) error {
 	logger := log.WithValues("Trial", types.NamespacedName{Name: instance.GetName(), Namespace: instance.GetNamespace()})
 
 	// Get desired service, and reconcile it
@@ -343,7 +342,7 @@ func (r *TrialReconciler) reconcileTrial(instance *morphlingv1alpha1.Trial) erro
 }
 
 //reconcileJob reconcile the client job
-func (r *TrialReconciler) reconcileJob(instance *morphlingv1alpha1.Trial, job *batchv1.Job) (*batchv1.Job, error) {
+func (r *ReconcileTrial) reconcileJob(instance *morphlingv1alpha1.Trial, job *batchv1.Job) (*batchv1.Job, error) {
 	logger := log.WithValues("Trial", types.NamespacedName{Name: instance.GetName(), Namespace: instance.GetNamespace()})
 
 	if err := controllerutil.SetControllerReference(instance, job, r.Scheme); err != nil {
@@ -383,7 +382,7 @@ func (r *TrialReconciler) reconcileJob(instance *morphlingv1alpha1.Trial, job *b
 }
 
 // getDesiredJobSpec returns a new trial run job from the template on the trial
-func (r *TrialReconciler) getDesiredJobSpec(t *morphlingv1alpha1.Trial) (*batchv1.Job, error) {
+func (r *ReconcileTrial) getDesiredJobSpec(t *morphlingv1alpha1.Trial) (*batchv1.Job, error) {
 	logger := log.WithValues("Trial", types.NamespacedName{Name: t.GetName(), Namespace: t.GetNamespace()})
 
 	job := &batchv1.Job{}
@@ -435,7 +434,7 @@ func (r *TrialReconciler) getDesiredJobSpec(t *morphlingv1alpha1.Trial) (*batchv
 	return job, nil
 }
 
-func (r *TrialReconciler) DesiredService(t *morphlingv1alpha1.Trial) (*corev1.Service, error) {
+func (r *ReconcileTrial) DesiredService(t *morphlingv1alpha1.Trial) (*corev1.Service, error) {
 	ports := []corev1.ServicePort{
 		{
 			Name: consts.DefaultServicePortName,
@@ -463,7 +462,7 @@ func (r *TrialReconciler) DesiredService(t *morphlingv1alpha1.Trial) (*corev1.Se
 	return service, nil
 }
 
-func (r *TrialReconciler) reconcileService(instance *morphlingv1alpha1.Trial, service *corev1.Service) (*corev1.Service, error) {
+func (r *ReconcileTrial) reconcileService(instance *morphlingv1alpha1.Trial, service *corev1.Service) (*corev1.Service, error) {
 	foundService := &corev1.Service{}
 	err := r.Get(context.TODO(), types.NamespacedName{Name: service.Name, Namespace: service.Namespace}, foundService)
 	if err != nil && errors.IsNotFound(err) && !util.IsCompletedTrial(instance) {
@@ -490,7 +489,7 @@ func (r *TrialReconciler) reconcileService(instance *morphlingv1alpha1.Trial, se
 }
 
 // getDesiredPodSpec returns a new trial r22un job from the template on the trial
-func (r *TrialReconciler) getDesiredDeploymentSpec(t *morphlingv1alpha1.Trial) (*appsv1.Deployment, error) {
+func (r *ReconcileTrial) getDesiredDeploymentSpec(t *morphlingv1alpha1.Trial) (*appsv1.Deployment, error) {
 
 	podTemplate := &corev1.PodTemplateSpec{}
 	//podTemplate.Name = t.Name + "-service-pod"
@@ -619,7 +618,7 @@ func AppendJobEnv(t *morphlingv1alpha1.Trial, env []corev1.EnvVar) []corev1.EnvV
 	return env
 }
 
-func (r *TrialReconciler) SetupWithManager(mgr ctrl.Manager) error {
+func (r *ReconcileTrial) SetupWithManager(mgr ctrl.Manager) error {
 	return ctrl.NewControllerManagedBy(mgr).
 		For(&morphlingv1alpha1.Trial{}).
 		Complete(r)
