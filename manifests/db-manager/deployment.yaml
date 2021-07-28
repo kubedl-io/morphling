@@ -28,12 +28,8 @@ spec:
               value: "mysql"
             - name: DB_PASSWORD
               value: "morphling"
-          #            valueFrom:
-          #              secretKeyRef:
-          #                name: morphling-mysql-secrets
-          #                key: MYSQL_ROOT_PASSWORD
           command:
-            - './morphling-db-manager'
+            - './morphling-storage'
           ports:
             - name: api
               containerPort: 6799

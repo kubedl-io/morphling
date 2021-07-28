@@ -36,3 +36,14 @@ func GetServiceEndpoint(t *morphlingv1alpha1.Trial) string {
 		GetServiceName(t),
 		consts.DefaultServicePort)
 }
+
+func GetDBStorageEndpoint() string {
+	dbManagerNS := consts.DefaultMorphlingDBManagerServiceNamespace
+	dbManagerIP := consts.DefaultMorphlingDBManagerServiceIP
+	dbManagerPort := consts.DefaultMorphlingDBManagerServicePort
+
+	if len(dbManagerNS) != 0 {
+		return dbManagerIP + "." + dbManagerNS + ":" + dbManagerPort
+	}
+	return dbManagerIP + ":" + dbManagerPort
+}

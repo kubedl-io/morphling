@@ -45,7 +45,8 @@ import (
 
 	morphlingv1alpha1 "github.com/alibaba/morphling/api/v1alpha1"
 	"github.com/alibaba/morphling/pkg/controllers/consts"
-	"github.com/alibaba/morphling/pkg/controllers/trial/managerclient"
+	"github.com/alibaba/morphling/pkg/controllers/trial/dbclient"
+
 	"github.com/alibaba/morphling/pkg/controllers/util"
 )
 
@@ -66,10 +67,10 @@ func Add(mgr manager.Manager) error {
 // newReconciler returns a new reconcile.Reconciler
 func newReconciler(mgr manager.Manager) reconcile.Reconciler {
 	r := &TrialReconciler{
-		Client:        mgr.GetClient(),
-		Scheme:        mgr.GetScheme(),
-		ManagerClient: managerclient.New(),
-		recorder:      mgr.GetEventRecorderFor(ControllerName),
+		Client:   mgr.GetClient(),
+		Scheme:   mgr.GetScheme(),
+		DBClient: dbclient.NewTrialDBClient(),
+		recorder: mgr.GetEventRecorderFor(ControllerName),
 		//collector:     NewTrialsCollector(mgr.GetCache(), metrics.Registry),
 		Log: logf.Log.WithName(ControllerName),
 	}
@@ -147,7 +148,7 @@ type TrialReconciler struct {
 	Log      logr.Logger
 	Scheme   *runtime.Scheme
 	recorder record.EventRecorder
-	managerclient.ManagerClient
+	dbclient.DBClient
 	updateStatusHandler updateStatusFunc
 	//collector           *TrialsCollector // collector is a wrapper for experiment metrics.
 }
@@ -314,7 +315,7 @@ func (r *TrialReconciler) reconcileTrial(instance *morphlingv1alpha1.Trial) erro
 		if util.IsJobSucceeded(jobCondition) {
 			logger.Info("Client Job is Completed", "name", desiredJob.GetName())
 			// Update trial observation
-			if err = r.UpdateTrialStatusObservation(instance, deployedJob); err != nil {
+			if err = r.UpdateTrialStatusObservation(instance); err != nil {
 				logger.Error(err, "Update trial status observation error")
 				return err
 			}

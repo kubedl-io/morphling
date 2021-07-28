@@ -55,8 +55,6 @@ const (
 )
 
 var expectedRequest = reconcile.Request{NamespacedName: types.NamespacedName{Name: trialName, Namespace: namespace}}
-var expectedResult = reconcile.Result{Requeue: true}
-var tfJobKey = types.NamespacedName{Name: clientName, Namespace: namespace}
 
 var (
 	cfg                      *rest.Config
@@ -117,7 +115,7 @@ func TestCreateTrial(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
 	defer mockCtrl.Finish()
 
-	mc := managerclientmock.NewMockManagerClient(mockCtrl)
+	mc := managerclientmock.NewMockDBClient(mockCtrl)
 
 	// Setup the Manager and Controller.  Wrap the Controller Reconcile function so it writes each request to a
 	// channel when it is finished.
@@ -126,11 +124,11 @@ func TestCreateTrial(t *testing.T) {
 	c := mgr.GetClient()
 
 	recFn := SetupTestReconcile(&TrialReconciler{
-		Client:        mgr.GetClient(),
-		Scheme:        mgr.GetScheme(),
-		ManagerClient: mc,
-		recorder:      mgr.GetEventRecorderFor(ControllerName),
-		Log:           logf.Log.WithName(ControllerName),
+		Client:   mgr.GetClient(),
+		Scheme:   mgr.GetScheme(),
+		DBClient: mc,
+		recorder: mgr.GetEventRecorderFor(ControllerName),
+		Log:      logf.Log.WithName(ControllerName),
 		updateStatusHandler: func(instance *morphlingv1alpha1.Trial) error {
 			if !util.IsCreatedTrial(instance) {
 				t.Errorf("Expected got condition created")
@@ -170,11 +168,10 @@ func TestReconcileTrial(t *testing.T) {
 	mockCtrl := gomock.NewController(t)
 	defer mockCtrl.Finish()
 
-	mc := managerclientmock.NewMockManagerClient(mockCtrl)
-	mc.EXPECT().GetTrialObservationLog(gomock.Any()).Return(&api_pb.GetObservationLogReply{
+	mc := managerclientmock.NewMockDBClient(mockCtrl)
+	mc.EXPECT().GetTrialResult(gomock.Any()).Return(&api_pb.GetObservationLogReply{
 		ObservationLog: nil,
 	}, nil).AnyTimes()
-	mc.EXPECT().DeleteTrialObservationLog(gomock.Any()).Return(&api_pb.DeleteObservationLogReply{}, nil).AnyTimes()
 
 	// Setup the Manager and Controller.  Wrap the Controller Reconcile function so it writes each request to a
 	// channel when it is finished.
@@ -183,10 +180,10 @@ func TestReconcileTrial(t *testing.T) {
 	c := mgr.GetClient()
 
 	r := &TrialReconciler{
-		Client:        mgr.GetClient(),
-		Scheme:        mgr.GetScheme(),
-		ManagerClient: mc,
-		recorder:      mgr.GetEventRecorderFor(ControllerName),
+		Client:   mgr.GetClient(),
+		Scheme:   mgr.GetScheme(),
+		DBClient: mc,
+		recorder: mgr.GetEventRecorderFor(ControllerName),
 		//collector:     NewTrialsCollector(mgr.GetCache(), prometheus.NewRegistry()),
 		Log: logf.Log.WithName(ControllerName),
 	}

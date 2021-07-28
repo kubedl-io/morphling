@@ -103,43 +103,17 @@ func (r *TrialReconciler) FindPodAssociatedWithServiceDeployment(instance *morph
 	return jobPod, nil
 }
 
-func (r *TrialReconciler) UpdateTrialStatusObservation(instance *morphlingv1alpha1.Trial, deployedJob *batchv1.Job) error {
-	if &instance.Spec.Objective == nil || &instance.Spec.Objective.ObjectiveMetricName == nil || r.ManagerClient == nil {
+func (r *TrialReconciler) UpdateTrialStatusObservation(instance *morphlingv1alpha1.Trial) error {
+	if &instance.Spec.Objective == nil || &instance.Spec.Objective.ObjectiveMetricName == nil || r.DBClient == nil {
 		return nil
 	}
-
-	// Get the name of the objective metric
-	objectiveMetricName := instance.Spec.Objective.ObjectiveMetricName
-
-	// Get the pod of the client job
-	//jobPod, err := r.FindPodAssociatedWithClientJob(instance, deployedJob)
-	//if err != nil {
-	//	return err
-	//}
-
-	// Get the trial result from the job pod (pod log)
-	//if jobPod.Items != nil {
-	reply, err := r.GetTrialObservationLog(instance)
+	reply, err := r.GetTrialResult(instance)
 	if err != nil {
 		return err
 	}
-	if reply.ObservationLog != nil {
-		// Get the value of the result
-		value := reply.ObservationLog.MetricLogs[0].Metric.Value
-		//value = "0.0"
-		//bestObjectiveValue := string(value) //strconv.ParseFloat(value, 0)
-		//bestObjectiveValue, _ := strconv.ParseFloat(value[:int(len(value)-1)], 0)
-		//a, _ := strconv.ParseFloat(instance.Spec.SamplingResult[0].Value, 0)
-		//bestObjectiveValue_ := int(bestObjectiveValue) //+ int32(a) + int32(rand.Intn(10))
-		//int32(rand.Int())
-
-		// Update the trial result to the status of the trial
-		metric := morphlingv1alpha1.Metric{Name: objectiveMetricName, Value: value}
-		instance.Status.TrialResult = &morphlingv1alpha1.TrialResult{}
-		instance.Status.TrialResult.ObjectiveMetricsObserved = []morphlingv1alpha1.Metric{metric}
+	if reply != nil {
+		instance.Status.TrialResult = reply
 	}
-	//}
-
 	return nil
 }
 
