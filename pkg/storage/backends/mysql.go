@@ -18,7 +18,7 @@ package backends
 
 import (
 	api_pb "github.com/alibaba/morphling/api/v1alpha1/grpc_storage/go"
-	//_ "github.com/go-sql-driver/mysql"
+	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"k8s.io/klog"
 	"sync/atomic"
