@@ -19,18 +19,19 @@ const (
 	port = "0.0.0.0:6799"
 )
 
-var dbIf backends.StorageBackend
+//var dbIf backends.StorageBackend
 
 type server struct {
+	dbIf backends.StorageBackend
 }
 
 func (s *server) SaveResult(ctx context.Context, in *api_pb.SaveResultRequest) (*api_pb.SaveResultReply, error) {
-	err := dbIf.SaveTrialResult(in)
+	err := s.dbIf.SaveTrialResult(in)
 	return &api_pb.SaveResultReply{}, err
 }
 
 func (s *server) GetResult(ctx context.Context, in *api_pb.GetResultRequest) (*api_pb.GetResultReply, error) {
-	reply, err := dbIf.GetTrialResult(in)
+	reply, err := s.dbIf.GetTrialResult(in)
 	return reply, err
 }
 
@@ -65,8 +66,8 @@ func main() {
 	klog.Infof("Start Morphling storage: %s", port)
 	s := grpc.NewServer()
 
-	api_pb.RegisterDBServer(s, &server{})
-	health_pb.RegisterHealthServer(s, &server{})
+	api_pb.RegisterDBServer(s, &server{dbIf:dbIf})
+	health_pb.RegisterHealthServer(s, &server{dbIf:dbIf})
 	reflection.Register(s)
 
 	if err = s.Serve(listener); err != nil {
