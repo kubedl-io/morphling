@@ -18,20 +18,16 @@ package main
 
 import (
 	"flag"
-	"github.com/spf13/viper"
+	"github.com/alibaba/morphling/api"
 	"os"
 
+	morphlingv1alpha1 "github.com/alibaba/morphling/api/v1alpha1"
+	"github.com/alibaba/morphling/pkg/controllers"
 	"k8s.io/apimachinery/pkg/runtime"
 	clientgoscheme "k8s.io/client-go/kubernetes/scheme"
 	_ "k8s.io/client-go/plugin/pkg/client/auth/gcp"
 	ctrl "sigs.k8s.io/controller-runtime"
 	"sigs.k8s.io/controller-runtime/pkg/log/zap"
-	logf "sigs.k8s.io/controller-runtime/pkg/runtime/log"
-
-	morphlingv1alpha1 "github.com/alibaba/morphling/api/v1alpha1"
-	"github.com/alibaba/morphling/pkg/controllers"
-	"github.com/alibaba/morphling/pkg/controllers/consts"
-	// +kubebuilder:scaffold:imports
 )
 
 var (
@@ -41,46 +37,51 @@ var (
 
 func init() {
 	_ = clientgoscheme.AddToScheme(scheme)
-
 	_ = morphlingv1alpha1.AddToScheme(scheme)
-	// +kubebuilder:scaffold:scheme
 }
 
 func main() {
-	var metricsAddr string
-	var enableLeaderElection bool
-	var enableGRPCProbeInSampling bool
+	var (
+		ctrlMetricsAddr string
+		//metricsAddr          string
+		enableLeaderElection bool
+	)
 
-	flag.StringVar(&metricsAddr, "metrics-addr", ":8080", "The address the metric endpoint binds to.")
-	flag.BoolVar(&enableLeaderElection, "enable-leader-election", false,
-		"Enable leader election for controller manager. "+
-			"Enabling this will ensure there is only one active controller manager.")
-
-	flag.BoolVar(&enableGRPCProbeInSampling, "enable-grpc-probe-in-sampling", true, "enable grpc probe in samplings")
+	flag.StringVar(&ctrlMetricsAddr, "controller-metrics-addr", ":8080", "The address the controller metric endpoint binds to.")
+	flag.BoolVar(&enableLeaderElection, "enable-leader-election", false, "Enable leader election for controller manager. Enabling this will ensure there is only one active controller manager.")
 	flag.Parse()
-	viper.Set(consts.ConfigEnableGRPCProbeInSampling, enableGRPCProbeInSampling)
 	ctrl.SetLogger(zap.New(zap.UseDevMode(true)))
-	log := logf.Log.WithName("entrypoint")
+
 	opt := ctrl.Options{
 		Scheme:             scheme,
-		MetricsBindAddress: metricsAddr,
+		MetricsBindAddress: ctrlMetricsAddr,
 		Port:               9443,
 		LeaderElection:     enableLeaderElection,
 		LeaderElectionID:   "tuning-kubedl-morphling",
 	}
 
+	// Create manager to provide shared dependencies and start components
 	mgr, err := ctrl.NewManager(ctrl.GetConfigOrDie(), opt)
 	if err != nil {
 		setupLog.Error(err, "unable to start manager")
 		os.Exit(1)
 	}
 
-	log.Info("Setting up controller")
-	if err := controllers.AddToManager(mgr); err != nil {
-		log.Error(err, "unable to register controllers to the manager")
+	// Setup Scheme for all resources
+	setupLog.Info("Setting up scheme")
+	if err := api.AddToScheme(mgr.GetScheme()); err != nil {
+		setupLog.Error(err, "unable to add APIs to scheme")
 		os.Exit(1)
 	}
 
+	// Setup all Controllers
+	setupLog.Info("Setting up controller")
+	if err := controllers.AddToManager(mgr); err != nil {
+		setupLog.Error(err, "unable to register controllers to the manager")
+		os.Exit(1)
+	}
+
+	// Start the Cmd
 	setupLog.Info("Starting manager")
 	if err := mgr.Start(ctrl.SetupSignalHandler()); err != nil {
 		setupLog.Error(err, "problem running manager")

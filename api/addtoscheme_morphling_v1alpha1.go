@@ -1,5 +1,5 @@
 /*
-Copyright 2021 The Alibaba Authors.
+Copyright 2019 The Alibaba Authors.
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
@@ -14,17 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package controllers
+package api
 
 import (
 	"github.com/alibaba/morphling/api/v1alpha1"
-	"github.com/alibaba/morphling/pkg/controllers/experiment"
-	controllerruntime "sigs.k8s.io/controller-runtime"
 )
 
 func init() {
-	// AddToManagerFuncs is a list of functions to create controllers and add them to a manager.
-	SetupWithManagerMap[&v1alpha1.ProfilingExperiment{}] = func(mgr controllerruntime.Manager) error {
-		return experiment.NewReconciler(mgr).SetupWithManager(mgr)
-	}
+	AddToSchemes = append(AddToSchemes, v1alpha1.SchemeBuilder.AddToScheme)
 }

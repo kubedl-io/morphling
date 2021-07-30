@@ -123,7 +123,7 @@ func TestCreateTrial(t *testing.T) {
 	g.Expect(err).NotTo(gomega.HaveOccurred())
 	c := mgr.GetClient()
 
-	recFn := SetupTestReconcile(&ReconcileTrial{
+	r := &ReconcileTrial{
 		Client:   mgr.GetClient(),
 		Scheme:   mgr.GetScheme(),
 		DBClient: mc,
@@ -135,8 +135,14 @@ func TestCreateTrial(t *testing.T) {
 			}
 			return nil
 		},
-	})
-	g.Expect(add(mgr, recFn)).NotTo(gomega.HaveOccurred())
+	}
+	r.updateStatusHandler = func(instance *morphlingv1alpha1.Trial) error {
+		if !util.IsCreatedTrial(instance) {
+			t.Errorf("Expected got condition created")
+		}
+		return r.updateStatus(instance)
+	}
+	g.Expect(r.SetupWithManager(mgr)).NotTo(gomega.HaveOccurred())
 
 	stopMgr, mgrStopped := StartTestManager(mgr, g)
 
@@ -195,8 +201,7 @@ func TestReconcileTrial(t *testing.T) {
 		return r.updateStatus(instance)
 	}
 
-	recFn := SetupTestReconcile(r)
-	g.Expect(add(mgr, recFn)).NotTo(gomega.HaveOccurred())
+	g.Expect(r.SetupWithManager(mgr)).NotTo(gomega.HaveOccurred())
 
 	stopMgr, mgrStopped := StartTestManager(mgr, g)
 

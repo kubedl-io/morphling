@@ -51,7 +51,7 @@ import (
 )
 
 const (
-	ControllerName = "trial-controller"
+	ControllerName     = "trial-controller"
 	defaultMetricValue = "0.0"
 )
 
@@ -59,36 +59,37 @@ var (
 	log = logf.Log.WithName(ControllerName)
 )
 
-// Add creates a new Trial Controller and adds it to the Manager with default RBAC. The Manager will set fields on the Controller
-func Add(mgr manager.Manager) error {
-	return add(mgr, newReconciler(mgr))
-}
-
-// newReconciler returns a new reconcile.ReconcileTrial
-func newReconciler(mgr manager.Manager) reconcile.Reconciler {
+// NewReconciler returns a new reconcile.ReconcileTrial
+func NewReconciler(mgr manager.Manager) *ReconcileTrial {
 	r := &ReconcileTrial{
 		Client:   mgr.GetClient(),
 		Scheme:   mgr.GetScheme(),
 		DBClient: dbclient.NewTrialDBClient(),
 		recorder: mgr.GetEventRecorderFor(ControllerName),
-		//collector:     NewTrialsCollector(mgr.GetCache(), metrics.Registry),
-		Log: logf.Log.WithName(ControllerName),
+		Log:      logf.Log.WithName(ControllerName),
 	}
 	r.updateStatusHandler = r.updateStatus
 	return r
 }
 
-// add adds a new Controller to mgr with r as the reconcile.ReconcileTrial
-func add(mgr manager.Manager, r reconcile.Reconciler) error {
-	// Create a new controller
-	c, err := controller.New("trial-controller", mgr, controller.Options{Reconciler: r})
+func (r *ReconcileTrial) SetupWithManager(mgr ctrl.Manager) error {
+	c, err := controller.New(ControllerName, mgr, controller.Options{Reconciler: r})
 	if err != nil {
-		log.Error(err, "Create trial controller error")
+		log.Error(err, "Failed to create experiment controller")
 		return err
 	}
+	if err = addWatch(c); err != nil {
+		log.Error(err, "Trial watch failed")
+		return err
+	}
+	log.Info("Experiment controller created")
+	return nil
+}
 
+// Add Watch of resources
+func addWatch(c controller.Controller) error {
 	// Watch for changes to trial
-	err = c.Watch(&source.Kind{Type: &morphlingv1alpha1.Trial{}}, &handler.EnqueueRequestForObject{})
+	err := c.Watch(&source.Kind{Type: &morphlingv1alpha1.Trial{}}, &handler.EnqueueRequestForObject{})
 	if err != nil {
 		log.Error(err, "Trial watch error")
 		return err
@@ -138,7 +139,6 @@ func add(mgr manager.Manager, r reconcile.Reconciler) error {
 		return err
 	}
 
-	log.Info("Trial  controller created")
 	return nil
 }
 
@@ -638,10 +638,4 @@ func AppendJobEnv(t *morphlingv1alpha1.Trial, env []corev1.EnvVar) []corev1.EnvV
 		}
 	}
 	return env
-}
-
-func (r *ReconcileTrial) SetupWithManager(mgr ctrl.Manager) error {
-	return ctrl.NewControllerManagedBy(mgr).
-		For(&morphlingv1alpha1.Trial{}).
-		Complete(r)
 }

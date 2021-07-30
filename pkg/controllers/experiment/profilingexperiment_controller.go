@@ -53,31 +53,19 @@ var (
 	log = logf.Log.WithName(ControllerName)
 )
 
-// Add creates a new Experiment Controller and adds it to the Manager with default RBAC. The Manager will set fields on the Controller
-func Add(mgr manager.Manager) error {
-	return add(mgr, newReconciler(mgr))
-}
-
-// newReconciler returns a new reconcile.Reconciler
-func newReconciler(mgr manager.Manager) reconcile.Reconciler {
+// NewReconciler returns a new reconcile.Reconciler
+func NewReconciler(mgr manager.Manager) *ProfilingExperimentReconciler {
 	r := &ProfilingExperimentReconciler{
 		Client:   mgr.GetClient(),
 		Scheme:   mgr.GetScheme(),
 		recorder: mgr.GetEventRecorderFor(ControllerName),
 	}
-	r.Sampling = newSampling(mgr.GetScheme(), mgr.GetClient())
+	r.Sampling = sampling.New(mgr.GetScheme(), mgr.GetClient())
 	r.updateStatusHandler = r.updateStatus
 	return r
 }
 
-// newSampling returns the new Sampling for the given config.
-func newSampling(scheme *runtime.Scheme, client client.Client) sampling.Sampling {
-	return sampling.New(scheme, client)
-}
-
-// add adds a new Controller to mgr with r as the reconcile.Reconciler
-func add(mgr manager.Manager, r reconcile.Reconciler) error {
-	// Create a new controller
+func (r *ProfilingExperimentReconciler) SetupWithManager(mgr ctrl.Manager) error {
 	c, err := controller.New(ControllerName, mgr, controller.Options{Reconciler: r})
 	if err != nil {
 		log.Error(err, "Failed to create experiment controller")
@@ -92,7 +80,7 @@ func add(mgr manager.Manager, r reconcile.Reconciler) error {
 	return nil
 }
 
-// add Watch of resources
+// Add Watch of resources
 func addWatch(c controller.Controller) error {
 	// Watch for changes to Experiment
 	err := c.Watch(&source.Kind{Type: &morphlingv1alpha1.ProfilingExperiment{}}, &handler.EnqueueRequestForObject{})
@@ -353,8 +341,4 @@ func (r *ProfilingExperimentReconciler) updateStatus(instance *morphlingv1alpha1
 	return nil
 }
 
-func (r *ProfilingExperimentReconciler) SetupWithManager(mgr ctrl.Manager) error {
-	return ctrl.NewControllerManagedBy(mgr).
-		For(&morphlingv1alpha1.ProfilingExperiment{}).
-		Complete(r)
-}
+
