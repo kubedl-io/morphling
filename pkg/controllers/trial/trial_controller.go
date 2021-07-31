@@ -107,17 +107,17 @@ func addWatch(c controller.Controller) error {
 		return err
 	}
 
-	// Watch for changes to service pod
-	err = c.Watch(
-		&source.Kind{Type: &corev1.Pod{}},
-		&handler.EnqueueRequestForOwner{
-			IsController: true,
-			OwnerType:    &morphlingv1alpha1.Trial{},
-		})
-	if err != nil {
-		log.Error(err, "Service Pod watch error")
-		return err
-	}
+	//// Watch for changes to service pod
+	//err = c.Watch(
+	//	&source.Kind{Type: &corev1.Pod{}},
+	//	&handler.EnqueueRequestForOwner{
+	//		IsController: true,
+	//		OwnerType:    &morphlingv1alpha1.Trial{},
+	//	})
+	//if err != nil {
+	//	log.Error(err, "Service Pod watch error")
+	//	return err
+	//}
 
 	// Watch for changes to service deployment
 	err = c.Watch(&source.Kind{Type: &appsv1.Deployment{}}, &handler.EnqueueRequestForOwner{
@@ -296,12 +296,13 @@ func (r *ReconcileTrial) reconcileTrial(instance *morphlingv1alpha1.Trial) error
 			return err
 		}
 		return nil
-	} else {
-		if instance.Status.ServiceDeployment == nil {
-			instance.Status.ServiceDeployment = &appsv1.Deployment{}
-		}
-		deployedDeployment.DeepCopyInto(instance.Status.ServiceDeployment)
 	}
+	//else {
+	//	if instance.Status.ServiceDeployment == nil {
+	//		instance.Status.ServiceDeployment = &appsv1.Deployment{}
+	//	}
+	//	deployedDeployment.DeepCopyInto(instance.Status.ServiceDeployment)
+	//}
 
 	ServiceDeploymentCondition := deployedDeployment.Status.Conditions
 
@@ -313,12 +314,13 @@ func (r *ReconcileTrial) reconcileTrial(instance *morphlingv1alpha1.Trial) error
 		if err != nil || deployedJob == nil {
 			logger.Error(err, "Reconcile Client job error")
 			return err
-		} else {
-			if instance.Status.StressTestJob == nil {
-				instance.Status.StressTestJob = &batchv1.Job{}
-			}
-			deployedJob.DeepCopyInto(instance.Status.StressTestJob)
 		}
+		//else {
+		//	if instance.Status.StressTestJob == nil {
+		//		instance.Status.StressTestJob = &batchv1.Job{}
+		//	}
+		//	deployedJob.DeepCopyInto(instance.Status.StressTestJob)
+		//}
 
 		// Update trial observation when the job is succeeded.
 		jobCondition := deployedJob.Status.Conditions

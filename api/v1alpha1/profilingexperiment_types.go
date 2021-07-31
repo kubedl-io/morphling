@@ -264,7 +264,6 @@ const (
 // +kubebuilder:printcolumn:name="Optimal Object Value",type=string,JSONPath=`.status.currentOptimalTrial.objectiveMetricsObserved[-1:].value`
 // +kubebuilder:printcolumn:name="Optimal Parameters",type=string,JSONPath=`.status.currentOptimalTrial.tunableParameters`
 // +kubebuilder:resource:shortName="pe"
-// +kubebuilder:subresource:status
 // ProfilingExperiment is the Schema for the profilingexperiments API
 type ProfilingExperiment struct {
 	metav1.TypeMeta   `json:",inline"`

@@ -334,7 +334,7 @@ func (r *ProfilingExperimentReconciler) createTrialInstance(expInstance *morphli
 }
 
 func (r *ProfilingExperimentReconciler) updateStatus(instance *morphlingv1alpha1.ProfilingExperiment) error {
-	err := r.Status().Update(context.TODO(), instance)
+	err := r.Update(context.TODO(), instance)
 	if err != nil {
 		return err
 	}

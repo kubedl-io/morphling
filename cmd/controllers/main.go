@@ -57,7 +57,7 @@ func main() {
 		MetricsBindAddress: ctrlMetricsAddr,
 		Port:               9443,
 		LeaderElection:     enableLeaderElection,
-		LeaderElectionID:   "tuning-kubedl-morphling",
+		//LeaderElectionID:   "tuning-kubedl-morphling",
 	}
 
 	// Create manager to provide shared dependencies and start components

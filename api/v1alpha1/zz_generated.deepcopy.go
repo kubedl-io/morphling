@@ -21,8 +21,6 @@ limitations under the License.
 package v1alpha1
 
 import (
-	"k8s.io/api/apps/v1"
-	batchv1 "k8s.io/api/batch/v1"
 	runtime "k8s.io/apimachinery/pkg/runtime"
 )
 
@@ -514,16 +512,6 @@ func (in *TrialStatus) DeepCopyInto(out *TrialStatus) {
 	if in.CompletionTime != nil {
 		in, out := &in.CompletionTime, &out.CompletionTime
 		*out = (*in).DeepCopy()
-	}
-	if in.ServiceDeployment != nil {
-		in, out := &in.ServiceDeployment, &out.ServiceDeployment
-		*out = new(v1.Deployment)
-		(*in).DeepCopyInto(*out)
-	}
-	if in.StressTestJob != nil {
-		in, out := &in.StressTestJob, &out.StressTestJob
-		*out = new(batchv1.Job)
-		(*in).DeepCopyInto(*out)
 	}
 }
 
