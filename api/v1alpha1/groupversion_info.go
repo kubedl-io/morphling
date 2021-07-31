@@ -17,6 +17,7 @@ limitations under the License.
 // Package v1alpha1 contains API Schema definitions for the morphling v1alpha1 API group
 // +kubebuilder:object:generate=true
 // +groupName=tuning.kubedl.io
+// +kubebuilder:subresource:status
 package v1alpha1
 
 import (

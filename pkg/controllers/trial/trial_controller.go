@@ -242,6 +242,10 @@ func (r *ReconcileTrial) reconcileServiceDeployment(instance *morphlingv1alpha1.
 			}
 			// Delete the service pod
 			if err = r.Delete(context.TODO(), deploy, client.PropagationPolicy(metav1.DeletePropagationForeground)); err != nil {
+				if errors.IsNotFound(err) {
+					logger.Info("Delete service pod operation is redundant")
+					return nil, nil
+				}
 				logger.Error(err, "Delete service pod error")
 				return nil, err
 			} else {
@@ -297,12 +301,6 @@ func (r *ReconcileTrial) reconcileTrial(instance *morphlingv1alpha1.Trial) error
 		}
 		return nil
 	}
-	//else {
-	//	if instance.Status.ServiceDeployment == nil {
-	//		instance.Status.ServiceDeployment = &appsv1.Deployment{}
-	//	}
-	//	deployedDeployment.DeepCopyInto(instance.Status.ServiceDeployment)
-	//}
 
 	ServiceDeploymentCondition := deployedDeployment.Status.Conditions
 
@@ -315,12 +313,6 @@ func (r *ReconcileTrial) reconcileTrial(instance *morphlingv1alpha1.Trial) error
 			logger.Error(err, "Reconcile Client job error")
 			return err
 		}
-		//else {
-		//	if instance.Status.StressTestJob == nil {
-		//		instance.Status.StressTestJob = &batchv1.Job{}
-		//	}
-		//	deployedJob.DeepCopyInto(instance.Status.StressTestJob)
-		//}
 
 		// Update trial observation when the job is succeeded.
 		jobCondition := deployedJob.Status.Conditions
@@ -405,6 +397,10 @@ func (r *ReconcileTrial) reconcileJob(instance *morphlingv1alpha1.Trial, job *ba
 		if util.IsCompletedTrial(instance) {
 			// Delete the client job upon the completion of the trial
 			if err = r.Delete(context.TODO(), job, client.PropagationPolicy(metav1.DeletePropagationForeground)); err != nil {
+				if errors.IsNotFound(err) {
+					logger.Info("Delete client operation is redundant")
+					return nil, nil
+				}
 				logger.Error(err, "Delete Client error")
 				return nil, err
 			} else {

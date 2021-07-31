@@ -179,6 +179,14 @@ func (r *ProfilingExperimentReconciler) Reconcile(req ctrl.Request) (ctrl.Result
 
 	// Update experiment status
 	if !equality.Semantic.DeepEqual(original.Status, instance.Status) {
+		//tmp := &morphlingv1alpha1.ProfilingExperiment{}
+		//err := r.Get(context.TODO(), req.NamespacedName, tmp)
+		//
+		//if original.GetResourceVersion() != tmp.GetResourceVersion() {
+		//	logger.Info("Update experiment skipped")
+		//	return reconcile.Result{}, nil
+		//}
+
 		err = r.updateStatusHandler(instance)
 		if err != nil {
 			logger.Error(err, "Update experiment status error")
@@ -330,13 +338,12 @@ func (r *ProfilingExperimentReconciler) createTrialInstance(expInstance *morphli
 		return err
 	}
 	return nil
-
 }
 
 func (r *ProfilingExperimentReconciler) updateStatus(instance *morphlingv1alpha1.ProfilingExperiment) error {
-	err := r.Update(context.TODO(), instance)
+	err := r.Status().Update(context.TODO(), instance)
 	if err != nil {
-		return err
+		if !errors.IsConflict(err){return err}
 	}
 	return nil
 }

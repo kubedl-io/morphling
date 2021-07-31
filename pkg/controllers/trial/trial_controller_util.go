@@ -19,6 +19,7 @@ package trial
 import (
 	"context"
 	"fmt"
+	"k8s.io/apimachinery/pkg/api/errors"
 
 	appsv1 "k8s.io/api/apps/v1"
 	batchv1 "k8s.io/api/batch/v1"
@@ -34,9 +35,9 @@ import (
 type updateStatusFunc func(instance *morphlingv1alpha1.Trial) error
 
 func (r *ReconcileTrial) updateStatus(instance *morphlingv1alpha1.Trial) error {
-	err := r.Update(context.TODO(), instance)
+	err := r.Status().Update(context.TODO(), instance)
 	if err != nil {
-		return err
+		if !errors.IsConflict(err){return err}
 	}
 	return nil
 }
