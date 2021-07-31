@@ -34,7 +34,7 @@ import (
 type updateStatusFunc func(instance *morphlingv1alpha1.Trial) error
 
 func (r *ReconcileTrial) updateStatus(instance *morphlingv1alpha1.Trial) error {
-	err := r.Update(context.TODO(), instance)
+	err := r.Status().Update(context.TODO(), instance)
 	if err != nil {
 		return err
 	}

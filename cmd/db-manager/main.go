@@ -66,8 +66,8 @@ func main() {
 	klog.Infof("Start Morphling storage: %s", port)
 	s := grpc.NewServer()
 
-	api_pb.RegisterDBServer(s, &server{dbIf:dbIf})
-	health_pb.RegisterHealthServer(s, &server{dbIf:dbIf})
+	api_pb.RegisterDBServer(s, &server{dbIf: dbIf})
+	health_pb.RegisterHealthServer(s, &server{dbIf: dbIf})
 	reflection.Register(s)
 
 	if err = s.Serve(listener); err != nil {

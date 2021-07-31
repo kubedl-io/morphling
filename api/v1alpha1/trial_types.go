@@ -17,6 +17,8 @@ limitations under the License.
 package v1alpha1
 
 import (
+	appsv1 "k8s.io/api/apps/v1"
+	batchv1 "k8s.io/api/batch/v1"
 	"k8s.io/api/batch/v1beta1"
 	corev1 "k8s.io/api/core/v1"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
@@ -56,6 +58,12 @@ type TrialStatus struct {
 
 	// The time this trial was completed.
 	CompletionTime *metav1.Time `json:"completionTime,omitempty"`
+
+	// ML Service deployment
+	ServiceDeployment *appsv1.Deployment `json:"serviceDeployment,omitempty"`
+
+	// Stress-test Job
+	StressTestJob *batchv1.Job `json:"stressTestJob,omitempty"`
 }
 
 type TrialCondition struct {
@@ -92,7 +100,7 @@ const (
 // +kubebuilder:printcolumn:name="Object Name",type=string,JSONPath=`.status.trialResult.objectiveMetricsObserved[-1:].name`
 // +kubebuilder:printcolumn:name="Object Value",type=string,JSONPath=`.status.trialResult.objectiveMetricsObserved[-1:].value`
 // +kubebuilder:printcolumn:name="Parameters",type=string,JSONPath=`.spec.samplingResult`
-
+// +kubebuilder:subresource:status
 // Trial is the Schema for the trials API
 type Trial struct {
 	metav1.TypeMeta   `json:",inline"`

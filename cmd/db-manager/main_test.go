@@ -41,9 +41,9 @@ var testCases = map[string]struct {
 func TestSaveResults(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
-	s := &server{}
+
 	mockDB := mockdb.NewMockStorageBackend(ctrl)
-	dbIf = mockDB
+	s := &server{mockDB}
 	for name, tc := range testCases {
 		t.Run(fmt.Sprintf("%s", name), func(t *testing.T) {
 			mockDB.EXPECT().SaveTrialResult(tc.addRequest).Return(nil)
@@ -59,9 +59,9 @@ func TestSaveResults(t *testing.T) {
 func TestGetObservationLog(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
-	s := &server{}
+
 	mockDB := mockdb.NewMockStorageBackend(ctrl)
-	dbIf = mockDB
+	s := &server{mockDB}
 
 	for name, tc := range testCases {
 		t.Run(fmt.Sprintf("%s", name), func(t *testing.T) {

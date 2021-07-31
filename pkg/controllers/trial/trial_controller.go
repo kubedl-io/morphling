@@ -296,6 +296,11 @@ func (r *ReconcileTrial) reconcileTrial(instance *morphlingv1alpha1.Trial) error
 			return err
 		}
 		return nil
+	} else {
+		if instance.Status.ServiceDeployment == nil {
+			instance.Status.ServiceDeployment = &appsv1.Deployment{}
+		}
+		deployedDeployment.DeepCopyInto(instance.Status.ServiceDeployment)
 	}
 
 	ServiceDeploymentCondition := deployedDeployment.Status.Conditions
@@ -308,6 +313,11 @@ func (r *ReconcileTrial) reconcileTrial(instance *morphlingv1alpha1.Trial) error
 		if err != nil || deployedJob == nil {
 			logger.Error(err, "Reconcile Client job error")
 			return err
+		} else {
+			if instance.Status.StressTestJob == nil {
+				instance.Status.StressTestJob = &batchv1.Job{}
+			}
+			deployedJob.DeepCopyInto(instance.Status.StressTestJob)
 		}
 
 		// Update trial observation when the job is succeeded.
@@ -419,7 +429,7 @@ func (r *ReconcileTrial) getDesiredJobSpec(t *morphlingv1alpha1.Trial) (*batchv1
 			t.Spec.ClientTemplate.ObjectMeta.DeepCopyInto(&job.ObjectMeta)
 		}
 	}
-	job.Name = t.Name + "-client-job"
+	job.Name = util.GetStressTestJobName(t) //t.Name + "-client-job"
 	job.Namespace = t.GetNamespace()
 	//job.Labels = util.ClientLabels(t)
 	if job.Labels == nil {
