@@ -59,7 +59,6 @@ var (
 	log = logf.Log.WithName(ControllerName)
 )
 
-// NewReconciler returns a new reconcile.ReconcileTrial
 func NewReconciler(mgr manager.Manager) *ReconcileTrial {
 	r := &ReconcileTrial{
 		Client:   mgr.GetClient(),
@@ -142,7 +141,6 @@ func addWatch(c controller.Controller) error {
 	return nil
 }
 
-// TrialReconciler reconciles a Trial object
 type ReconcileTrial struct {
 	client.Client
 	Log      logr.Logger
@@ -150,14 +148,12 @@ type ReconcileTrial struct {
 	recorder record.EventRecorder
 	dbclient.DBClient
 	updateStatusHandler updateStatusFunc
-	//collector           *TrialsCollector // collector is a wrapper for experiment metrics.
 }
 
 // +kubebuilder:rbac:groups=tuning.kubedl.io,resources=trials,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=tuning.kubedl.io,resources=trials/status,verbs=get;update;patch
 // +kubebuilder:rbac:groups=apps,resources=deployments,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=apps,resources=deployments/status,verbs=get;update;patch
-
 func (r *ReconcileTrial) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 	logger := r.Log.WithValues("trial", req.NamespacedName)
 
@@ -166,11 +162,14 @@ func (r *ReconcileTrial) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 	err := r.Get(context.TODO(), req.NamespacedName, original)
 	if err != nil {
 		if errors.IsNotFound(err) {
+			log.Info("try to get trial, but it has been deleted", "key", req.String())
 			return reconcile.Result{}, nil
 		}
+		// Error reading the object - requeue the request.
 		logger.Error(err, "Trial Get error")
 		return reconcile.Result{}, err
 	}
+
 	instance := original.DeepCopy()
 
 	// If not created, create the trial
@@ -179,11 +178,6 @@ func (r *ReconcileTrial) Reconcile(req ctrl.Request) (ctrl.Result, error) {
 			now := metav1.Now()
 			instance.Status.StartTime = &now
 		}
-		// Todo (Controller) Should delete this
-		//if instance.Status.CompletionTime == nil {
-		//	now := metav1.Now()
-		//	instance.Status.CompletionTime = &now
-		//}
 		msg := "Trial is created"
 		util.MarkTrialStatusCreatedTrial(instance, msg)
 	} else {
@@ -358,10 +352,10 @@ func (r *ReconcileTrial) reconcileTrial(instance *morphlingv1alpha1.Trial) error
 			instance.Status.TrialResult = &morphlingv1alpha1.TrialResult{}
 			instance.Status.TrialResult.ObjectiveMetricsObserved = []morphlingv1alpha1.Metric{metric}
 
-			util.SetConditionTrial(instance, morphlingv1alpha1.TrialFailed, corev1.ConditionTrue, message)
+			util.MarkTrialStatusFailed(instance, message)
 		} else {
 			message := "Trial service pod pending"
-			util.SetConditionTrial(instance, morphlingv1alpha1.TrialPending, corev1.ConditionTrue, message)
+			util.MarkTrialStatusPendingTrial(instance, message)
 		}
 	}
 	return nil

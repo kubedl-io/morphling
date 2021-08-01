@@ -43,6 +43,7 @@ func (r *ReconcileTrial) updateStatus(instance *morphlingv1alpha1.Trial) error {
 }
 
 func (r *ReconcileTrial) UpdateTrialStatusCondition(instance *morphlingv1alpha1.Trial, deployedJob *batchv1.Job, jobCondition []batchv1.JobCondition) {
+	// Todo should mark trial status as 'unknown'
 	if jobCondition == nil || instance == nil || deployedJob == nil {
 		msg := "Trial is running"
 		util.MarkTrialStatusRunning(instance, msg)
@@ -51,31 +52,31 @@ func (r *ReconcileTrial) UpdateTrialStatusCondition(instance *morphlingv1alpha1.
 
 	now := metav1.Now()
 	jobConditionType := (jobCondition[len(jobCondition)-1]).Type
+	switch jobConditionType {
+	
+	}
 
 	if jobConditionType == batchv1.JobComplete {
-		// Client job is completed
+		// Client-side stress test job is completed
 		if isTrialObservationAvailable(instance) {
-			// Client job has recorded the trial result
-			msg := "Trial has succeeded"
+			msg := "Client-side stress test job has completed"
 			util.MarkTrialStatusSucceeded(instance, corev1.ConditionTrue, msg)
 			instance.Status.CompletionTime = &now
-			eventMsg := fmt.Sprintf("Client Job %s has succeeded", deployedJob.GetName())
+			eventMsg := fmt.Sprintf("Client-side stress test job %s has succeeded", deployedJob.GetName())
 			r.recorder.Eventf(instance, corev1.EventTypeNormal, "JobSucceeded", eventMsg)
-			//r.collector.IncreaseTrialsSucceededCount(instance.Namespace)
 		} else {
 			// Client job has NOT recorded the trial result
-			msg := "Metrics are not available"
+			msg := "Trial results are not available"
 			util.MarkTrialStatusSucceeded(instance, corev1.ConditionFalse, msg)
 		}
 	} else if jobConditionType == batchv1.JobFailed {
-		// Client job is failed
-		msg := "Trial has failed"
+		// Client-side stress test job is failed
+		msg := "Client-side stress test job has failed"
 		util.MarkTrialStatusFailed(instance, msg)
 		instance.Status.CompletionTime = &now
-		//r.collector.IncreaseTrialsFailedCount(instance.Namespace)
 	} else {
-		// Client job is still running
-		msg := "Trial is running"
+		// Client-side stress test job is still running
+		msg := "Client-side stress test job is running"
 		util.MarkTrialStatusRunning(instance, msg)
 	}
 
@@ -139,4 +140,8 @@ func isTrialObservationAvailable(instance *morphlingv1alpha1.Trial) bool {
 
 	// Objective metric record Not found
 	return false
+}
+
+func (r *ReconcileTrial) ControllerName() string {
+	return ControllerName
 }

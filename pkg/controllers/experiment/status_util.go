@@ -14,12 +14,10 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package util
+package experiment
 
 import (
 	"strconv"
-
-	logf "sigs.k8s.io/controller-runtime/pkg/runtime/log"
 
 	morphlingv1alpha1 "github.com/alibaba/morphling/api/v1alpha1"
 	samplingClient "github.com/alibaba/morphling/pkg/controllers/experiment/sampling"
@@ -27,13 +25,11 @@ import (
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-var log = logf.Log.WithName("experiment-status-util")
-
 // UpdateExperimentStatus updates trials summary and experiment status
 func UpdateExperimentStatus(instance *morphlingv1alpha1.ProfilingExperiment, trials *morphlingv1alpha1.TrialList) error {
 	_ = updateTrialsSummary(instance, trials)
 	if !util.IsCompletedExperiment(instance) {
-		UpdateExperimentStatusCondition(instance, false, false)
+		updateExperimentStatusCondition(instance, false, false)
 	}
 	return nil
 }
@@ -128,7 +124,7 @@ func getObjectiveMetricValue(trial morphlingv1alpha1.Trial, objectiveMetricName 
 }
 
 // UpdateExperimentStatusCondition updates the experiment status.
-func UpdateExperimentStatusCondition(instance *morphlingv1alpha1.ProfilingExperiment, isObjectiveGoalReached bool, getSamplingDone bool) {
+func updateExperimentStatusCondition(instance *morphlingv1alpha1.ProfilingExperiment, isObjectiveGoalReached bool, getSamplingDone bool) {
 	completedTrialsCount := instance.Status.TrialsSucceeded + instance.Status.TrialsFailed + instance.Status.TrialsKilled
 	activeTrialsCount := instance.Status.TrialsPending + instance.Status.TrialsRunning
 	now := metav1.Now()

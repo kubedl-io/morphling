@@ -41,7 +41,6 @@ import (
 	morphlingv1alpha1 "github.com/alibaba/morphling/api/v1alpha1"
 	"github.com/alibaba/morphling/pkg/controllers/consts"
 	"github.com/alibaba/morphling/pkg/controllers/experiment/sampling"
-	experimentutil "github.com/alibaba/morphling/pkg/controllers/experiment/util"
 	"github.com/alibaba/morphling/pkg/controllers/util"
 )
 
@@ -215,7 +214,7 @@ func (r *ProfilingExperimentReconciler) ReconcileExperiment(instance *morphlingv
 
 	// Update trials summary and experiment status
 	if len(trials.Items) > 0 {
-		if err := experimentutil.UpdateExperimentStatus(instance, trials); err != nil {
+		if err := UpdateExperimentStatus(instance, trials); err != nil {
 			logger.Error(err, "Update experiment status error")
 			return err
 		}

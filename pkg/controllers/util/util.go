@@ -206,12 +206,6 @@ func SetConditionTrial(trial *morphlingv1alpha1.Trial, conditionType morphlingv1
 
 	newCond := newConditionTrial(conditionType, status, message)
 	currentCond := getConditionTrial(trial, conditionType)
-	// Do nothing if condition doesn't change
-	if currentCond != nil && currentCond.Status == newCond.Status {
-		return
-	}
-
-	// Do not update lastTransitionTime if the status of the condition doesn't change.
 	if currentCond != nil && currentCond.Status == newCond.Status {
 		newCond.LastTransitionTime = currentCond.LastTransitionTime
 	}
@@ -222,11 +216,9 @@ func SetConditionTrial(trial *morphlingv1alpha1.Trial, conditionType morphlingv1
 func removeConditionTrial(trial *morphlingv1alpha1.Trial, condType morphlingv1alpha1.TrialConditionType) {
 	var newConditions []morphlingv1alpha1.TrialCondition
 	for _, c := range trial.Status.Conditions {
-
 		if c.Type == condType {
 			continue
 		}
-
 		newConditions = append(newConditions, c)
 	}
 	trial.Status.Conditions = newConditions
@@ -234,6 +226,10 @@ func removeConditionTrial(trial *morphlingv1alpha1.Trial, condType morphlingv1al
 
 func MarkTrialStatusCreatedTrial(trial *morphlingv1alpha1.Trial, message string) {
 	SetConditionTrial(trial, morphlingv1alpha1.TrialCreated, v1.ConditionTrue, message)
+}
+
+func MarkTrialStatusPendingTrial(trial *morphlingv1alpha1.Trial, message string) {
+	SetConditionTrial(trial, morphlingv1alpha1.TrialPending, v1.ConditionTrue, message)
 }
 
 func MarkTrialStatusSucceeded(trial *morphlingv1alpha1.Trial, status v1.ConditionStatus, message string) {
