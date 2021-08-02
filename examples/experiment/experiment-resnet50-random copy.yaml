@@ -12,9 +12,6 @@ spec:
   parallelism: 1
   maxNumTrials: 18
   clientTemplate:
-    metadata:
-      name: "mobilenet-client"
-      namespace: "default"
     spec:
       template:
         spec:
@@ -41,9 +38,6 @@ spec:
       backoffLimit: 1
 
   servicePodTemplate:
-    metadata:
-      name: "resnet-pod"
-      namespace: "default"
     template:
       spec:
         containers:

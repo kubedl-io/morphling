@@ -136,14 +136,12 @@ func MarkExperimentStatusRunning(exp *morphlingv1alpha1.ProfilingExperiment, mes
 
 }
 
-// ServicePodLabels returns the expected trial labels.
 func ServiceDeploymentLabels(instance *morphlingv1alpha1.Trial) map[string]string {
 	res := make(map[string]string)
 	for k, v := range instance.Labels {
 		res[k] = v
 	}
-	res["trial"] = instance.Name
-
+	res[consts.LabelTrialName] = instance.Name
 	return res
 }
 
@@ -155,7 +153,6 @@ func ServicePodLabels(instance *morphlingv1alpha1.Trial) map[string]string {
 	}
 	res[consts.LabelTrialName] = instance.Name
 	res[consts.LabelDeploymentName] = GetServiceDeploymentName(instance)
-
 	return res
 }
 

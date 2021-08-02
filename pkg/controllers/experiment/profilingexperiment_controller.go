@@ -309,7 +309,7 @@ func (r *ProfilingExperimentReconciler) createTrialInstance(expInstance *morphli
 	trial := &morphlingv1alpha1.Trial{}
 	trial.Name = trialAssignment.Name // grid id
 	trial.Namespace = expInstance.GetNamespace()
-	trial.Labels = util.TrialLabels(expInstance)
+	trial.Labels = TrialLabels(expInstance)
 	if err := controllerutil.SetControllerReference(expInstance, trial, r.Scheme); err != nil {
 		logger.Error(err, "Set controller reference error")
 		return err

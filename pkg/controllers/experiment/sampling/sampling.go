@@ -20,7 +20,7 @@ import (
 	"context"
 	"fmt"
 	grpcapi "github.com/alibaba/morphling/api/v1alpha1/grpc/go"
-	"github.com/alibaba/morphling/pkg/controllers/util"
+	"github.com/alibaba/morphling/pkg/controllers/consts"
 	"google.golang.org/grpc"
 	utilrand "k8s.io/apimachinery/pkg/util/rand"
 	"strconv"
@@ -70,7 +70,7 @@ func (g *General) GetSamplings(requestNum int32, instance *morphlingv1alpha1.Pro
 		return nil, err
 	}
 
-	endpoint := util.GetAlgorithmServerEndpoint() //"localhost:9996"
+	endpoint := getAlgorithmServerEndpoint() //"localhost:9996"
 	conn, err := grpc.Dial(endpoint, grpc.WithInsecure())
 	if err != nil {
 		return nil, err
@@ -324,4 +324,13 @@ func composeParameterAssignments(pas []*grpcapi.KeyValue, categories []morphling
 		})
 	}
 	return res
+}
+
+func getAlgorithmServerEndpoint() string {
+
+	serviceName := consts.DefaultSamplingService
+	return fmt.Sprintf("%s:%d",
+		serviceName,
+		//s.Namespace,
+		consts.DefaultSamplingPort)
 }

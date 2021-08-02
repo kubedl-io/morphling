@@ -17,6 +17,7 @@ limitations under the License.
 package experiment
 
 import (
+	"github.com/alibaba/morphling/pkg/controllers/consts"
 	"strconv"
 
 	morphlingv1alpha1 "github.com/alibaba/morphling/api/v1alpha1"
@@ -176,4 +177,15 @@ func CalculateMaximumSearchSpace(instance *morphlingv1alpha1.ProfilingExperiment
 		}
 	}
 	return space
+}
+
+// TrialLabels returns the expected trial labels.
+func TrialLabels(instance *morphlingv1alpha1.ProfilingExperiment) map[string]string {
+	res := make(map[string]string)
+	for k, v := range instance.Labels {
+		res[k] = v
+	}
+	res[consts.LabelExperimentName] = instance.Name
+
+	return res
 }

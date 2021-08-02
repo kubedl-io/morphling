@@ -204,7 +204,7 @@ func getInstanceType(node *corev1.Node) string {
 	return instanceType
 }
 
-// Get namespaces, ignoring system-ones
+// GetNamespaces gets namespaces, ignoring system-ones
 func (handler *DataHandler) GetNamespaces() ([]string, error) {
 	ctrlClient := handler.client
 

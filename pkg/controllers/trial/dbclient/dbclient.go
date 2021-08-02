@@ -39,7 +39,12 @@ func (t TrialDBClient) GetTrialResult(trial *morphlingv1alpha1.Trial) (*morphlin
 	if err != nil {
 		return nil, err
 	}
-	defer conn.Close()
+	defer func(conn *grpc.ClientConn) {
+		err := conn.Close()
+		if err != nil {
+
+		}
+	}(conn)
 
 	clientGRPC := api_pb.NewDBClient(conn)
 	ctx, cancel := context.WithTimeout(context.Background(), timeout)
