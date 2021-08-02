@@ -191,13 +191,6 @@ func appendServiceEnv(t *morphlingv1alpha1.Trial, env []corev1.EnvVar, args []st
 				resources.Requests[resourceClass] = resource.MustParse(a.Value)
 			}
 		}
-		if a.Category == morphlingv1alpha1.CategoryEnv {
-
-		} else if a.Category == morphlingv1alpha1.CategoryArgs {
-
-		} else if a.Category == morphlingv1alpha1.CategoryResource {
-
-		}
 	}
 	return env, args, resources
 }
