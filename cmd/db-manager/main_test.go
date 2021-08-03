@@ -2,132 +2,77 @@ package main
 
 import (
 	"context"
+	"fmt"
+	api_pb "github.com/alibaba/morphling/api/v1alpha1/grpc_proto/grpc_storage/go"
+	"github.com/stretchr/testify/assert"
 	"testing"
 
 	"github.com/golang/mock/gomock"
 
-	api_pb "github.com/alibaba/morphling/api/v1alpha1/manager"
 	mockdb "github.com/alibaba/morphling/pkg/mock/db"
 )
 
-func TestReportObservationLog(t *testing.T) {
+var testCases = map[string]struct {
+	addRequest   *api_pb.SaveResultRequest
+	queryRequest *api_pb.GetResultRequest
+	queryReply   *api_pb.GetResultReply
+}{
+	"result_1": {
+		addRequest: &api_pb.SaveResultRequest{
+			Namespace: "morphling-system",
+			TrialName: "test-trial-1",
+			//ExperimentName: "test-pe",
+			Results: []*api_pb.KeyValue{{Key: "qps", Value: "120"}},
+		},
+		queryRequest: &api_pb.GetResultRequest{
+			Namespace: "morphling-system",
+			TrialName: "test-trial-1",
+			//ExperimentName: "test-pe",
+		},
+		queryReply: &api_pb.GetResultReply{
+			Namespace: "morphling-system",
+			TrialName: "test-trial-1",
+			//ExperimentName: "test-pe",
+			Results: []*api_pb.KeyValue{{Key: "qps", Value: "120"}},
+		},
+	},
+}
+
+func TestSaveResults(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
-	s := &server{}
-	mockDB := mockdb.NewMockMorphlingDBInterface(ctrl)
-	dbIf = mockDB
 
-	req := &api_pb.ReportObservationLogRequest{
-		TrialName: "test1-trial1",
-		ObservationLog: &api_pb.ObservationLog{
-			MetricLogs: []*api_pb.MetricLog{
-				{
-					TimeStamp: "2019-02-03T04:05:06+09:00",
-					Metric: &api_pb.Metric{
-						Name:  "f1_score",
-						Value: "88.95",
-					},
-				},
-				{
-					TimeStamp: "2019-02-03T04:05:06+09:00",
-					Metric: &api_pb.Metric{
-						Name:  "loss",
-						Value: "0.5",
-					},
-				},
-				{
-					TimeStamp: "2019-02-03T04:05:06+09:00",
-					Metric: &api_pb.Metric{
-						Name:  "precision",
-						Value: "88.7",
-					},
-				},
-				{
-					TimeStamp: "2019-02-03T04:05:06+09:00",
-					Metric: &api_pb.Metric{
-						Name:  "recall",
-						Value: "89.2",
-					},
-				},
-			},
-		},
+	mockDB := mockdb.NewMockStorageBackend(ctrl)
+	s := &server{mockDB}
+	for name, tc := range testCases {
+		t.Run(fmt.Sprintf("%s", name), func(t *testing.T) {
+			mockDB.EXPECT().SaveTrialResult(tc.addRequest).Return(nil)
+			_, err := s.SaveResult(context.Background(), tc.addRequest)
+			if err != nil {
+				t.Fatalf("SaveResults Error %v", err)
+			}
+		})
 	}
-	mockDB.EXPECT().AddToDB(req.TrialName, req.ObservationLog).Return(nil)
-	_, err := s.ReportObservationLog(context.Background(), req)
-	if err != nil {
-		t.Fatalf("ReportObservationLog Error %v", err)
-	}
+
 }
 
 func TestGetObservationLog(t *testing.T) {
 	ctrl := gomock.NewController(t)
 	defer ctrl.Finish()
-	s := &server{}
-	mockDB := mockdb.NewMockMorphlingDBInterface(ctrl)
-	dbIf = mockDB
 
-	req := &api_pb.GetObservationLogRequest{
-		TrialName: "test1-trial1",
-		StartTime: "2019-02-03T03:05:06+09:00",
-		EndTime:   "2019-02-03T05:05:06+09:00",
-	}
+	mockDB := mockdb.NewMockStorageBackend(ctrl)
+	s := &server{mockDB}
 
-	obs := &api_pb.ObservationLog{
-		MetricLogs: []*api_pb.MetricLog{
-			{
-				TimeStamp: "2019-02-03T04:05:06+09:00",
-				Metric: &api_pb.Metric{
-					Name:  "f1_score",
-					Value: "88.95",
-				},
-			},
-			{
-				TimeStamp: "2019-02-03T04:05:06+09:00",
-				Metric: &api_pb.Metric{
-					Name:  "loss",
-					Value: "0.5",
-				},
-			},
-			{
-				TimeStamp: "2019-02-03T04:05:06+09:00",
-				Metric: &api_pb.Metric{
-					Name:  "precision",
-					Value: "88.7",
-				},
-			},
-			{
-				TimeStamp: "2019-02-03T04:05:06+09:00",
-				Metric: &api_pb.Metric{
-					Name:  "recall",
-					Value: "89.2",
-				},
-			},
-		},
-	}
+	for name, tc := range testCases {
+		t.Run(fmt.Sprintf("%s", name), func(t *testing.T) {
 
-	mockDB.EXPECT().GetObservationLog(req.TrialName, req.MetricName, req.StartTime, req.EndTime).Return(obs, nil)
-	ret, err := s.GetObservationLog(context.Background(), req)
-	if err != nil {
-		t.Fatalf("GetObservationLog Error %v", err)
-	}
-	if len(obs.MetricLogs) != len(ret.ObservationLog.MetricLogs) {
-		t.Fatalf("GetObservationLog Test fail expect metrics number %d got %d", len(obs.MetricLogs), len(ret.ObservationLog.MetricLogs))
-	}
-}
-
-func TestDeleteObservationLog(t *testing.T) {
-	ctrl := gomock.NewController(t)
-	defer ctrl.Finish()
-	s := &server{}
-	mockDB := mockdb.NewMockMorphlingDBInterface(ctrl)
-	dbIf = mockDB
-
-	req := &api_pb.DeleteObservationLogRequest{
-		TrialName: "test1-trial1",
-	}
-	mockDB.EXPECT().DeleteObservationLog(req.TrialName).Return(nil)
-	_, err := s.DeleteObservationLog(context.Background(), req)
-	if err != nil {
-		t.Fatalf("DeleteExperiment Error %v", err)
+			mockDB.EXPECT().GetTrialResult(tc.queryRequest).Return(tc.queryReply, nil)
+			reply, err := s.GetResult(context.Background(), tc.queryRequest)
+			if err != nil {
+				t.Fatalf("GetResult Error %v", err)
+			}
+			assert.Equal(t, reply.Results[0].Key, tc.addRequest.Results[0].Key)
+			assert.Equal(t, reply.Results[0].Value, tc.addRequest.Results[0].Value)
+		})
 	}
 }

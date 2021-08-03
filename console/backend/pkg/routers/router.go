@@ -58,6 +58,7 @@ func InitRouter(cmgr *clientmgr.ClientMgr) *gin.Engine {
 	if err != nil {
 		morphlingDir = "."
 	}
+	//distDir := path.Join(morphlingDir, "dist")
 	distDir := path.Join(morphlingDir, "console/frontend/dist")
 	r.LoadHTMLFiles(distDir + "/index.html")
 	r.Use(static.Serve("/", static.LocalFile(distDir, true)))

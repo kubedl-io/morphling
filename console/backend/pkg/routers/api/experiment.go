@@ -150,7 +150,6 @@ func (ctrl *ExperimentAPIsController) getExperimentList(c *gin.Context) {
 	})
 }
 
-
 func (ctrl *ExperimentAPIsController) getExperimentDetail(c *gin.Context) {
 	var (
 		ns, name string
@@ -177,6 +176,6 @@ func (ctrl *ExperimentAPIsController) getExperimentDetail(c *gin.Context) {
 
 	utils.Succeed(c, map[string]interface{}{
 		"peInfo": peInfos,
-		"total":   1,
+		"total":  1,
 	})
 }

@@ -69,6 +69,7 @@ const BasicLayout = (props) => {
       pathname: '/',
     },
   } = props;
+
   const menuDataRef = useRef([]);
   useEffect(() => {
     if (dispatch) {
@@ -77,7 +78,9 @@ const BasicLayout = (props) => {
       });
     }
   }, []);
+
   const [namespaceValue, setNamespaceValue] = useState('');
+
   useEffect(() => {
     if (dispatch) {
       // dispatch({
@@ -125,7 +128,7 @@ const BasicLayout = (props) => {
       logo={logo}
       formatMessage={formatMessage}
       {...props}
-      {...settings}
+      {...settings}fetchConfig
       onCollapse={handleMenuCollapse}
       onMenuHeaderClick={() => history.push('/')}
       menuItemRender={(menuItemProps, defaultDom) => {
@@ -185,5 +188,6 @@ const BasicLayout = (props) => {
 // connect 有两个参数,mapStateToProps以及mapDispatchToProps,一个将状态绑定到组件的props一个将方法绑定到组件的props
 export default connect(({global, settings}) => ({
   collapsed: global.collapsed,
+  config: global.config,
   settings,
 }))(BasicLayout);
