@@ -31,8 +31,19 @@ func GetServiceName(t *morphlingv1alpha1.Trial) string {
 	return t.Name + "-" + "service"
 }
 
+func GetStressTestJobName(t *morphlingv1alpha1.Trial) string {
+	return t.Name + "-" + "client-job"
+}
+
 func GetServiceEndpoint(t *morphlingv1alpha1.Trial) string {
 	return fmt.Sprintf("%s:%d",
 		GetServiceName(t),
 		consts.DefaultServicePort)
+}
+
+func GetDBStorageEndpoint() string {
+	return fmt.Sprintf("%s.%s:%d",
+		consts.DefaultMorphlingDBManagerServiceName,
+		consts.DefaultMorphlingNamespace,
+		consts.DefaultMorphlingDBManagerServicePort)
 }

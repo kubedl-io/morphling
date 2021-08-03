@@ -53,20 +53,12 @@ func GetLastConditionTypeProfiling(exp *morphlingv1alpha1.ProfilingExperiment) (
 	return "", errors.New("Experiment doesn't have any condition")
 }
 
-func IsFailedSampling(sampling *morphlingv1alpha1.Sampling) bool {
-	return hasConditionSampling(sampling, morphlingv1alpha1.SamplingFailed)
-}
-
-func hasConditionSampling(sampling *morphlingv1alpha1.Sampling, condType morphlingv1alpha1.SamplingConditionType) bool {
-	cond := getConditionSampling(sampling, condType)
-	if cond != nil && cond.Status == v1.ConditionTrue {
-		return true
-	}
-	return false
-}
-
 func IsSucceededExperiment(exp *morphlingv1alpha1.ProfilingExperiment) bool {
 	return hasConditionExperiment(exp, morphlingv1alpha1.ProfilingSucceeded)
+}
+
+func IsRunningExperiment(exp *morphlingv1alpha1.ProfilingExperiment) bool {
+	return hasConditionExperiment(exp, morphlingv1alpha1.ProfilingRunning)
 }
 
 func IsFailedExperiment(exp *morphlingv1alpha1.ProfilingExperiment) bool {
@@ -144,14 +136,12 @@ func MarkExperimentStatusRunning(exp *morphlingv1alpha1.ProfilingExperiment, mes
 
 }
 
-// ServicePodLabels returns the expected trial labels.
 func ServiceDeploymentLabels(instance *morphlingv1alpha1.Trial) map[string]string {
 	res := make(map[string]string)
 	for k, v := range instance.Labels {
 		res[k] = v
 	}
-	res["trial"] = instance.Name
-
+	res[consts.LabelTrialName] = instance.Name
 	return res
 }
 
@@ -163,7 +153,6 @@ func ServicePodLabels(instance *morphlingv1alpha1.Trial) map[string]string {
 	}
 	res[consts.LabelTrialName] = instance.Name
 	res[consts.LabelDeploymentName] = GetServiceDeploymentName(instance)
-
 	return res
 }
 
@@ -214,12 +203,6 @@ func SetConditionTrial(trial *morphlingv1alpha1.Trial, conditionType morphlingv1
 
 	newCond := newConditionTrial(conditionType, status, message)
 	currentCond := getConditionTrial(trial, conditionType)
-	// Do nothing if condition doesn't change
-	if currentCond != nil && currentCond.Status == newCond.Status {
-		return
-	}
-
-	// Do not update lastTransitionTime if the status of the condition doesn't change.
 	if currentCond != nil && currentCond.Status == newCond.Status {
 		newCond.LastTransitionTime = currentCond.LastTransitionTime
 	}
@@ -230,11 +213,9 @@ func SetConditionTrial(trial *morphlingv1alpha1.Trial, conditionType morphlingv1
 func removeConditionTrial(trial *morphlingv1alpha1.Trial, condType morphlingv1alpha1.TrialConditionType) {
 	var newConditions []morphlingv1alpha1.TrialCondition
 	for _, c := range trial.Status.Conditions {
-
 		if c.Type == condType {
 			continue
 		}
-
 		newConditions = append(newConditions, c)
 	}
 	trial.Status.Conditions = newConditions
@@ -242,6 +223,10 @@ func removeConditionTrial(trial *morphlingv1alpha1.Trial, condType morphlingv1al
 
 func MarkTrialStatusCreatedTrial(trial *morphlingv1alpha1.Trial, message string) {
 	SetConditionTrial(trial, morphlingv1alpha1.TrialCreated, v1.ConditionTrue, message)
+}
+
+func MarkTrialStatusPendingTrial(trial *morphlingv1alpha1.Trial, message string) {
+	SetConditionTrial(trial, morphlingv1alpha1.TrialPending, v1.ConditionTrue, message)
 }
 
 func MarkTrialStatusSucceeded(trial *morphlingv1alpha1.Trial, status v1.ConditionStatus, message string) {
@@ -275,6 +260,15 @@ func GetLastConditionType(trial *morphlingv1alpha1.Trial) (morphlingv1alpha1.Tri
 func IsJobSucceeded(jobCondition []batchv1.JobCondition) bool {
 	for _, condition := range jobCondition {
 		if condition.Type == batchv1.JobComplete {
+			return true
+		}
+	}
+	return false
+}
+
+func IsJobFailed(jobCondition []batchv1.JobCondition) bool {
+	for _, condition := range jobCondition {
+		if condition.Type == batchv1.JobFailed {
 			return true
 		}
 	}
@@ -319,144 +313,8 @@ func IsKilledTrial(trial *morphlingv1alpha1.Trial) bool {
 	return hasConditionTrial(trial, morphlingv1alpha1.TrialKilled)
 }
 
+func IsPendingTrial(trial *morphlingv1alpha1.Trial) bool {
+	return hasConditionTrial(trial, morphlingv1alpha1.TrialPending)
+}
+
 // Patch Job
-
-// Sampling
-
-func IsSucceededSampling(sampling *morphlingv1alpha1.Sampling) bool {
-	return hasConditionSampling(sampling, morphlingv1alpha1.SamplingSucceeded)
-}
-
-func IsCreatedSampling(sampling *morphlingv1alpha1.Sampling) bool {
-	return hasConditionSampling(sampling, morphlingv1alpha1.SamplingCreated)
-}
-
-func IsRunningSampling(sampling *morphlingv1alpha1.Sampling) bool {
-	return hasConditionSampling(sampling, morphlingv1alpha1.SamplingRunning)
-}
-
-func MarkSamplingStatusFailed(sampling *morphlingv1alpha1.Sampling, reason, message string) {
-	currentCond := getConditionSampling(sampling, morphlingv1alpha1.SamplingRunning)
-	if currentCond != nil {
-		SetConditionSampling(sampling, morphlingv1alpha1.SamplingRunning, v1.ConditionFalse, currentCond.Message)
-	}
-	SetConditionSampling(sampling, morphlingv1alpha1.SamplingFailed, v1.ConditionTrue, message)
-}
-
-func MarkSamplingStatusSucceeded(sampling *morphlingv1alpha1.Sampling, message string) {
-	currentCond := getConditionSampling(sampling, morphlingv1alpha1.SamplingRunning)
-	if currentCond != nil {
-		SetConditionSampling(sampling, morphlingv1alpha1.SamplingRunning, v1.ConditionFalse, currentCond.Message)
-	}
-	SetConditionSampling(sampling, morphlingv1alpha1.SamplingSucceeded, v1.ConditionTrue, message)
-}
-
-func MarkSamplingStatusDeploymentReady(sampling *morphlingv1alpha1.Sampling, status v1.ConditionStatus, reason, message string) {
-	SetConditionSampling(sampling, morphlingv1alpha1.SamplingDeploymentReady, status, message)
-}
-
-func MarkSamplingStatusRunning(sampling *morphlingv1alpha1.Sampling, reason, message string) {
-	//removeCondition(SamplingRestarting)
-	SetConditionSampling(sampling, morphlingv1alpha1.SamplingRunning, v1.ConditionTrue, message)
-}
-
-func MarkSamplingStatusCreated(sampling *morphlingv1alpha1.Sampling, message string) {
-	//removeCondition(SamplingRestarting)
-	SetConditionSampling(sampling, morphlingv1alpha1.SamplingCreated, v1.ConditionTrue, message)
-}
-
-func SetConditionSampling(sampling *morphlingv1alpha1.Sampling, conditionType morphlingv1alpha1.SamplingConditionType, status v1.ConditionStatus, message string) {
-	newCond := newConditionSampling(conditionType, status, message)
-	currentCond := getConditionSampling(sampling, conditionType)
-	// Do nothing if condition doesn't change
-	if currentCond != nil && currentCond.Status == newCond.Status {
-		return
-	}
-
-	// Do not update lastTransitionTime if the status of the condition doesn't change.
-	if currentCond != nil && currentCond.Status == newCond.Status {
-		return
-	}
-	removeConditionSampling(sampling, conditionType)
-	sampling.Status.Conditions = append(sampling.Status.Conditions, newCond)
-}
-
-func removeConditionSampling(sampling *morphlingv1alpha1.Sampling, condType morphlingv1alpha1.SamplingConditionType) {
-	var newConditions []morphlingv1alpha1.SamplingCondition
-	for _, c := range sampling.Status.Conditions {
-
-		if c.Type == condType {
-			continue
-		}
-
-		newConditions = append(newConditions, c)
-	}
-	sampling.Status.Conditions = newConditions
-}
-
-func newConditionSampling(conditionType morphlingv1alpha1.SamplingConditionType, status v1.ConditionStatus, message string) morphlingv1alpha1.SamplingCondition {
-	return morphlingv1alpha1.SamplingCondition{
-		Type:           conditionType,
-		Status:         status,
-		LastUpdateTime: metav1.Now(),
-		Message:        message,
-	}
-}
-
-func getConditionSampling(sampling *morphlingv1alpha1.Sampling, condType morphlingv1alpha1.SamplingConditionType) *morphlingv1alpha1.SamplingCondition {
-
-	if sampling.Status.Conditions != nil {
-		for _, condition := range sampling.Status.Conditions {
-			if condition.Type == condType {
-				return &condition
-			}
-		}
-	}
-	return nil
-}
-
-// Sampling service
-//type General struct {
-//	scheme *runtime.Scheme
-//	client.Client
-//}
-
-//func (g *General) DesiredService(s *Sampling) (*corev1.Service, error) {
-//	ports := []corev1.ServicePort{
-//		{
-//			Name: consts.DefaultSamplingPortName,
-//			Port: consts.DefaultSamplingPort,
-//		},
-//	}
-//
-//	service := &corev1.Service{
-//		ObjectMeta: metav1.ObjectMeta{
-//			Name:      s.Name + "-" + string(s.Spec.Algorithm.AlgorithmName),//util.GetAlgorithmServiceName(s),
-//			Namespace: s.Namespace,
-//		},
-//		Spec: corev1.ServiceSpec{
-//			Selector: SamplingLabels(s),
-//			Ports:    ports,
-//			Type:     corev1.ServiceTypeClusterIP,
-//		},
-//	}
-//
-//	// Add owner reference to the service so that it could be GC after the sampling is deleted
-//	if err := controllerutil.SetControllerReference(s, service, g.scheme); err != nil {
-//		return nil, err
-//	}
-//
-//	return service, nil
-//}
-
-//func SamplingLabels(instance *morphlingv1alpha1.Sampling) map[string]string {
-//	res := make(map[string]string)
-//	for k, v := range instance.Labels {
-//		res[k] = v
-//	}
-//	res[consts.LabelDeploymentName] = instance.Name + "-" + string(instance.Spec.Algorithm.AlgorithmName)
-//	res[consts.LabelExperimentName] = instance.Name
-//	res[consts.LabelSamplingName] = instance.Name
-//
-//	return res
-//}

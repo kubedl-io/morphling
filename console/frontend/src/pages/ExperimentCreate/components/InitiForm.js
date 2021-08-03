@@ -1,20 +1,17 @@
 const initialParameter = {
   name: "demo-experiment",
   namespace: "morphling-system",
-  algorithmName: "random",
+  algorithmName: "grid",
   objectiveType: "maximize",
   objectiveName: "qps",
-  maxTrials: 3,
+  maxTrials: 18,
   parallelism: 1,
   tuningParameters: [{
     key: '1',
     category: 'Resource',
     name: 'CPU',
-    type: 'double',
-    max: '2',
-    min: '1',
-    step: '0.1',
-    list: []
+    type: 'discrete',
+    list: "500m, 1000m, 2000m"
   },
     {
       key: '2',
@@ -24,7 +21,14 @@ const initialParameter = {
       max: '2',
       min: '1',
       step: '1',
-      list: []
+      list: ''
+    },
+    {
+      key: '3',
+      category: 'Resource',
+      name: 'Memory',
+      type: 'discrete',
+      list: "200Mi, 1000Mi, 2000Mi"
     }]
 
 

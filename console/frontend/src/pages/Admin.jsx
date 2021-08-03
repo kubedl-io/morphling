@@ -33,7 +33,7 @@ export default () => {
             textAlign: 'center',
           }}
         >
-          <SmileTwoTone/> Ant Design Pro <HeartTwoTone twoToneColor="#eb2f96"/> You
+          <SmileTwoTone/> Morphling <HeartTwoTone twoToneColor="#eb2f96"/> You
         </Typography.Title>
       </Card>
       <p

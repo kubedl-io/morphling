@@ -2,7 +2,7 @@ apiVersion: "tuning.kubedl.io/v1alpha1"
 kind: ProfilingExperiment
 metadata:
   namespace: default
-  name: random-experiment
+  name: grid-experiment
 spec:
   requestTemplate: ""
   serviceName: "resnet"
@@ -10,7 +10,7 @@ spec:
     type: maximize
     objectiveMetricName: qps
   algorithm:
-    algorithmName: random
+    algorithmName: grid
   samplingLimit: 3
   serviceClientTemplate:
     metadata:
