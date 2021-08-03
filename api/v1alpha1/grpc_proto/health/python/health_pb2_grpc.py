@@ -15,7 +15,7 @@ class HealthStub(object):
       channel: A grpc_algorithm.Channel.
     """
     self.Check = channel.unary_unary(
-        '/grpc_algorithm.health.v1.Health/Check',
+        '/grpc.health.v1.Health/Check',
         request_serializer=health__pb2.HealthCheckRequest.SerializeToString,
         response_deserializer=health__pb2.HealthCheckResponse.FromString,
         )
@@ -42,5 +42,5 @@ def add_HealthServicer_to_server(servicer, server):
       ),
   }
   generic_handler = grpc.method_handlers_generic_handler(
-      'grpc_algorithm.health.v1.Health', rpc_method_handlers)
+      'grpc.health.v1.Health', rpc_method_handlers)
   server.add_generic_rpc_handlers((generic_handler,))

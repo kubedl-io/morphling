@@ -17,16 +17,16 @@ _sym_db = _symbol_database.Default()
 
 DESCRIPTOR = _descriptor.FileDescriptor(
   name='health.proto',
-  package='grpc_algorithm.health.v1',
+  package='grpc.health.v1',
   syntax='proto3',
-  serialized_pb=_b('\n\x0chealth.proto\x12\x0egrpc.health.v1\"%\n\x12HealthCheckRequest\x12\x0f\n\x07service\x18\x01 \x01(\t\"\x94\x01\n\x13HealthCheckResponse\x12\x41\n\x06status\x18\x01 \x01(\x0e\x32\x31.grpc_algorithm.health.v1.HealthCheckResponse.ServingStatus\":\n\rServingStatus\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07SERVING\x10\x01\x12\x0f\n\x0bNOT_SERVING\x10\x02\x32Z\n\x06Health\x12P\n\x05\x43heck\x12\".grpc_algorithm.health.v1.HealthCheckRequest\x1a#.grpc_algorithm.health.v1.HealthCheckResponseb\x06proto3')
+  serialized_pb=_b('\n\x0chealth.proto\x12\x0egrpc.health.v1\"%\n\x12HealthCheckRequest\x12\x0f\n\x07service\x18\x01 \x01(\t\"\x94\x01\n\x13HealthCheckResponse\x12\x41\n\x06status\x18\x01 \x01(\x0e\x32\x31.grpc.health.v1.HealthCheckResponse.ServingStatus\":\n\rServingStatus\x12\x0b\n\x07UNKNOWN\x10\x00\x12\x0b\n\x07SERVING\x10\x01\x12\x0f\n\x0bNOT_SERVING\x10\x02\x32Z\n\x06Health\x12P\n\x05\x43heck\x12\".grpc.health.v1.HealthCheckRequest\x1a#.grpc.health.v1.HealthCheckResponseb\x06proto3')
 )
 
 
 
 _HEALTHCHECKRESPONSE_SERVINGSTATUS = _descriptor.EnumDescriptor(
   name='ServingStatus',
-  full_name='grpc_algorithm.health.v1.HealthCheckResponse.ServingStatus',
+  full_name='grpc.health.v1.HealthCheckResponse.ServingStatus',
   filename=None,
   file=DESCRIPTOR,
   values=[
@@ -53,13 +53,13 @@ _sym_db.RegisterEnumDescriptor(_HEALTHCHECKRESPONSE_SERVINGSTATUS)
 
 _HEALTHCHECKREQUEST = _descriptor.Descriptor(
   name='HealthCheckRequest',
-  full_name='grpc_algorithm.health.v1.HealthCheckRequest',
+  full_name='grpc.health.v1.HealthCheckRequest',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='service', full_name='grpc_algorithm.health.v1.HealthCheckRequest.service', index=0,
+      name='service', full_name='grpc.health.v1.HealthCheckRequest.service', index=0,
       number=1, type=9, cpp_type=9, label=1,
       has_default_value=False, default_value=_b("").decode('utf-8'),
       message_type=None, enum_type=None, containing_type=None,
@@ -84,13 +84,13 @@ _HEALTHCHECKREQUEST = _descriptor.Descriptor(
 
 _HEALTHCHECKRESPONSE = _descriptor.Descriptor(
   name='HealthCheckResponse',
-  full_name='grpc_algorithm.health.v1.HealthCheckResponse',
+  full_name='grpc.health.v1.HealthCheckResponse',
   filename=None,
   file=DESCRIPTOR,
   containing_type=None,
   fields=[
     _descriptor.FieldDescriptor(
-      name='status', full_name='grpc_algorithm.health.v1.HealthCheckResponse.status', index=0,
+      name='status', full_name='grpc.health.v1.HealthCheckResponse.status', index=0,
       number=1, type=14, cpp_type=8, label=1,
       has_default_value=False, default_value=0,
       message_type=None, enum_type=None, containing_type=None,
@@ -122,14 +122,14 @@ _sym_db.RegisterFileDescriptor(DESCRIPTOR)
 HealthCheckRequest = _reflection.GeneratedProtocolMessageType('HealthCheckRequest', (_message.Message,), dict(
   DESCRIPTOR = _HEALTHCHECKREQUEST,
   __module__ = 'health_pb2'
-  # @@protoc_insertion_point(class_scope:grpc_algorithm.health.v1.HealthCheckRequest)
+  # @@protoc_insertion_point(class_scope:grpc.health.v1.HealthCheckRequest)
   ))
 _sym_db.RegisterMessage(HealthCheckRequest)
 
 HealthCheckResponse = _reflection.GeneratedProtocolMessageType('HealthCheckResponse', (_message.Message,), dict(
   DESCRIPTOR = _HEALTHCHECKRESPONSE,
   __module__ = 'health_pb2'
-  # @@protoc_insertion_point(class_scope:grpc_algorithm.health.v1.HealthCheckResponse)
+  # @@protoc_insertion_point(class_scope:grpc.health.v1.HealthCheckResponse)
   ))
 _sym_db.RegisterMessage(HealthCheckResponse)
 
@@ -137,7 +137,7 @@ _sym_db.RegisterMessage(HealthCheckResponse)
 
 _HEALTH = _descriptor.ServiceDescriptor(
   name='Health',
-  full_name='grpc_algorithm.health.v1.Health',
+  full_name='grpc.health.v1.Health',
   file=DESCRIPTOR,
   index=0,
   options=None,
@@ -146,7 +146,7 @@ _HEALTH = _descriptor.ServiceDescriptor(
   methods=[
   _descriptor.MethodDescriptor(
     name='Check',
-    full_name='grpc_algorithm.health.v1.Health.Check',
+    full_name='grpc.health.v1.Health.Check',
     index=0,
     containing_service=None,
     input_type=_HEALTHCHECKREQUEST,
@@ -179,7 +179,7 @@ try:
         channel: A grpc_algorithm.Channel.
       """
       self.Check = channel.unary_unary(
-          '/grpc_algorithm.health.v1.Health/Check',
+          '/grpc.health.v1.Health/Check',
           request_serializer=HealthCheckRequest.SerializeToString,
           response_deserializer=HealthCheckResponse.FromString,
           )
@@ -206,7 +206,7 @@ try:
         ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
-        'grpc_algorithm.health.v1.Health', rpc_method_handlers)
+        'grpc.health.v1.Health', rpc_method_handlers)
     server.add_generic_rpc_handlers((generic_handler,))
 
 
@@ -246,13 +246,13 @@ try:
     file not marked beta) for all further purposes. This function was
     generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
     request_deserializers = {
-      ('grpc_algorithm.health.v1.Health', 'Check'): HealthCheckRequest.FromString,
+      ('grpc.health.v1.Health', 'Check'): HealthCheckRequest.FromString,
     }
     response_serializers = {
-      ('grpc_algorithm.health.v1.Health', 'Check'): HealthCheckResponse.SerializeToString,
+      ('grpc.health.v1.Health', 'Check'): HealthCheckResponse.SerializeToString,
     }
     method_implementations = {
-      ('grpc_algorithm.health.v1.Health', 'Check'): face_utilities.unary_unary_inline(servicer.Check),
+      ('grpc.health.v1.Health', 'Check'): face_utilities.unary_unary_inline(servicer.Check),
     }
     server_options = beta_implementations.server_options(request_deserializers=request_deserializers, response_serializers=response_serializers, thread_pool=pool, thread_pool_size=pool_size, default_timeout=default_timeout, maximum_timeout=maximum_timeout)
     return beta_implementations.server(method_implementations, options=server_options)
@@ -265,16 +265,16 @@ try:
     file not marked beta) for all further purposes. This function was
     generated only to ease transition from grpcio<0.15.0 to grpcio>=0.15.0"""
     request_serializers = {
-      ('grpc_algorithm.health.v1.Health', 'Check'): HealthCheckRequest.SerializeToString,
+      ('grpc.health.v1.Health', 'Check'): HealthCheckRequest.SerializeToString,
     }
     response_deserializers = {
-      ('grpc_algorithm.health.v1.Health', 'Check'): HealthCheckResponse.FromString,
+      ('grpc.health.v1.Health', 'Check'): HealthCheckResponse.FromString,
     }
     cardinalities = {
       'Check': cardinality.Cardinality.UNARY_UNARY,
     }
     stub_options = beta_implementations.stub_options(host=host, metadata_transformer=metadata_transformer, request_serializers=request_serializers, response_deserializers=response_deserializers, thread_pool=pool, thread_pool_size=pool_size)
-    return beta_implementations.dynamic_stub(channel, 'grpc_algorithm.health.v1.Health', cardinalities, options=stub_options)
+    return beta_implementations.dynamic_stub(channel, 'grpc.health.v1.Health', cardinalities, options=stub_options)
 except ImportError:
   pass
 # @@protoc_insertion_point(module_scope)
