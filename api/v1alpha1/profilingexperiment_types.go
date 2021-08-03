@@ -133,7 +133,7 @@ type TrialAssignment struct {
 	// Sampling results
 	ParameterAssignments []ParameterAssignment `json:"parameterAssignments,omitempty"`
 
-	//Name of the sampling sampling result, used to start a trial
+	//Name of the sampling_client sampling_client result, used to start a trial
 	Name string `json:"name,omitempty"`
 }
 
@@ -169,7 +169,7 @@ type FeasibleSpace struct {
 	// The list of possible value.
 	List []string `json:"list,omitempty"`
 
-	// The step of sampling.
+	// The step of sampling_client.
 	Step string `json:"step,omitempty"`
 }
 
@@ -231,10 +231,10 @@ const (
 
 // Specification of the Opt. algorithm
 type AlgorithmSpec struct {
-	// The name of algorithm for sampling: random, grid, bayesianoptimiation.
+	// The name of algorithm for sampling_client: random, grid, bayesianoptimiation.
 	AlgorithmName AlgorithmName `json:"algorithmName,omitempty"`
 
-	// The key-value pairs representing settings for sampling algorithms.
+	// The key-value pairs representing settings for sampling_client algorithms.
 	AlgorithmSettings []AlgorithmSetting `json:"algorithmSettings,omitempty"`
 }
 

@@ -3,6 +3,7 @@ package grid
 import (
 	"fmt"
 	morphlingv1alpha1 "github.com/alibaba/morphling/api/v1alpha1"
+	suggestionapi "github.com/alibaba/morphling/api/v1alpha1/grpc_proto/grpc_algorithm/go"
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -10,7 +11,6 @@ import (
 	"testing"
 	"time"
 
-	suggestionapi "github.com/alibaba/morphling/api/v1alpha1/grpc/go"
 	"github.com/onsi/gomega"
 	"golang.org/x/net/context"
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
@@ -23,11 +23,11 @@ func init() {
 }
 
 var (
-	log     = logf.Log.WithName("sampling-client")
+	log     = logf.Log.WithName("sampling_client-client")
 	timeout = 60 * time.Second
 )
 
-func TestValidateAlgorithmSettings(t *testing.T) {
+func _TestValidateAlgorithmSettings(t *testing.T) {
 
 	mega := gomega.NewGomegaWithT(t)
 	// Get the service addr and dial it
@@ -64,7 +64,7 @@ func TestValidateAlgorithmSettings(t *testing.T) {
 	log.Info("Algorithm settings validated")
 }
 
-func TestSampling(t *testing.T) {
+func _TestSampling(t *testing.T) {
 
 	mega := gomega.NewGomegaWithT(t)
 	// Get the service addr and dial it
@@ -104,7 +104,7 @@ func TestSampling(t *testing.T) {
 	for _, t := range response.AssignmentsSet {
 		Assignment = append(Assignment,
 			morphlingv1alpha1.TrialAssignment{
-				Name:                 fmt.Sprintf("%s-%s", "test-sampling", utilrand.String(8)), // grid id
+				Name:                 fmt.Sprintf("%s-%s", "test-sampling_client", utilrand.String(8)), // grid id
 				ParameterAssignments: composeParameterAssignments(t.KeyValues),
 			})
 	}

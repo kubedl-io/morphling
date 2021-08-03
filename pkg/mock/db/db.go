@@ -5,7 +5,7 @@
 package mock_backends
 
 import (
-	_go "github.com/alibaba/morphling/api/v1alpha1/grpc_storage/go"
+	"github.com/alibaba/morphling/api/v1alpha1/grpc_proto/grpc_storage/go"
 	gomock "github.com/golang/mock/gomock"
 	reflect "reflect"
 )

@@ -26,13 +26,13 @@ func (r *ReconcileTrial) getDesiredService(t *morphlingv1alpha1.Trial) (*corev1.
 		},
 		Spec: corev1.ServiceSpec{
 			Selector: util.ServicePodLabels(t),
-			Ports:    []corev1.ServicePort{
+			Ports: []corev1.ServicePort{
 				{
 					Name: consts.DefaultServicePortName,
 					Port: consts.DefaultServicePort,
 				},
 			},
-			Type:     corev1.ServiceTypeClusterIP,
+			Type: corev1.ServiceTypeClusterIP,
 		},
 	}
 	// ToDo: SetControllerReference here is useless, as the controller delete svc upon trial completion
@@ -94,7 +94,7 @@ func (r *ReconcileTrial) getDesiredDeploymentSpec(instance *morphlingv1alpha1.Tr
 			Annotations: instance.Annotations,
 		},
 		Spec: appsv1.DeploymentSpec{
-			Selector: &metav1.LabelSelector{MatchLabels: util.ServicePodLabels(instance),},
+			Selector: &metav1.LabelSelector{MatchLabels: util.ServicePodLabels(instance)},
 			Template: *podTemplate,
 		},
 	}
@@ -143,10 +143,10 @@ func (r *ReconcileTrial) reconcileServiceDeployment(instance *morphlingv1alpha1.
 					logger.Info("Delete ML deployment operation is redundant", "name", deploy.GetName())
 					return nil, nil
 				}
-				logger.Error(err, "Delete ML deployment error","name", deploy.GetName())
+				logger.Error(err, "Delete ML deployment error", "name", deploy.GetName())
 				return nil, err
 			} else {
-				logger.Info("Delete ML deployment succeeded","name", deploy.GetName())
+				logger.Info("Delete ML deployment succeeded", "name", deploy.GetName())
 				return nil, nil
 			}
 		}
@@ -158,28 +158,31 @@ func (r *ReconcileTrial) reconcileServiceDeployment(instance *morphlingv1alpha1.
 func appendServiceEnv(t *morphlingv1alpha1.Trial, env []corev1.EnvVar, args []string, resources corev1.ResourceRequirements) ([]corev1.EnvVar, []string, corev1.ResourceRequirements) {
 	for _, a := range t.Spec.SamplingResult {
 		switch a.Category {
-			case morphlingv1alpha1.CategoryEnv: {
+		case morphlingv1alpha1.CategoryEnv:
+			{
 				name := strings.ReplaceAll(strings.ToUpper(a.Name), ".", "_")
 				env = append(env, corev1.EnvVar{Name: name, Value: fmt.Sprintf(a.Value)})
 			}
-			case morphlingv1alpha1.CategoryArgs: {
+		case morphlingv1alpha1.CategoryArgs:
+			{
 				args = append(args, fmt.Sprintf(a.Value))
 			}
-			case morphlingv1alpha1.CategoryResource: {
+		case morphlingv1alpha1.CategoryResource:
+			{
 				var resourceClass = corev1.ResourceCPU
 				switch a.Name {
-					case "cpu":
-						resourceClass = corev1.ResourceCPU
-					case "memory":
-						resourceClass = corev1.ResourceMemory
-					case "storage":
-						resourceClass = corev1.ResourceStorage
-					case "nvidia.com/gpu":
-						resourceClass = "nvidia.com/gpu"
-					case "nvidia.com/gpumem":
-						resourceClass = "nvidia.com/gpumem"
-					default:
-						resourceClass = corev1.ResourceEphemeralStorage
+				case "cpu":
+					resourceClass = corev1.ResourceCPU
+				case "memory":
+					resourceClass = corev1.ResourceMemory
+				case "storage":
+					resourceClass = corev1.ResourceStorage
+				case "nvidia.com/gpu":
+					resourceClass = "nvidia.com/gpu"
+				case "nvidia.com/gpumem":
+					resourceClass = "nvidia.com/gpumem"
+				default:
+					resourceClass = corev1.ResourceEphemeralStorage
 				}
 				if resources.Limits == nil {
 					resources.Limits = make(map[corev1.ResourceName]resource.Quantity)

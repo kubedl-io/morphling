@@ -14,12 +14,12 @@ See the License for the specific language governing permissions and
 limitations under the License.
 */
 
-package sampling
+package sampling_client
 
 import (
 	"context"
 	"fmt"
-	grpcapi "github.com/alibaba/morphling/api/v1alpha1/grpc/go"
+	grpcapi "github.com/alibaba/morphling/api/v1alpha1/grpc_proto/grpc_algorithm/go"
 	"github.com/alibaba/morphling/pkg/controllers/consts"
 	"google.golang.org/grpc"
 	utilrand "k8s.io/apimachinery/pkg/util/rand"
@@ -39,7 +39,7 @@ type Sampling interface {
 }
 
 var (
-	log     = logf.Log.WithName("sampling-client")
+	log     = logf.Log.WithName("sampling_client-client")
 	timeout = 60 * time.Second
 )
 
@@ -112,14 +112,8 @@ func (g *General) GetSamplings(requestNum int32, instance *morphlingv1alpha1.Pro
 
 func newSamplingRequest(requestNum int32, instance *morphlingv1alpha1.ProfilingExperiment, currentCount int32, trials []morphlingv1alpha1.Trial) (*grpcapi.SamplingRequest, error) {
 	request := &grpcapi.SamplingRequest{
-		//IsFirstRequest:          true,
-		AlgorithmName: string(instance.Spec.Algorithm.AlgorithmName),
-		//AlgorithmExtraSettings:  nil,
-		//SamplingNumberSpecified: *instance.Spec.MaxNumTrials,
-		//SamplingNumberExisting:  currentCount,
+		AlgorithmName:    string(instance.Spec.Algorithm.AlgorithmName),
 		RequiredSampling: requestNum,
-		//IsMaximize:              false,
-		//ExistingResults:         nil,
 	}
 	if instance.Spec.MaxNumTrials != nil {
 		request.SamplingNumberSpecified = *instance.Spec.MaxNumTrials

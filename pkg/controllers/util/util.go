@@ -313,4 +313,8 @@ func IsKilledTrial(trial *morphlingv1alpha1.Trial) bool {
 	return hasConditionTrial(trial, morphlingv1alpha1.TrialKilled)
 }
 
+func IsPendingTrial(trial *morphlingv1alpha1.Trial) bool {
+	return hasConditionTrial(trial, morphlingv1alpha1.TrialPending)
+}
+
 // Patch Job

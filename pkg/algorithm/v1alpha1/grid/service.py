@@ -2,8 +2,7 @@ import logging
 
 import grpc
 
-from api.v1alpha1.grpc.python3 import api_pb2
-from api.v1alpha1.grpc.python3 import api_pb2_grpc
+from api.v1alpha1.grpc_proto.grpc_algorithm.python3 import api_pb2_grpc, api_pb2
 from pkg.algorithm.v1alpha1.grid.base_service import BaseSamplingService
 from pkg.algorithm.v1alpha1.internal.base_health_service import HealthServicer
 logger = logging.getLogger(__name__)

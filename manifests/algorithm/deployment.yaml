@@ -33,7 +33,7 @@ spec:
             periodSeconds: 120
             successThreshold: 1
             timeoutSeconds: 1
-          name: sampling
+          name: sampling_client
           ports:
             - containerPort: 9996
               name: morphling-api

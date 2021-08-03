@@ -2,6 +2,7 @@ package dbclient
 
 import (
 	"context"
+	api_pb "github.com/alibaba/morphling/api/v1alpha1/grpc_proto/grpc_storage/go"
 	"github.com/alibaba/morphling/pkg/controllers/util"
 	"google.golang.org/grpc"
 	"time"
@@ -9,7 +10,6 @@ import (
 	logf "sigs.k8s.io/controller-runtime/pkg/log"
 
 	morphlingv1alpha1 "github.com/alibaba/morphling/api/v1alpha1"
-	api_pb "github.com/alibaba/morphling/api/v1alpha1/grpc_storage/go"
 )
 
 var (

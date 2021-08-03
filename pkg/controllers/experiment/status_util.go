@@ -21,24 +21,14 @@ import (
 	"strconv"
 
 	morphlingv1alpha1 "github.com/alibaba/morphling/api/v1alpha1"
-	samplingClient "github.com/alibaba/morphling/pkg/controllers/experiment/sampling"
+	samplingClient "github.com/alibaba/morphling/pkg/controllers/experiment/sampling_client"
 	"github.com/alibaba/morphling/pkg/controllers/util"
 	metav1 "k8s.io/apimachinery/pkg/apis/meta/v1"
 )
 
-// UpdateExperimentStatus updates trials summary and experiment status
-func UpdateExperimentStatus(instance *morphlingv1alpha1.ProfilingExperiment, trials *morphlingv1alpha1.TrialList) error {
-	_ = updateTrialsSummary(instance, trials)
-	if !util.IsCompletedExperiment(instance) {
-		updateExperimentStatusCondition(instance, false, false)
-	}
-	return nil
-}
-
 // updateTrialsSummary updates trials summary
-func updateTrialsSummary(instance *morphlingv1alpha1.ProfilingExperiment, trials *morphlingv1alpha1.TrialList) bool {
-
-	var bestTrialValue float64
+func updateTrialsSummary(instance *morphlingv1alpha1.ProfilingExperiment, trials *morphlingv1alpha1.TrialList) {
+	bestTrialValue, _ := strconv.ParseFloat(consts.DefaultMetricValue, 64)
 	sts := &instance.Status
 	sts.TrialsTotal = 0
 	sts.RunningTrialList, sts.PendingTrialList, sts.FailedTrialList, sts.SucceededTrialList, sts.KilledTrialList = nil, nil, nil, nil, nil
@@ -61,6 +51,7 @@ func updateTrialsSummary(instance *morphlingv1alpha1.ProfilingExperiment, trials
 			sts.PendingTrialList = append(sts.PendingTrialList, trial.Name)
 		}
 
+		// Get trial results
 		objectiveMetricValue := getObjectiveMetricValue(trial, objectiveMetricName)
 		if objectiveMetricValue == nil {
 			continue
@@ -105,54 +96,39 @@ func updateTrialsSummary(instance *morphlingv1alpha1.ProfilingExperiment, trials
 			sts.CurrentOptimalTrial.ObjectiveMetricsObserved = append(sts.CurrentOptimalTrial.ObjectiveMetricsObserved, metric)
 		}
 	}
-
-	return false
 }
 
 func getObjectiveMetricValue(trial morphlingv1alpha1.Trial, objectiveMetricName string) *float64 {
 	if trial.Status.TrialResult == nil {
 		return nil
 	}
-
 	for _, metric := range trial.Status.TrialResult.ObjectiveMetricsObserved {
 		if objectiveMetricName == metric.Name {
 			value, _ := strconv.ParseFloat(metric.Value, 0)
 			return &value
 		}
 	}
-
 	return nil
 }
 
-// UpdateExperimentStatusCondition updates the experiment status.
-func updateExperimentStatusCondition(instance *morphlingv1alpha1.ProfilingExperiment, isObjectiveGoalReached bool, getSamplingDone bool) {
+// updateExperimentStatusCondition updates the experiment status.
+func updateExperimentStatusCondition(instance *morphlingv1alpha1.ProfilingExperiment) {
 	completedTrialsCount := instance.Status.TrialsSucceeded + instance.Status.TrialsFailed + instance.Status.TrialsKilled
-	activeTrialsCount := instance.Status.TrialsPending + instance.Status.TrialsRunning
 	now := metav1.Now()
 
-	// Then Check if MaxTrialCount is reached.
+	// Check if MaxTrialCount is reached.
 	if (instance.Spec.MaxNumTrials != nil) && (completedTrialsCount >= *instance.Spec.MaxNumTrials) {
 		msg := "Experiment has succeeded because max trial count has reached"
 		util.MarkExperimentStatusSucceeded(instance, msg)
 		instance.Status.CompletionTime = &now
-		//collector.IncreaseExperimentsSucceededCount(instance.Namespace)
 		return
 	}
 
+	// Check if Sampling space is exhausted.
 	if (CalculateMaximumSearchSpace(instance) > 0) && (int(completedTrialsCount) >= CalculateMaximumSearchSpace(instance)) {
 		msg := "Experiment has succeeded because maximum search space has reached"
 		util.MarkExperimentStatusSucceeded(instance, msg)
 		instance.Status.CompletionTime = &now
-		//collector.IncreaseExperimentsSucceededCount(instance.Namespace)
-		return
-	}
-
-	// Then Check if MaxTrialCount is succeeded.
-	if getSamplingDone && activeTrialsCount == 0 {
-		msg := "Experiment has succeeded because sampling service has reached the end"
-		util.MarkExperimentStatusSucceeded(instance, msg)
-		instance.Status.CompletionTime = &now
-		//collector.IncreaseExperimentsSucceededCount(instance.Namespace)
 		return
 	}
 

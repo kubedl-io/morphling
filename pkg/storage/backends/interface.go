@@ -17,7 +17,7 @@ limitations under the License.
 package backends
 
 import (
-	api_pb "github.com/alibaba/morphling/api/v1alpha1/grpc_storage/go"
+	api_pb "github.com/alibaba/morphling/api/v1alpha1/grpc_proto/grpc_storage/go"
 )
 
 // ObjectStorageBackend provides a collection of abstract methods to

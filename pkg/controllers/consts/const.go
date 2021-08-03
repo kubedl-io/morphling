@@ -16,59 +16,30 @@ limitations under the License.
 
 package consts
 
-import (
-	"os"
-)
-
 const (
-	ConfigEnableGRPCProbeInSampling = "enable-grpc-probe-in-sampling"
-
 	// LabelExperimentName is the label of experiment name.
 	LabelExperimentName = "experiment"
 	// LabelTrialName is the label of trial name.
 	LabelTrialName = "trial"
 	// LabelDeploymentName is the label of deployment name.
 	LabelDeploymentName = "deployment"
-	// DefaultServicePort is the default port of sampling service.
+	// DefaultServicePort is the default port of sampling_client service.
 	DefaultServicePort = 8500
-	// DefaultServicePortName is the default port name of sampling service.
+	// DefaultServicePortName is the default port name of sampling_client service.
 	DefaultServicePortName = "profile-service"
-	// DefaultSamplingPort is the default port of sampling service.
-	DefaultSamplingPort = 9996 //6789
-
+	// DefaultMetricValue is the default trial result value, set for failed trials
+	DefaultMetricValue = "0.0"
+	// DefaultSamplingService is the default algorithm k8s service name
 	DefaultSamplingService = "morphling-algorithm-server"
-
-	// DefaultMorphlingNamespaceEnvName is the default env name of morphling namespace
-	DefaultMorphlingNamespaceEnvName = "MORPHLING_CORE_NAMESPACE"
-	// DefaultMorphlingComposerEnvName is the default env name of morphling sampling composer
-	DefaultMorphlingComposerEnvName = "MORPHLING_SUGGESTION_COMPOSER"
-
-	// DefaultMorphlingDBManagerServiceNamespaceEnvName is the env name of morphling DB Manager namespace
-	DefaultMorphlingDBManagerServiceNamespaceEnvName = "MORPHLING_DB_MANAGER_SERVICE_NAMESPACE"
-	// DefaultMorphlingDBManagerServiceIPEnvName is the env name of morphling DB Manager IP
-	DefaultMorphlingDBManagerServiceIPEnvName = "MORPHLING_DB_MANAGER_SERVICE_IP"
-	// DefaultMorphlingDBManagerServicePortEnvName is the env name of morphling DB Manager Port
-	DefaultMorphlingDBManagerServicePortEnvName = "MORPHLING_DB_MANAGER_SERVICE_PORT"
-
+	// DefaultSamplingPort is the default port of algorithm service.
+	DefaultSamplingPort = 9996
+	// DefaultMorphlingMySqlServiceName is the default mysql k8s service name
 	DefaultMorphlingMySqlServiceName = "morphling-mysql"
+	// DefaultMorphlingMySqlServicePort is the default mysql k8s service port
 	DefaultMorphlingMySqlServicePort = "3306"
-)
-
-func GetEnvOrDefault(key string, fallback string) string {
-	if value, ok := os.LookupEnv(key); ok {
-		return value
-	}
-	return fallback
-}
-
-//
-var (
-	// DefaultMorphlingNamespace is the default namespace of Morphling deployment.
-	DefaultMorphlingNamespace = GetEnvOrDefault(DefaultMorphlingNamespaceEnvName, "morphling-system")
-	// DefaultMorphlingDBManagerServiceNamespace is the default namespace of Morphling DB Manager
-	DefaultMorphlingDBManagerServiceNamespace = GetEnvOrDefault(DefaultMorphlingDBManagerServiceNamespaceEnvName, DefaultMorphlingNamespace)
-	// DefaultMorphlingDBManagerServiceIP is the default IP of Morphling DB Manager
-	DefaultMorphlingDBManagerServiceIP = GetEnvOrDefault(DefaultMorphlingDBManagerServiceIPEnvName, "morphling-db-manager")
-	// DefaultMorphlingDBManagerServicePort is the default Port of Morphling DB Manager
-	DefaultMorphlingDBManagerServicePort = GetEnvOrDefault(DefaultMorphlingDBManagerServicePortEnvName, "6799")
+	// DefaultMorphlingDBManagerServiceName is the default db-manager k8s service name
+	DefaultMorphlingDBManagerServiceName = "morphling-db-manager"
+	// DefaultMorphlingDBManagerServicePort is the default db-manager k8s service port
+	DefaultMorphlingDBManagerServicePort = 6799
+	DefaultMorphlingNamespace            = "morphling-system"
 )

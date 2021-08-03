@@ -1,8 +1,11 @@
 import base64
 import logging
 import operator
+
 import numpy as np
-from api.v1alpha1.grpc.python3 import api_pb2
+
+from api.v1alpha1.grpc_proto.grpc_algorithm.python3 import api_pb2
+
 logger = logging.getLogger(__name__)
 
 
@@ -72,7 +75,8 @@ class BaseSamplingService(object):
         while True:
             assignments = []
             for i in range(self.num_pars):
-                assignments.append(api_pb2.KeyValue(key=self.space[i].name, value=self.space[i].space_list[np.random.randint(self.space[i].length)]))
+                assignments.append(api_pb2.KeyValue(key=self.space[i].name, value=self.space[i].space_list[
+                    np.random.randint(self.space[i].length)]))
             if num2str(assignments, self.num_pars) not in self.existing_trials:
                 break
         assert num2str(assignments, self.num_pars) not in self.existing_trials

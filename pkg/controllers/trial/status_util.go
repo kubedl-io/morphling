@@ -19,6 +19,7 @@ package trial
 import (
 	"fmt"
 	morphlingv1alpha1 "github.com/alibaba/morphling/api/v1alpha1"
+	"github.com/alibaba/morphling/pkg/controllers/consts"
 	"github.com/alibaba/morphling/pkg/controllers/util"
 	appsv1 "k8s.io/api/apps/v1"
 	batchv1 "k8s.io/api/batch/v1"
@@ -144,7 +145,7 @@ func (r *ReconcileTrial) updateTrialResultForFailedTrial(instance *morphlingv1al
 	}
 	instance.Status.TrialResult.ObjectiveMetricsObserved = append(instance.Status.TrialResult.ObjectiveMetricsObserved, morphlingv1alpha1.Metric{
 		Name:  instance.Spec.Objective.ObjectiveMetricName,
-		Value: defaultMetricValue,
+		Value: consts.DefaultMetricValue,
 	})
 }
 

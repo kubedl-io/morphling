@@ -76,7 +76,7 @@ func (m *HealthCheckRequest) GetService() string {
 }
 
 type HealthCheckResponse struct {
-	Status HealthCheckResponse_ServingStatus `protobuf:"varint,1,opt,name=status,enum=grpc.health.v1.HealthCheckResponse_ServingStatus" json:"status,omitempty"`
+	Status HealthCheckResponse_ServingStatus `protobuf:"varint,1,opt,name=status,enum=grpc_algorithm.health.v1.HealthCheckResponse_ServingStatus" json:"status,omitempty"`
 }
 
 func (m *HealthCheckResponse) Reset()                    { *m = HealthCheckResponse{} }
@@ -92,9 +92,9 @@ func (m *HealthCheckResponse) GetStatus() HealthCheckResponse_ServingStatus {
 }
 
 func init() {
-	proto.RegisterType((*HealthCheckRequest)(nil), "grpc.health.v1.HealthCheckRequest")
-	proto.RegisterType((*HealthCheckResponse)(nil), "grpc.health.v1.HealthCheckResponse")
-	proto.RegisterEnum("grpc.health.v1.HealthCheckResponse_ServingStatus", HealthCheckResponse_ServingStatus_name, HealthCheckResponse_ServingStatus_value)
+	proto.RegisterType((*HealthCheckRequest)(nil), "grpc_algorithm.health.v1.HealthCheckRequest")
+	proto.RegisterType((*HealthCheckResponse)(nil), "grpc_algorithm.health.v1.HealthCheckResponse")
+	proto.RegisterEnum("grpc_algorithm.health.v1.HealthCheckResponse_ServingStatus", HealthCheckResponse_ServingStatus_name, HealthCheckResponse_ServingStatus_value)
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -121,7 +121,7 @@ func NewHealthClient(cc *grpc.ClientConn) HealthClient {
 
 func (c *healthClient) Check(ctx context.Context, in *HealthCheckRequest, opts ...grpc.CallOption) (*HealthCheckResponse, error) {
 	out := new(HealthCheckResponse)
-	err := grpc.Invoke(ctx, "/grpc.health.v1.Health/Check", in, out, c.cc, opts...)
+	err := grpc.Invoke(ctx, "/grpc_algorithm.health.v1.Health/Check", in, out, c.cc, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -148,7 +148,7 @@ func _Health_Check_Handler(srv interface{}, ctx context.Context, dec func(interf
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/grpc.health.v1.Health/Check",
+		FullMethod: "/grpc_algorithm.health.v1.Health/Check",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(HealthServer).Check(ctx, req.(*HealthCheckRequest))
@@ -157,7 +157,7 @@ func _Health_Check_Handler(srv interface{}, ctx context.Context, dec func(interf
 }
 
 var _Health_serviceDesc = grpc.ServiceDesc{
-	ServiceName: "grpc.health.v1.Health",
+	ServiceName: "grpc_algorithm.health.v1.Health",
 	HandlerType: (*HealthServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{

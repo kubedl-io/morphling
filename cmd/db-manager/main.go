@@ -4,14 +4,14 @@ import (
 	"context"
 	"flag"
 	"fmt"
+	api_pb "github.com/alibaba/morphling/api/v1alpha1/grpc_proto/grpc_storage/go"
+	health_pb "github.com/alibaba/morphling/api/v1alpha1/grpc_proto/health"
 	"k8s.io/klog"
 	"net"
 
 	"google.golang.org/grpc"
 	"google.golang.org/grpc/reflection"
 
-	api_pb "github.com/alibaba/morphling/api/v1alpha1/grpc_storage/go"
-	health_pb "github.com/alibaba/morphling/api/v1alpha1/manager/health"
 	"github.com/alibaba/morphling/pkg/storage/backends"
 )
 
@@ -41,9 +41,9 @@ func (s *server) Check(ctx context.Context, in *health_pb.HealthCheckRequest) (*
 	}
 
 	// We only accept optional service name only if it's set to suggested format.
-	if in != nil && in.Service != "" && in.Service != "grpc.health.v1.Health" {
+	if in != nil && in.Service != "" && in.Service != "grpc_algorithm.health.v1.Health" {
 		resp.Status = health_pb.HealthCheckResponse_UNKNOWN
-		return &resp, fmt.Errorf("grpc.health.v1.Health can only be accepted if you specify service name.")
+		return &resp, fmt.Errorf("grpc_algorithm.health.v1.Health can only be accepted if you specify service name.")
 	}
 
 	return &resp, nil

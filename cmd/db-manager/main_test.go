@@ -3,12 +3,12 @@ package main
 import (
 	"context"
 	"fmt"
+	api_pb "github.com/alibaba/morphling/api/v1alpha1/grpc_proto/grpc_storage/go"
 	"github.com/stretchr/testify/assert"
 	"testing"
 
 	"github.com/golang/mock/gomock"
 
-	api_pb "github.com/alibaba/morphling/api/v1alpha1/grpc_storage/go"
 	mockdb "github.com/alibaba/morphling/pkg/mock/db"
 )
 

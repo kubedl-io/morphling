@@ -17,7 +17,7 @@ limitations under the License.
 package backends
 
 import (
-	api_pb "github.com/alibaba/morphling/api/v1alpha1/grpc_storage/go"
+	api_pb "github.com/alibaba/morphling/api/v1alpha1/grpc_proto/grpc_storage/go"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"k8s.io/klog"

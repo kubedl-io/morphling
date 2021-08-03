@@ -1,6 +1,6 @@
 syntax = "proto3";
 package api.suggestion;
-option go_package = "../grpc/go";
+option go_package = "../grpc_algorithm/go";
 //import "google/api/annotations.proto";
 
 service Suggestion {

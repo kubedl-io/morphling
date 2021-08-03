@@ -1,16 +1,12 @@
 # encoding: utf-8
 import logging
 import os
-import random
-import time
 
 import grpc
 
-from api.v1alpha1.grpc.python3 import api_pb2
-from api.v1alpha1.grpc.python3 import api_pb2_grpc
-from pkg.algorithm.v1alpha1.internal.constant import CATEGORICAL
+from api.v1alpha1.grpc_proto.grpc_algorithm.python3 import api_pb2_grpc, api_pb2
 
-logger = logging.getLogger('grpc-client')
+logger = logging.getLogger('grpc_algorithm-client')
 logger.setLevel(logging.INFO)
 console = logging.StreamHandler()
 console.setLevel(logging.INFO)
@@ -23,8 +19,8 @@ def validate(stub):
 
     # parameter_type = api_pb2.ParameterType(CATEGORICAL)
 
-    par_1 = api_pb2.ParameterSpec(name="cpu", parameter_type=CATEGORICAL, feasible_space=["1", "2", "3.5"])
-    par_2 = api_pb2.ParameterSpec(name="memory", parameter_type=CATEGORICAL, feasible_space=["10", "20", "35"])
+    par_1 = api_pb2.ParameterSpec(name="cpu", parameter_type="CATEGORICAL", feasible_space=["1", "2", "3.5"])
+    par_2 = api_pb2.ParameterSpec(name="memory", parameter_type="CATEGORICAL", feasible_space=["10", "20", "35"])
 
     parameters = [par_1, par_2]
     request = api_pb2.SamplingValidationRequest(algorithm_name="grid", sampling_number_specified=3, is_maximize=True, parameters=parameters)

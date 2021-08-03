@@ -33,7 +33,7 @@ const (
 )
 
 func GetMysqlDBSource() (dbSource, logMode string, err error) {
-	host := GetEnvOrDefault(EnvDBHost, consts.DefaultMorphlingMySqlServiceName)
+	host := consts.DefaultMorphlingMySqlServiceName // GetEnvOrDefault(EnvDBHost, consts.DefaultMorphlingMySqlServiceName)
 	port, err := strconv.Atoi(GetEnvOrDefault(EnvDBPort, consts.DefaultMorphlingMySqlServicePort))
 	if err != nil {
 		return "", "", err

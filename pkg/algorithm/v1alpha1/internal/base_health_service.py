@@ -18,8 +18,7 @@ import threading
 
 import grpc
 
-from api.v1alpha1.manager.health.python import health_pb2 as _health_pb2
-from api.v1alpha1.manager.health.python import health_pb2_grpc as _health_pb2_grpc
+from api.v1alpha1.grpc_proto.health.python import health_pb2 as _health_pb2, health_pb2_grpc as _health_pb2_grpc
 
 SERVICE_NAME = _health_pb2.DESCRIPTOR.services_by_name['Health'].full_name
 

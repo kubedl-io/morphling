@@ -43,8 +43,7 @@ import (
 )
 
 const (
-	ControllerName     = "trial-controller"
-	defaultMetricValue = "0.0"
+	ControllerName = "trial-controller"
 )
 
 var (

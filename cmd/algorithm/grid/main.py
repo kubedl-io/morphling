@@ -1,7 +1,7 @@
 import grpc
 import time
-from api.v1alpha1.grpc.python3 import api_pb2_grpc
-from api.v1alpha1.manager.health.python import health_pb2_grpc
+from api.v1alpha1.grpc_proto.grpc_algorithm.python3 import api_pb2_grpc
+from api.v1alpha1.grpc_proto.health.python import health_pb2_grpc
 from pkg.algorithm.v1alpha1.grid.service import BaseService
 from concurrent import futures
 

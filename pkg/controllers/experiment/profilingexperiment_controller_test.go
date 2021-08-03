@@ -21,7 +21,7 @@ import (
 	"fmt"
 	morphlingv1alpha1 "github.com/alibaba/morphling/api/v1alpha1"
 	"github.com/alibaba/morphling/pkg/controllers/consts"
-	samplingclient "github.com/alibaba/morphling/pkg/controllers/experiment/sampling"
+	samplingclient "github.com/alibaba/morphling/pkg/controllers/experiment/sampling_client"
 	"github.com/alibaba/morphling/pkg/controllers/util"
 	samplingmock "github.com/alibaba/morphling/pkg/mock/profilingexperiment/sampling"
 	. "github.com/alibaba/morphling/pkg/test_util"
