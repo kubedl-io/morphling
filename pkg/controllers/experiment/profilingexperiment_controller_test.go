@@ -61,7 +61,7 @@ func init() {
 
 func TestMain(m *testing.M) {
 	testEnv := &envtest.Environment{
-		CRDDirectoryPaths: []string{filepath.Join("..", "..","..", "config", "crd", "bases")},
+		CRDDirectoryPaths: []string{filepath.Join("..", "..", "..", "config", "crd", "bases")},
 	}
 	var err error
 	if err = morphlingv1alpha1.AddToScheme(scheme.Scheme); err != nil {

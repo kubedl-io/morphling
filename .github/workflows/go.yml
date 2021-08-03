@@ -8,25 +8,47 @@ on:
 
 jobs:
 
-  build:
+  test:
+    name: Test
     runs-on: ubuntu-latest
+    env:
+      GO_VERSION: '1.16'
+      GOLANGCI_VERSION: 'v1.39'
+      DOCKER_BUILDX_VERSION: 'v0.4.2'
+      KUSTOMIZE_VERSION: '3.9.2'
+      KUBEDL_CI: 'true'
+      KIND_VERSION: 'v0.11.1'
+      GOPATH: ${{ github.workspace }}/go
+    defaults:
+      run:
+        working-directory: ${{ env.GOPATH }}/src/github.com/alibaba/morphling
+
     steps:
-    - uses: actions/checkout@v2
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          path: ${{ env.GOPATH }}/src/github.com/alibaba/morphling
 
-    - name: Set up Go
-      uses: actions/setup-go@v2
-      with:
-        go-version: 1.16
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ env.GO_VERSION }}
 
-    - name: Build
-      run: go build -v ./...
+      # Verify that go.mod and go.sum is synchronized
+      - name: Check Go modules
+        run: |
+          if [[ ! -z $(go mod tidy && git diff --exit-code) ]]; then
+            echo "Please run "go mod tidy" to sync Go modules"
+            exit 1
+          fi
 
-    - name: Test
-      run: |
-        go mod download
-        curl -L -O "https://github.com/kubernetes-sigs/kubebuilder/releases/download/v1.0.7/kubebuilder_1.0.7_linux_amd64.tar.gz"
-        tar -zxvf kubebuilder_1.0.7_linux_amd64.tar.gz
-        sudo mv kubebuilder_1.0.7_linux_amd64 /usr/local/kubebuilder
-        export PATH=$PATH:/usr/local/kubebuilder/bin
-        make check
-        make test
+      - name: Run Go test
+        run: |
+          go mod download
+
+          curl -L -O "https://github.com/kubernetes-sigs/kubebuilder/releases/download/v1.0.7/kubebuilder_1.0.7_linux_amd64.tar.gz"
+          tar -zxvf kubebuilder_1.0.7_linux_amd64.tar.gz
+          sudo mv kubebuilder_1.0.7_linux_amd64 /usr/local/kubebuilder
+          export PATH=$PATH:/usr/local/kubebuilder/bin
+
+          make test
