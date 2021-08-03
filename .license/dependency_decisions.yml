@@ -1,7 +1,37 @@
 ---
 - - :permit
   - Apache 2.0
-  - :who:
-    :why:
+  - :who: 
+    :why: 
     :versions: []
-    :when: 2021-08-03 19:12:18.243194000 Z
+    :when: 2021-08-03 14:33:03.324221000 Z
+- - :permit
+  - MIT
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2021-08-03 14:33:03.324221000 Z
+- - :permit
+  - New BSD
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2021-08-03 14:34:51.293777000 Z
+- - :permit
+  - Simplified BSD
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2021-08-03 14:35:24.884647000 Z
+- - :permit
+  - Mozilla Public License 2.0
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2021-08-03 14:35:43.730405000 Z
+- - :permit
+  - ISC
+  - :who: 
+    :why: 
+    :versions: []
+    :when: 2021-08-03 14:36:03.346954000 Z

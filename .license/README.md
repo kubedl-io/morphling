@@ -17,3 +17,11 @@ gem install license_finder
 ```shell
 license_finder  permitted_licenses add MIT --decisions_file .license/dependency_decisions.yml
 ```
+
+### Current licenses
+#### Apache 2.0
+#### MIT
+#### New BSD
+#### Simplified BSD
+#### Mozilla Public License 2.0
+#### ISC
