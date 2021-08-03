@@ -24,9 +24,9 @@ spec:
           image: kubedl/morphling-ui
           imagePullPolicy: IfNotPresent
           command:
-            - './morphling-ui'
+            - '/backend-server'
           args:
-            - '--port=8080'
+            - '--port=9091'
           env:
             - name: MORPHLING_CORE_NAMESPACE
               valueFrom:
@@ -34,5 +34,5 @@ spec:
                   fieldPath: metadata.namespace
           ports:
             - name: ui
-              containerPort: 8080
+              containerPort: 9091
       serviceAccountName: morphling-ui

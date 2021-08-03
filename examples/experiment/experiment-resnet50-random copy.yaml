@@ -2,57 +2,59 @@ apiVersion: "tuning.kubedl.io/v1alpha1"
 kind: ProfilingExperiment
 metadata:
   namespace: morphling-system
-  name: resnet50-experiment-random-1
+  name: mobilenet-experiment-grid-1
 spec:
-  requestTemplate: "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2153705155,1396952620&fm=11&gp=0.jpg"
   objective:
     type: maximize
     objectiveMetricName: qps
   algorithm:
-    algorithmName: random
+    algorithmName: grid
   parallelism: 1
-  maxNumTrials: 3
+  maxNumTrials: 18
   clientTemplate:
-    metadata:
-      name: "resnet50-client"
-      namespace: "default"
     spec:
       template:
         spec:
           containers:
           - name: pi
-            image: kubedl/morphling-http-client
+            image: kubedl/morphling-http-client:demo
             env:
               - name: TF_CPP_MIN_LOG_LEVEL
                 value: "3"
               - name: MODEL_NAME
-                value: "resnet50"
+                value: "mobilenet"
+            resources:
+              requests:
+                cpu: 800m
+                memory: "1800Mi"
+              limits:
+                cpu: 800m
+                memory: "1800Mi"
             command: [ "python3" ]
-            args: ["morphling_client.py", "--model", "resnet50", "--printLog", "True"]
+            args: ["morphling_client.py", "--model", "mobilenet", "--printLog", "True", "--num_tests", "10"]
 
             imagePullPolicy: IfNotPresent
           restartPolicy: Never
-      backoffLimit: 4
+      backoffLimit: 1
 
   servicePodTemplate:
-    metadata:
-      name: "resnet-pod"
-      namespace: "default"
     template:
       spec:
         containers:
           - name: resnet-container
-            image: registry.cn-hangzhou.aliyuncs.com/delphin/resnet-model:aws #kubedl/morphling-tf-model:resnet50 #gcr.io/tensorflow-serving/resnet
+            image: kubedl/morphling-tf-model:demo-cv #registry.cn-hangzhou.aliyuncs.com/delphin/resnet-model:aws #kubedl/morphling-tf-model:mobilenet #gcr.io/tensorflow-serving/resnet
             imagePullPolicy: IfNotPresent
             env:
               - name: MODEL_NAME
-                value: "resnet50"
+                value: "mobilenet"
             resources:
               requests:
                 cpu: 1
+                memory: "1800Mi"
                 # nvidia.com/gpu: "1"
               limits:
                 cpu: 1
+                memory: "1800Mi"
                 # nvidia.com/gpu: "1"
             ports:
               - containerPort: 8500
@@ -60,29 +62,26 @@ spec:
   tunableParameters:
     - category: "resource"
       parameters:
-        - parameterType: double
+        - parameterType: discrete
           name: "cpu"
           feasibleSpace:
-            min: "1"
-            max: "2"
-            step: "0.1"
+            list:
+#              - "500m"
+#              - "1500m"
+              - "2000m"
+        - parameterType: discrete
+          name: "memory"
+          feasibleSpace:
+            list:
+              - "200Mi"
+#              - "1000Mi"
+              - "2000Mi"
     - category: "env"
       parameters:
-        - parameterType: double
-          name: "GPU_MEM"
-          feasibleSpace:
-            min: "0.20"
-            max: "1.01"
-            step: "0.20"
         - parameterType: discrete
           name: "BATCH_SIZE"
           feasibleSpace:
             list:
               - "1"
-              # - "2"
-              # - "4"
-              # - "8"
-              # - "16"
-              # - "32"
-              # - "64"
-              # - "128"
+              - "2"
+

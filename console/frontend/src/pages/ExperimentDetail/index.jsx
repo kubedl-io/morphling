@@ -87,12 +87,6 @@ class ExperimentDetail extends Component {
         detail: res.data ? res.data.peInfo : {},
         total: res.data ? res.data.total : 0,
       },
-      // () => {
-      //   const newResources = this.state.detail && this.state.detail.resources ? eval('(' + this.state.detail?.resources + ')') : {};
-      //   this.setState({
-      //     resourceConfigKey: JSON.stringify(newResources) !== '{}' ? Object.keys(newResources)[0] : '',
-      //   });
-      // }
     );
   }
 
@@ -172,6 +166,32 @@ class ExperimentDetail extends Component {
         title: <FormattedMessage id="morphling-dashboard-pe-trial-status"/>,
         dataIndex: "Status",
         width: 196,
+        valueEnum: {
+          All: {
+            text: "All",
+            status: "Default"
+          },
+          Created: {
+            text: "Created",
+            status: "Default"
+          },
+          Pending: {
+            text: "Pending",
+            status: "Processing"
+          },
+          Running: {
+            text: "Running",
+            status: "Processing"
+          },
+          Succeeded: {
+            text: "Succeeded",
+            status: "Success"
+          },
+          Failed: {
+            text: "Failed",
+            status: "Error"
+          },
+        }
       },
       {
         title: <FormattedMessage id="morphling-dashboard-pe-trial-objective"/>,
@@ -337,7 +357,7 @@ class ExperimentDetail extends Component {
             }}
             search={false}
             columns={columns_optTrials}
-            dataSource={detail.currentOptimalTrial}
+            dataSource={detail.currentOptimalTrials}
             options={{
               fullScreen: true,
               setting: true,

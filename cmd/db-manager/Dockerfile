@@ -4,9 +4,9 @@ ADD . /go/src/morphling
 WORKDIR /go/src/morphling/cmd/db-manager
 RUN if [ "$(uname -m)" = "ppc64le" ] || [ "$(uname -m)" = "aarch64" ]; then \
         apk --update add git gcc musl-dev && \
-        go build -o morphling-db-manager .; \
+        go build -o morphling-storage .; \
     else \
-        go build -o morphling-db-manager .; \
+        go build -o morphling-storage .; \
     fi
 RUN GRPC_HEALTH_PROBE_VERSION=v0.3.1 && \
     if [ "$(uname -m)" = "ppc64le" ]; then \
@@ -21,6 +21,6 @@ RUN GRPC_HEALTH_PROBE_VERSION=v0.3.1 && \
 FROM alpine:3.7
 WORKDIR /app
 COPY --from=build-env /bin/grpc_health_probe /bin/
-COPY --from=build-env /go/src/morphling/cmd/db-manager/morphling-db-manager /app/
-ENTRYPOINT ["./morphling-db-manager"]
+COPY --from=build-env /go/src/morphling/cmd/db-manager/morphling-storage /app/
+ENTRYPOINT ["./morphling-storage"]
 CMD ["-w", "kubernetes"]

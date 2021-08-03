@@ -90,11 +90,69 @@ export default {
       code: '200',
       data: {
         namespace: "morphling-system",
-        "http-client-image": "kubedl/morphling-http-client",
-        "http-client.yaml": "unknown",
-        "pai-tf-cpu-images": "unknown",
-        "pai-tf-gpu-images": "unknown",
-      },
+        "http-client-image": "kubedl/morphling-http-client:demo",
+        "http-hsf-image": "kubedl/morphling-hsf-client:demo",
+        "algorithm-names": ["random", "grid"],
+        "http-client-yaml":
+`metadata:
+  name: "mobilenet-client"
+  namespace: "default"
+spec:
+  template:
+    spec:
+      containers:
+      - image: kubedl/morphling-http-client
+        env:
+          - name: TF_CPP_MIN_LOG_LEVEL
+            value: "3"
+          - name: MODEL_NAME
+            value: "mobilenet"
+        command: [ "python3" ]
+        args: ["morphling_client.py", "--model", "mobilenet", "--printLog", "True"]
+        imagePullPolicy: IfNotPresent
+      restartPolicy: Never
+  backoffLimit: 4`,
+        "hsf-client-yaml":
+          `metadata:
+  name: "resnet50-client"
+  namespace: "default"
+spec:
+  template:
+    spec:
+      containers:
+      - image: kubedl/morphling-http-client
+        env:
+          - name: TF_CPP_MIN_LOG_LEVEL
+            value: "3"
+          - name: MODEL_NAME
+            value: "resnet50"
+        command: [ "python3" ]
+        args: ["morphling_client.py", "--model", "resnet50", "--printLog", "True"]
+        imagePullPolicy: IfNotPresent
+      restartPolicy: Never
+  backoffLimit: 4`,
+        "http-service-yaml": `metadata:
+  name: "mobilenet-pod"
+  namespace: "default"
+template:
+  spec:
+    containers:
+      - name: resnet-container
+        image: kubedl/morphling-tf-model:demo-cv
+        imagePullPolicy: IfNotPresent
+        env:
+          - name: MODEL_NAME
+            value: "mobilenet"
+        resources:
+          requests:
+            cpu: 1
+            memory: "1800Mi"
+          limits:
+            cpu: 1
+            memory: "1800Mi"
+        ports:
+          - containerPort: 8500`
+  },
     })
   },
 
@@ -119,7 +177,7 @@ export default {
       data: {
         "peInfos": [
           {
-            name: 'resnet50-experiment-random',
+            name: 'resnet50-experiment-grid',
             UserName: 'user-1',
             UserId: 123456789,
             peStatus: 'Created',
@@ -162,7 +220,7 @@ export default {
             ],
             trials: [
               {
-                name: "resnet50-experiment-random-dpg9qlps",
+                name: "resnet50-experiment-grid-dpg9qlps",
                 Status: "Succeeded",
                 objectiveName: "qps",
                 objectiveValue: "3",
@@ -171,7 +229,7 @@ export default {
                 isOptimal: false,
               },
               {
-                name: "resnet50-experiment-random-rer3frg4",
+                name: "resnet50-experiment-grid-rer3frg4",
                 Status: "Succeeded",
                 objectiveName: "qps",
                 objectiveValue: "4",
@@ -180,8 +238,8 @@ export default {
                 isOptimal: false,
               },
               {
-                name: "resnet50-experiment-random-oemyu879",
-                Status: "Succeeded",
+                name: "resnet50-experiment-grid-oemyu879",
+                Status: "Failed",
                 objectiveName: "qps",
                 objectiveValue: "6",
                 createTime: "2021-01-02 15:04:05",
@@ -189,7 +247,7 @@ export default {
                 isOptimal: true,
               },
             ],
-            currentOptimalTrial: [{
+            currentOptimalTrials: [{
               objectiveName: "qps",
               objectiveValue: "6",
               parameterSamples: {CPU: 1, "Batch Size": 3},

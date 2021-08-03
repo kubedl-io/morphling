@@ -92,7 +92,7 @@ const (
 // +kubebuilder:printcolumn:name="Object Name",type=string,JSONPath=`.status.trialResult.objectiveMetricsObserved[-1:].name`
 // +kubebuilder:printcolumn:name="Object Value",type=string,JSONPath=`.status.trialResult.objectiveMetricsObserved[-1:].value`
 // +kubebuilder:printcolumn:name="Parameters",type=string,JSONPath=`.spec.samplingResult`
-
+// +kubebuilder:subresource:status
 // Trial is the Schema for the trials API
 type Trial struct {
 	metav1.TypeMeta   `json:",inline"`

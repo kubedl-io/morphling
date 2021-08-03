@@ -1,15 +1,14 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: random
+  name: morphling-algorithm-server
   namespace: morphling-system
 spec:
   ports:
     - name: morphling-api
-#      nodePort: 6789
-      port: 6789
+      port: 9996
       protocol: TCP
-      targetPort: 6789
+      targetPort: 9996
   selector:
-    deployment: random
+    deployment: morphling-algorithm-server
   type: NodePort

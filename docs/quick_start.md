@@ -13,19 +13,19 @@ kubectl -n morphling-system apply -f https://raw.githubusercontent.com/alibaba/m
 ```
 
 ```yaml
-# kubectl  -n morphling-system get pe resnet50-experiment-random -o yaml
+# kubectl  -n morphling-system get pe resnet50-experiment-grid -o yaml
 apiVersion: "tuning.kubedl.io/v1alpha1"
 kind: ProfilingExperiment
 metadata:
   namespace: morphling-system
-  name: resnet50-experiment-random
+  name: resnet50-experiment-grid
 spec:
   requestTemplate: "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2153705155,1396952620&fm=11&gp=0.jpg"
   objective:
     type: maximize
     objectiveMetricName: qps
   algorithm:
-    algorithmName: random
+    algorithmName: grid
   parallelism: 1
   maxNumTrials: 3
   clientTemplate:

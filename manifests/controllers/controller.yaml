@@ -21,7 +21,7 @@ spec:
       containers:
         - name: morphling-controller
           image: kubedl/morphling-controllers
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           command: ["./morphling-controller"]
           ports:
             - containerPort: 8443

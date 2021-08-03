@@ -493,7 +493,7 @@ export default {
 
   //
   'morphling-dashboard-pe-finish-time': "完成时间",
-  "morphling-dashboard-pe-trials-total": "完成测试",
+  "morphling-dashboard-pe-trials-total": "生成测试",
   "morphling-dashboard-pe-trials-succeeded": "成功测试",
   "morphling-dashboard-pe-setting": "配置",
   "morphling-dashboard-pe-basic-setting": "基础配置",
@@ -530,7 +530,7 @@ export default {
   'morphling-dashboard-err-valid-par-double': "参数类型为浮点数",
   'morphling-dashboard-err-valid-par-range': "参数上限应高于下限",
   'morphling-dashboard-pe-parameter-min': "最小值",
-  'morphling-dashboard-pe-parameter-max': "最大值（不含）",
+  'morphling-dashboard-pe-parameter-max': "最大值",
   'morphling-dashboard-pe-parameter-step': "步长",
   'morphling-dashboard-pe-parameter-list': "离散取值范围",
   'morphling-dashboard-pe-parameter-action': "操作",
@@ -554,5 +554,6 @@ export default {
   'morphling-dashboard-err-duplicate': "请删除重复参数",
   "morphling-dashboard-results": "压测结果",
   "morphling-dashboard-optimal": "当前最优配置",
+  'morphling-dashboard-err-valid-par-discrete': "离散取值为数字或字符，以 , 分割",
 
 };
