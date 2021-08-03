@@ -160,7 +160,7 @@ func TestReconcileExperiment(t *testing.T) {
 	}, Timeout).Should(gomega.BeTrue())
 }
 
-func _TestSetParameterSpace(t *testing.T) {
+func TestSetParameterSpace(t *testing.T) {
 
 	testCases := map[string]struct {
 		parSpec        morphlingv1alpha1.ParameterSpec
@@ -360,18 +360,6 @@ func newMockSamplings() ([]morphlingv1alpha1.TrialAssignment, error) {
 				Category: "resource",
 			}},
 			Name: "trial-2",
-		},
-		{
-			ParameterAssignments: []morphlingv1alpha1.ParameterAssignment{{
-				Name:     "cpu",
-				Value:    "2",
-				Category: "resource",
-			}, {
-				Name:     "GPUMem",
-				Value:    "20G",
-				Category: "resource",
-			}},
-			Name: "trial-3",
 		},
 	}, nil
 }
