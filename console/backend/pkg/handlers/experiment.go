@@ -30,7 +30,7 @@ type ExperimentHandler struct {
 	client client.Client
 }
 
-// Get experiments
+// GetExperimentList Get experiments
 func (handler *ExperimentHandler) GetExperimentList(query *utils.Query) ([]utils.ProfilingExperimentInfo, error) {
 	ctrlClient := handler.client
 
@@ -127,7 +127,7 @@ func (handler *ExperimentHandler) GetExperimentList(query *utils.Query) ([]utils
 	return peInfoList, nil
 }
 
-// Get experiment detail
+// GetExperimentDetail Get experiment detail
 func (handler *ExperimentHandler) GetExperimentDetail(query *utils.Query) (utils.ProfilingExperimentDetail, error) {
 	ctrlClient := handler.client
 
@@ -306,7 +306,7 @@ func stringifyFeasibleSpace(space morphlingv1alpha1.FeasibleSpace) string {
 
 }
 
-//DeleteJobFromBackend
+// DeleteJobFromBackend deletes job
 func (handler *ExperimentHandler) DeleteJobFromBackend(ns, name string) error {
 
 	exp := &morphlingv1alpha1.ProfilingExperiment{}
@@ -319,7 +319,7 @@ func (handler *ExperimentHandler) DeleteJobFromBackend(ns, name string) error {
 	return nil
 }
 
-// Submit experiment
+// SubmitExperiment Submit experiment
 func (handler *ExperimentHandler) SubmitExperiment(data []byte) error {
 
 	pe := morphlingv1alpha1.ProfilingExperiment{}
@@ -336,7 +336,7 @@ func (handler *ExperimentHandler) SubmitExperiment(data []byte) error {
 	return handler.submitExperiment(pe)
 }
 
-// Submit experiment with parameters
+// SubmitExperimentPars submits experiment with parameters
 func (handler *ExperimentHandler) SubmitExperimentPars(dataRaw []byte) error {
 
 	var data map[string]interface{}

@@ -1,0 +1,56 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  unit-tests:
+    name: Test
+    runs-on: ubuntu-latest
+    env:
+      GO_VERSION: '1.16'
+      GOLANGCI_VERSION: 'v1.39'
+      DOCKER_BUILDX_VERSION: 'v0.4.2'
+      KUSTOMIZE_VERSION: 'v4.1.3'
+      KUBEDL_CI: 'true'
+      KIND_VERSION: 'v0.11.1'
+      GOPATH: ${{ github.workspace }}/go
+    defaults:
+      run:
+        working-directory: ${{ env.GOPATH }}/src/github.com/alibaba/morphling
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+        with:
+          path: ${{ env.GOPATH }}/src/github.com/alibaba/morphling
+
+      - name: Setup Go
+        uses: actions/setup-go@v2
+        with:
+          go-version: ${{ env.GO_VERSION }}
+
+      - name: Check Go modules
+        run: |
+          if [[ ! -z $(go mod tidy && git diff --exit-code) ]]; then
+            echo "Please run "go mod tidy" to sync Go modules"
+            exit 1
+          fi
+
+      - name: Install Kubebuilder
+        uses: RyanSiu1995/kubebuilder-action@v1.2
+
+      - name: Cache Go Dependencies
+        uses: actions/cache@v2
+        with:
+          path: ~/go/pkg/mod
+          key: ${{ runner.os }}-go-${{ hashFiles('**/go.sum') }}
+          restore-keys: ${{ runner.os }}-go-
+
+      - name: Run Go test
+        run: |
+          go mod download
+          make test

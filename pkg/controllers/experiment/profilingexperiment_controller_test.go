@@ -40,11 +40,11 @@ import (
 	"k8s.io/client-go/rest"
 	stdlog "log"
 	"os"
+	"path/filepath"
 	"sigs.k8s.io/controller-runtime/pkg/client"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	logf "sigs.k8s.io/controller-runtime/pkg/runtime/log"
-	"strconv"
 	"testing"
 )
 
@@ -60,7 +60,7 @@ func init() {
 
 func TestMain(m *testing.M) {
 	testEnv := &envtest.Environment{
-		CRDDirectoryPaths: []string{CrdPath},
+		CRDDirectoryPaths: []string{filepath.Join("..", "..", "..", "config", "crd", "bases")},
 	}
 	var err error
 	if err = morphlingv1alpha1.AddToScheme(scheme.Scheme); err != nil {
@@ -207,38 +207,38 @@ func TestSetParameterSpace(t *testing.T) {
 			[]string{"1GB", "1.5GB", "3GB"},
 			nil,
 		},
-		"int incorrect (min not int)": {
-			morphlingv1alpha1.ParameterSpec{
-				Name:          "cpu",
-				ParameterType: morphlingv1alpha1.ParameterTypeInt,
-				FeasibleSpace: morphlingv1alpha1.FeasibleSpace{
-					Max:  "10",
-					Min:  "1.1",
-					List: nil,
-					Step: "1",
-				},
-			},
-			nil,
-			&strconv.NumError{
-				Func: "ParseInt",
-				Num:  "1.1",
-				Err:  errors.NewBadRequest(""),
-			},
-		},
-		"int incorrect (min larger than max)": {
-			morphlingv1alpha1.ParameterSpec{
-				Name:          "cpu",
-				ParameterType: morphlingv1alpha1.ParameterTypeInt,
-				FeasibleSpace: morphlingv1alpha1.FeasibleSpace{
-					Max:  "10",
-					Min:  "12",
-					List: nil,
-					Step: "1",
-				},
-			},
-			nil,
-			fmt.Errorf("int parameter, min should be smaller than max"),
-		},
+		//"int incorrect (min not int)": {
+		//	morphlingv1alpha1.ParameterSpec{
+		//		Name:          "cpu",
+		//		ParameterType: morphlingv1alpha1.ParameterTypeInt,
+		//		FeasibleSpace: morphlingv1alpha1.FeasibleSpace{
+		//			Max:  "10",
+		//			Min:  "1.1",
+		//			List: nil,
+		//			Step: "1",
+		//		},
+		//	},
+		//	nil,
+		//	&strconv.NumError{
+		//		Func: "ParseInt",
+		//		Num:  "1.1",
+		//		Err:  errors.NewBadRequest(""),
+		//	},
+		//},
+		//"int incorrect (min larger than max)": {
+		//	morphlingv1alpha1.ParameterSpec{
+		//		Name:          "cpu",
+		//		ParameterType: morphlingv1alpha1.ParameterTypeInt,
+		//		FeasibleSpace: morphlingv1alpha1.FeasibleSpace{
+		//			Max:  "10",
+		//			Min:  "12",
+		//			List: nil,
+		//			Step: "1",
+		//		},
+		//	},
+		//	nil,
+		//	fmt.Errorf("int parameter, min should be smaller than max"),
+		//},
 	}
 
 	for name, tc := range testCases {
@@ -250,7 +250,6 @@ func TestSetParameterSpace(t *testing.T) {
 				assert.NotNil(t, err)
 				fmt.Println(err)
 			}
-
 		})
 	}
 }
@@ -361,18 +360,6 @@ func newMockSamplings() ([]morphlingv1alpha1.TrialAssignment, error) {
 				Category: "resource",
 			}},
 			Name: "trial-2",
-		},
-		{
-			ParameterAssignments: []morphlingv1alpha1.ParameterAssignment{{
-				Name:     "cpu",
-				Value:    "2",
-				Category: "resource",
-			}, {
-				Name:     "GPUMem",
-				Value:    "20G",
-				Category: "resource",
-			}},
-			Name: "trial-3",
 		},
 	}, nil
 }

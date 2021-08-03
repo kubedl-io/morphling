@@ -33,6 +33,7 @@ import (
 	"k8s.io/client-go/rest"
 	stdlog "log"
 	"os"
+	"path/filepath"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
 	"sigs.k8s.io/controller-runtime/pkg/reconcile"
@@ -65,7 +66,7 @@ func init() {
 
 func TestMain(m *testing.M) {
 	testEnv := &envtest.Environment{
-		CRDDirectoryPaths: []string{CrdPath},
+		CRDDirectoryPaths: []string{filepath.Join("..", "..", "..", "config", "crd", "bases")},
 	}
 	var err error
 	if err = morphlingv1alpha1.AddToScheme(scheme.Scheme); err != nil {
@@ -90,6 +91,7 @@ func TestCreateTrial(t *testing.T) {
 	g := gomega.NewGomegaWithT(t)
 	mockCtrl := gomock.NewController(t)
 	defer mockCtrl.Finish()
+	time.Sleep(25 * time.Second)
 	mgr, err := manager.New(cfg, manager.Options{})
 	g.Expect(err).NotTo(gomega.HaveOccurred())
 	c := mgr.GetClient()
