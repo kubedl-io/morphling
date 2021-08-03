@@ -56,29 +56,13 @@ vet:
 generate: controller-gen
 	$(CONTROLLER_GEN) object:headerFile="hack/boilerplate.go.txt" paths="./..."
 
-build-controller: generate fmt vet
-	docker build -t ${CONTROLLER_IMG} -f cmd/controllers/Dockerfile .
-
-upload-controller:
-	docker push ${CONTROLLER_IMG}
-
-build-db-manager: generate fmt vet
-	docker build -t ${DB_MANAGER_IMG} -f cmd/db-manager/Dockerfile .
-
-upload-db-manager:
-	docker push ${DB_MANAGER_IMG}
-
-build-ui: generate fmt vet
-	docker build -t ${UI_IMG} -f cmd/ui/Dockerfile .
-
-upload-ui:
-	docker push ${UI_IMG}
-
 # Build the docker image
-docker-build: build-controller build-db-manager build-ui
+docker-build:
+	bash script/docker_build.sh
 
 # Push the docker image
-docker-push: upload-controller upload-db-manager upload-ui
+docker-push:
+	bash script/docker_push.sh
 
 # find or download controller-gen
 # download controller-gen if necessary

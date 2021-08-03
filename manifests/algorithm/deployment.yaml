@@ -1,46 +1,49 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: random
+  name: morphling-algorithm-server
   namespace: morphling-system
 spec:
   replicas: 1
   revisionHistoryLimit: 10
   selector:
     matchLabels:
-      deployment: random
+      deployment: morphling-algorithm-server
   template:
     metadata:
       annotations:
         sidecar.istio.io/inject: "false"
       labels:
-        deployment: random
+        deployment: morphling-algorithm-server
     spec:
       containers:
-        - image: kubedl/algorithm-random
-          imagePullPolicy: IfNotPresent
+        - image: kubedl/morphling-algorithm:base
+          imagePullPolicy: Always #IfNotPresent
+#          command: [ "/bin/sh" ]
+#          args: ["-c", "sleep 100000"]
+
           livenessProbe:
             exec:
               command:
                 - /bin/grpc_health_probe
-                - -addr=:6789
-                - -service=manager.v1alpha3.Suggestion
+                - -addr=:9996
+                - -service=algorithm.probe
             failureThreshold: 12
             initialDelaySeconds: 10
             periodSeconds: 120
             successThreshold: 1
             timeoutSeconds: 1
-          name: sampling
+          name: sampling_client
           ports:
-            - containerPort: 6789
+            - containerPort: 9996
               name: morphling-api
               protocol: TCP
           readinessProbe:
             exec:
               command:
                 - /bin/grpc_health_probe
-                - -addr=:6789
-                - -service=manager.v1alpha3.Suggestion
+                - -addr=:9996
+                - -service=algorithm.probe
             failureThreshold: 3
             initialDelaySeconds: 10
             periodSeconds: 10

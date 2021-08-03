@@ -7,6 +7,7 @@ const (
 	IndexNodeName = "spec.nodeName"
 	IndexPhase    = "status.phase"
 	GPUType       = "aliyun.accelerator/nvidia_name"
+	UINameSpace   = "morphling-system"
 )
 
 var PreservedNS = [...]string{"kube-system", "kube-public"}

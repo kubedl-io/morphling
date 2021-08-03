@@ -19,15 +19,15 @@ package experiment
 import (
 	"context"
 	"fmt"
-	stdlog "log"
-	"os"
-	"path/filepath"
-	"sync"
-	"testing"
-	"time"
-
+	morphlingv1alpha1 "github.com/alibaba/morphling/api/v1alpha1"
+	"github.com/alibaba/morphling/pkg/controllers/consts"
+	samplingclient "github.com/alibaba/morphling/pkg/controllers/experiment/sampling_client"
+	"github.com/alibaba/morphling/pkg/controllers/util"
+	samplingmock "github.com/alibaba/morphling/pkg/mock/profilingexperiment/sampling"
+	. "github.com/alibaba/morphling/pkg/test_util"
 	"github.com/golang/mock/gomock"
 	"github.com/onsi/gomega"
+	"github.com/stretchr/testify/assert"
 	batchv1 "k8s.io/api/batch/v1"
 	"k8s.io/api/batch/v1beta1"
 	corev1 "k8s.io/api/core/v1"
@@ -38,165 +38,78 @@ import (
 	"k8s.io/apimachinery/pkg/types"
 	"k8s.io/client-go/kubernetes/scheme"
 	"k8s.io/client-go/rest"
+	stdlog "log"
+	"os"
 	"sigs.k8s.io/controller-runtime/pkg/client"
-	"sigs.k8s.io/controller-runtime/pkg/controller"
 	"sigs.k8s.io/controller-runtime/pkg/envtest"
 	"sigs.k8s.io/controller-runtime/pkg/manager"
-	"sigs.k8s.io/controller-runtime/pkg/reconcile"
 	logf "sigs.k8s.io/controller-runtime/pkg/runtime/log"
-
-	morphlingv1alpha1 "github.com/alibaba/morphling/api/v1alpha1"
-	"github.com/alibaba/morphling/pkg/controllers/consts"
-	"github.com/alibaba/morphling/pkg/controllers/util"
-	samplingmock "github.com/alibaba/morphling/pkg/mock/profilingexperiment/sampling"
-)
-
-const (
-	experimentName = "test-experiment"
-	namespace      = "default"
-	timeout        = time.Second * 40
+	"strconv"
+	"testing"
 )
 
 var (
-	cfg                      *rest.Config
-	controlPlaneStartTimeout = 60 * time.Second
-	controlPlaneStopTimeout  = 60 * time.Second
+	cfg *rest.Config
 )
 
-var expectedRequest = reconcile.Request{NamespacedName: types.NamespacedName{Name: experimentName, Namespace: namespace}}
-var trialKey = types.NamespacedName{Name: "test-trial", Namespace: namespace}
+const useFakeSampling = true
 
 func init() {
 	logf.SetLogger(logf.ZapLogger(true))
 }
 
 func TestMain(m *testing.M) {
-	t := &envtest.Environment{
-		ControlPlaneStartTimeout: controlPlaneStartTimeout,
-		ControlPlaneStopTimeout:  controlPlaneStopTimeout,
-		CRDDirectoryPaths: []string{
-			filepath.Join("..", "..", "..", "config", "crd", "bases"),
-			filepath.Join("..", "..", "..", "config", "crd", "patches"),
-		},
+	testEnv := &envtest.Environment{
+		CRDDirectoryPaths: []string{CrdPath},
 	}
-	morphlingv1alpha1.AddToScheme(scheme.Scheme)
-
 	var err error
-	if cfg, err = t.Start(); err != nil {
+	if err = morphlingv1alpha1.AddToScheme(scheme.Scheme); err != nil {
 		stdlog.Fatal(err)
 	}
 
+	if cfg, err = testEnv.Start(); err != nil {
+		stdlog.Fatal(err)
+	}
+	fmt.Println(cfg)
+
 	code := m.Run()
-	t.Stop()
+
+	if err = testEnv.Stop(); err != nil {
+		stdlog.Fatal(err)
+	}
 	os.Exit(code)
 }
 
-func TestCreateExperiment(t *testing.T) {
-	g := gomega.NewGomegaWithT(t)
-	instance := newFakeInstance()
-
-	mockCtrl := gomock.NewController(t)
-	defer mockCtrl.Finish()
-
-	sampling := samplingmock.NewMockSampling(mockCtrl)
-
-	// Setup the Manager and Controller.  Wrap the Controller Reconcile function so it writes each request to a
-	// channel when it is finished.
-	fmt.Println(cfg)
-	mgr, err := manager.New(cfg, manager.Options{})
-	g.Expect(err).NotTo(gomega.HaveOccurred())
-	c := mgr.GetClient()
-
-	recFn := SetupTestReconcile(&ProfilingExperimentReconciler{
-		Client:   mgr.GetClient(),
-		Scheme:   mgr.GetScheme(),
-		Sampling: sampling,
-		// Generator: generator,
-		updateStatusHandler: func(instance *morphlingv1alpha1.ProfilingExperiment) error {
-			if !util.IsCreatedExperiment(instance) {
-				t.Errorf("Expected got condition created")
-			}
-			return nil
-		},
-	})
-	g.Expect(addForTestPurpose(mgr, recFn)).NotTo(gomega.HaveOccurred())
-
-	stopMgr, mgrStopped := StartTestManager(mgr, g)
-
-	defer func() {
-		close(stopMgr)
-		mgrStopped.Wait()
-	}()
-
-	// Create the Trial object and expect the Reconcile and Deployment to be created
-	err = c.Create(context.TODO(), instance)
-
-	if apierrors.IsInvalid(err) {
-		t.Logf("failed to create object, got an invalid object error: %v", err)
-		return
-	}
-	g.Expect(err).NotTo(gomega.HaveOccurred())
-
-	g.Expect(c.Delete(context.TODO(), instance)).NotTo(gomega.HaveOccurred())
-	g.Eventually(func() bool {
-		return errors.IsNotFound(c.Get(context.TODO(),
-			expectedRequest.NamespacedName, instance))
-	}, timeout).Should(gomega.BeTrue())
-}
-
 func TestReconcileExperiment(t *testing.T) {
+	// Initialize event test configurations
 	g := gomega.NewGomegaWithT(t)
-	testName := "tn"
-	instance := newFakeInstance()
-	instance.Name = testName
-
 	mockCtrl := gomock.NewController(t)
 	defer mockCtrl.Finish()
-
-	sampling := samplingmock.NewMockSampling(mockCtrl)
-	sampling.EXPECT().GetOrCreateSampling(gomock.Any(), gomock.Any(), gomock.Any()).Return(
-		&morphlingv1alpha1.Sampling{
-			ObjectMeta: metav1.ObjectMeta{
-				Name:      instance.Name,
-				Namespace: instance.Namespace,
-			},
-			Status: morphlingv1alpha1.SamplingStatus{
-				SamplingResults: []morphlingv1alpha1.TrialAssignment{
-					{
-						Name: trialKey.Name,
-						ParameterAssignments: []morphlingv1alpha1.ParameterAssignment{
-							{
-								Name:  "--GPUMem",
-								Value: "0.5",
-							},
-						},
-					},
-				},
-			},
-		}, nil).AnyTimes()
-	sampling.EXPECT().UpdateSampling(gomock.Any()).Return(nil).AnyTimes()
-
 	mgr, err := manager.New(cfg, manager.Options{})
 	g.Expect(err).NotTo(gomega.HaveOccurred())
 	c := mgr.GetClient()
+	err = c.Create(context.TODO(), &corev1.Namespace{ObjectMeta: metav1.ObjectMeta{
+		Name:      Namespace,
+		Namespace: Namespace,
+	}})
+	g.Expect(err).NotTo(gomega.HaveOccurred())
+
+	sampling := samplingmock.NewMockSampling(mockCtrl)
 
 	r := &ProfilingExperimentReconciler{
 		Client:   mgr.GetClient(),
 		Scheme:   mgr.GetScheme(),
-		Sampling: sampling,
-		//Generator: generator,
-		//collector: util.NewExpsCollector(mgr.GetCache(), prometheus.NewRegistry()),
+		recorder: mgr.GetEventRecorderFor(ControllerName),
 	}
-	r.updateStatusHandler = func(instance *morphlingv1alpha1.ProfilingExperiment) error {
-		if !util.IsCreatedExperiment(instance) {
-			t.Errorf("Expected got condition created")
-		}
-		return r.updateStatus(instance)
+	if useFakeSampling {
+		r.Sampling = sampling
+	} else {
+		r.Sampling = samplingclient.New(mgr.GetScheme(), mgr.GetClient())
 	}
+	r.updateStatusHandler = r.updateStatus
 
-	recFn := SetupTestReconcile(r)
-	g.Expect(addForTestPurpose(mgr, recFn)).NotTo(gomega.HaveOccurred())
-
+	// Set up reconciler and manager
+	g.Expect(r.SetupWithManager(mgr)).NotTo(gomega.HaveOccurred())
 	stopMgr, mgrStopped := StartTestManager(mgr, g)
 
 	defer func() {
@@ -204,70 +117,196 @@ func TestReconcileExperiment(t *testing.T) {
 		mgrStopped.Wait()
 	}()
 
-	// Create the Trial object and expect the Reconcile and Deployment to be created
+	// Test experiment creation
+	instance := newFakeInstance()
 	err = c.Create(context.TODO(), instance)
-	// The instance object may not be a valid object because it might be missing some required fields.
-	// Please modify the instance object by adding required fields and then remove the following if statement.
 	if apierrors.IsInvalid(err) {
 		t.Logf("failed to create object, got an invalid object error: %v", err)
 		return
 	}
 	g.Expect(err).NotTo(gomega.HaveOccurred())
 
+	if useFakeSampling {
+		mockedSamplings, _ := newMockSamplings()
+		sampling.EXPECT().GetSamplings(gomock.Any(), gomock.Any(), gomock.Any(), gomock.Any()).Return(
+			mockedSamplings, nil).AnyTimes()
+	}
+
+	// Test experiment status
+	experiment := &morphlingv1alpha1.ProfilingExperiment{}
+	g.Eventually(func() bool {
+		c.Get(context.Background(), types.NamespacedName{Namespace: Namespace, Name: ExperimentName}, experiment)
+		return util.IsCreatedExperiment(experiment)
+	}, Timeout).Should(gomega.BeTrue())
+
+	// Test trial belongings
+	g.Expect(err).NotTo(gomega.HaveOccurred())
 	trials := &morphlingv1alpha1.TrialList{}
 	g.Eventually(func() int {
 		label := labels.Set{
-			consts.LabelExperimentName: testName,
+			consts.LabelExperimentName: ExperimentName,
 		}
 		c.List(context.TODO(), trials, &client.ListOptions{
 			LabelSelector: label.AsSelector(),
 		})
 		return len(trials.Items)
-	}, timeout).
-		Should(gomega.Equal(0)) //TODO: change to 1 after finishing Trials
+	}, Timeout).Should(gomega.Equal(2))
 
+	// Test experiment deletion
 	g.Expect(c.Delete(context.TODO(), instance)).NotTo(gomega.HaveOccurred())
 	g.Eventually(func() bool {
 		return errors.IsNotFound(c.Get(context.TODO(),
 			types.NamespacedName{Namespace: instance.Namespace, Name: instance.Name}, instance))
-	}, timeout).Should(gomega.BeTrue())
+	}, Timeout).Should(gomega.BeTrue())
+}
+
+func TestSetParameterSpace(t *testing.T) {
+
+	testCases := map[string]struct {
+		parSpec        morphlingv1alpha1.ParameterSpec
+		expectedOutput []string
+		err            error
+	}{
+		"int correct": {
+			morphlingv1alpha1.ParameterSpec{
+				Name:          "cpu",
+				ParameterType: morphlingv1alpha1.ParameterTypeInt,
+				FeasibleSpace: morphlingv1alpha1.FeasibleSpace{
+					Max:  "10",
+					Min:  "1",
+					List: []string{"1", "2", "3", "4", "10"},
+					Step: "1",
+				},
+			},
+			[]string{"1", "2", "3", "4", "5", "6", "7", "8", "9", "10"}, nil},
+		"double correct": {
+			morphlingv1alpha1.ParameterSpec{
+				Name:          "memory",
+				ParameterType: morphlingv1alpha1.ParameterTypeDouble,
+				FeasibleSpace: morphlingv1alpha1.FeasibleSpace{
+					Max:  "3.6",
+					Min:  "0.50",
+					List: nil,
+					Step: "0.5000",
+				},
+			},
+			[]string{"0.5", "1", "1.5", "2", "2.5", "3", "3.5"},
+			nil,
+		},
+		"discrete correct": {
+			morphlingv1alpha1.ParameterSpec{
+				Name:          "GPUMem",
+				ParameterType: morphlingv1alpha1.ParameterTypeDiscrete,
+				FeasibleSpace: morphlingv1alpha1.FeasibleSpace{
+					Max:  "10.6",
+					Min:  "0.5",
+					List: []string{"1GB", "1.5GB", "3GB"},
+					Step: "0.5",
+				},
+			},
+			[]string{"1GB", "1.5GB", "3GB"},
+			nil,
+		},
+		"int incorrect (min not int)": {
+			morphlingv1alpha1.ParameterSpec{
+				Name:          "cpu",
+				ParameterType: morphlingv1alpha1.ParameterTypeInt,
+				FeasibleSpace: morphlingv1alpha1.FeasibleSpace{
+					Max:  "10",
+					Min:  "1.1",
+					List: nil,
+					Step: "1",
+				},
+			},
+			nil,
+			&strconv.NumError{
+				Func: "ParseInt",
+				Num:  "1.1",
+				Err:  errors.NewBadRequest(""),
+			},
+		},
+		"int incorrect (min larger than max)": {
+			morphlingv1alpha1.ParameterSpec{
+				Name:          "cpu",
+				ParameterType: morphlingv1alpha1.ParameterTypeInt,
+				FeasibleSpace: morphlingv1alpha1.FeasibleSpace{
+					Max:  "10",
+					Min:  "12",
+					List: nil,
+					Step: "1",
+				},
+			},
+			nil,
+			fmt.Errorf("int parameter, min should be smaller than max"),
+		},
+	}
+
+	for name, tc := range testCases {
+		t.Run(fmt.Sprintf("%s", name), func(t *testing.T) {
+			feasibleSpace, err := samplingclient.ConvertFeasibleSpace(tc.parSpec.FeasibleSpace, tc.parSpec.ParameterType)
+			if tc.expectedOutput != nil {
+				assert.Equal(t, feasibleSpace, tc.expectedOutput)
+			} else {
+				assert.NotNil(t, err)
+				fmt.Println(err)
+			}
+
+		})
+	}
 }
 
 func newFakeInstance() *morphlingv1alpha1.ProfilingExperiment {
-	var maxNumTrials int32 = 1
+	var maxNumTrials int32 = 2
+	var parallelism int32 = 2
 	return &morphlingv1alpha1.ProfilingExperiment{
 		ObjectMeta: metav1.ObjectMeta{
-			Name:      experimentName,
-			Namespace: namespace,
+			Name:      ExperimentName,
+			Namespace: Namespace,
 		},
 		Spec: morphlingv1alpha1.ProfilingExperimentSpec{
-			MaxNumTrials: &maxNumTrials,
-			Objective: morphlingv1alpha1.ObjectiveSpec{
-				Type:                morphlingv1alpha1.ObjectiveTypeMaximize,
-				ObjectiveMetricName: "qps",
-			},
-			ServicePodTemplate: corev1.PodTemplate{
-				Template: corev1.PodTemplateSpec{
-					Spec: corev1.PodSpec{
-						Containers: []corev1.Container{
-							corev1.Container{
-								Name:  "servicePod-test",
-								Image: "gcr.io/tensorflow-serving/resnet",
+			TunableParameters: []morphlingv1alpha1.ParameterCategory{
+				{
+					Category: "resource",
+					Parameters: []morphlingv1alpha1.ParameterSpec{
+						{
+							Name:          "cpu",
+							ParameterType: morphlingv1alpha1.ParameterType("int"),
+							FeasibleSpace: morphlingv1alpha1.FeasibleSpace{
+								Min:  "1",
+								Max:  "2",
+								Step: "1",
+							},
+						},
+						{
+							Name:          "GPUMem",
+							ParameterType: morphlingv1alpha1.ParameterType("discrete"),
+							FeasibleSpace: morphlingv1alpha1.FeasibleSpace{
+								List: []string{"10G", "20G", "05G"},
 							},
 						},
 					},
 				},
 			},
+			Objective: morphlingv1alpha1.ObjectiveSpec{
+				Type:                morphlingv1alpha1.ObjectiveTypeMaximize,
+				ObjectiveMetricName: "qps",
+			},
+			Algorithm: morphlingv1alpha1.AlgorithmSpec{
+				AlgorithmName:     "grid",
+				AlgorithmSettings: nil,
+			},
+			MaxNumTrials: &maxNumTrials,
+			Parallelism:  &parallelism,
 			ClientTemplate: v1beta1.JobTemplateSpec{
 				Spec: batchv1.JobSpec{
 					Template: corev1.PodTemplateSpec{
 						Spec: corev1.PodSpec{
 							Containers: []corev1.Container{
-								corev1.Container{
+								{
 									Name:    "clientJob-test",
-									Image:   "lwangbm/delphin-client:7",
+									Image:   "kubedl/morphling-http-client:demo",
 									Command: []string{"python3"},
-									Args:    []string{"resnet_grpc_with_db.py"},
+									Args:    []string{"morphling_client.py", "--model", "mobilenet", "--printLog", "True", "--num_tests", "10"},
 									Env: []corev1.EnvVar{
 										{
 											Name:  "TF_CPP_MIN_LOG_LEVEL",
@@ -279,64 +318,61 @@ func newFakeInstance() *morphlingv1alpha1.ProfilingExperiment {
 						},
 					}},
 			},
-			TunableParameters: []morphlingv1alpha1.ParameterCategory{
-				{
-					Category: "resource",
-					Parameters: []morphlingv1alpha1.ParameterSpec{
-						{
-							Name:          "cpu",
-							ParameterType: morphlingv1alpha1.ParameterType("discrete"),
-							FeasibleSpace: morphlingv1alpha1.FeasibleSpace{
-								List: []string{"1", "2"},
+			ServicePodTemplate: corev1.PodTemplate{
+				Template: corev1.PodTemplateSpec{
+					Spec: corev1.PodSpec{
+						Containers: []corev1.Container{
+							{
+								Name:  "servicePod-test",
+								Image: "kubedl/morphling-tf-model:demo-cv",
 							},
 						},
 					},
 				},
 			},
-			Algorithm: morphlingv1alpha1.AlgorithmSpec{
-				AlgorithmName:     "grid",
-				AlgorithmSettings: nil,
-			},
-			RequestTemplate: "https://i.guim.co.uk/img/media/7a633730f5f90db3c12f6efc954a2d5b475c3d4a/0_138_5544_3327/master/5544.jpg?width=620&quality=45&auto=format&fit=max&dpr=2&s=fda28812dc06498b55f2e615455183c3",
+			ServiceProgressDeadline: nil,
 		},
 	}
 }
 
-// SetupTestReconcile returns a reconcile.Reconcile implementation that delegates to inner.
-func SetupTestReconcile(inner reconcile.Reconciler) reconcile.Reconciler {
-	fn := reconcile.Func(func(req reconcile.Request) (reconcile.Result, error) {
-		result, err := inner.Reconcile(req)
-		return result, err
-	})
-	return fn
-}
+func newMockSamplings() ([]morphlingv1alpha1.TrialAssignment, error) {
 
-// StartTestManager adds recFn
-func StartTestManager(mgr manager.Manager, g *gomega.GomegaWithT) (chan struct{}, *sync.WaitGroup) {
-	stop := make(chan struct{})
-	wg := &sync.WaitGroup{}
-	wg.Add(1)
-	go func() {
-		defer wg.Done()
-		g.Expect(mgr.Start(stop)).NotTo(gomega.HaveOccurred())
-	}()
-	return stop, wg
-}
-
-// addForTestPurpose adds a new Controller to mgr with r as the reconcile.Reconciler.
-func addForTestPurpose(mgr manager.Manager, r reconcile.Reconciler) error {
-	// Create a new controller
-	c, err := controller.New("test-experiment-controller", mgr, controller.Options{Reconciler: r})
-	if err != nil {
-		log.Error(err, "Failed to create experiment controller for test purpose.")
-		return err
-	}
-
-	if err = addWatch(c); err != nil {
-		log.Error(err, "Trial watch failed")
-		return err
-	}
-
-	log.Info("Experiment controller created")
-	return nil
+	return []morphlingv1alpha1.TrialAssignment{
+		{
+			ParameterAssignments: []morphlingv1alpha1.ParameterAssignment{{
+				Name:     "cpu",
+				Value:    "1",
+				Category: "resource",
+			}, {
+				Name:     "GPUMem",
+				Value:    "10G",
+				Category: "resource",
+			}},
+			Name: "trial-1",
+		},
+		{
+			ParameterAssignments: []morphlingv1alpha1.ParameterAssignment{{
+				Name:     "cpu",
+				Value:    "2",
+				Category: "resource",
+			}, {
+				Name:     "GPUMem",
+				Value:    "20G",
+				Category: "resource",
+			}},
+			Name: "trial-2",
+		},
+		{
+			ParameterAssignments: []morphlingv1alpha1.ParameterAssignment{{
+				Name:     "cpu",
+				Value:    "2",
+				Category: "resource",
+			}, {
+				Name:     "GPUMem",
+				Value:    "20G",
+				Category: "resource",
+			}},
+			Name: "trial-3",
+		},
+	}, nil
 }

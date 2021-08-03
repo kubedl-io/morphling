@@ -11,7 +11,7 @@ var (
 )
 
 func init() {
-	port = flag.String("port", "8081", "the port to listen to for incoming HTTP connections")
+	port = flag.String("port", "9091", "the port to listen to for incoming HTTP connections")
 	host = flag.String("host", "0.0.0.0", "the host to listen to for incoming HTTP connections")
 	buildDir = flag.String("build-dir", "dist", "the dir of frontend")
 }

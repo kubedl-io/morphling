@@ -1,0 +1,78 @@
+syntax = "proto3";
+package api.suggestion;
+option go_package = "../grpc_algorithm/go";
+//import "google/api/annotations.proto";
+
+service Suggestion {
+  rpc GetSuggestions(SamplingRequest) returns (SamplingResponse);
+  rpc ValidateAlgorithmSettings(SamplingValidationRequest) returns (SamplingValidationResponse);
+}
+
+message KeyValue {
+  string key = 1;
+  string value = 2;
+}
+
+//message AlgorithmExtraSetting {
+//  repeated KeyValue settings = 1;
+//}
+
+message ParameterAssignments {
+  repeated KeyValue key_values = 1;
+}
+
+message TrialResult {
+  repeated KeyValue parameter_assignments = 1;
+  float object_value = 2; //
+}
+
+//message ExistingResults {
+//  repeated TrialResult trial_results = 1;
+//}
+
+//message FeasibleSpace {
+//  repeated string list = 1;
+//}
+
+enum ParameterType {
+  UNKNOWN_TYPE = 0;
+  DOUBLE = 1;
+  INT = 2;
+  DISCRETE = 3;
+  CATEGORICAL = 4;
+}
+
+message ParameterSpec {
+  string name = 1;
+  ParameterType parameter_type = 2;
+  repeated string feasible_space = 3;
+}
+
+message SamplingRequest {
+  bool is_first_request = 1;
+  string algorithm_name = 2;
+  repeated KeyValue algorithm_extra_settings = 3;
+  int32 sampling_number_specified = 4;
+  int32 required_sampling = 6;
+  bool is_maximize = 7;
+  repeated TrialResult existing_results = 8;
+  repeated ParameterSpec parameters = 9;
+}
+
+message SamplingResponse {
+  repeated ParameterAssignments assignments_set = 1;
+}
+
+message SamplingValidationRequest {
+  string algorithm_name = 1;
+  repeated KeyValue algorithm_extra_settings = 2;
+  int32 sampling_number_specified = 3;
+  bool is_maximize = 4;
+  repeated ParameterSpec parameters = 5;
+}
+
+message SamplingValidationResponse {
+}
+
+
+
