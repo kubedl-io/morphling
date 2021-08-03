@@ -28,6 +28,6 @@ RUN pip install --no-cache-dir -r requirements.txt
 RUN chgrp -R 0 ${TARGET_DIR} \
   && chmod -R g+rwX ${TARGET_DIR}
 
-ENV PYTHONPATH ${TARGET_DIR}:${TARGET_DIR}/api/v1alpha1/grpc/grpc_algorithm/python3:${TARGET_DIR}/api/v1alpha1/grpc/health/python
+ENV PYTHONPATH ${TARGET_DIR}:${TARGET_DIR}/api/v1alpha1/grpc_proto/grpc_algorithm/python3:${TARGET_DIR}/api/v1alpha1/grpc_proto/health/python
 
 ENTRYPOINT ["python", "main.py"]
