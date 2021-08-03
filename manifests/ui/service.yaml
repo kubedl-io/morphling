@@ -12,7 +12,7 @@ spec:
     - port: 80
       protocol: TCP
       name: ui
-      targetPort: 8080
+      targetPort: 9091
       nodePort: 30680
   selector:
     app: morphling

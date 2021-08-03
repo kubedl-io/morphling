@@ -1,28 +1,93 @@
 kind: ConfigMap
 metadata:
-  name: morpgling-ui-config
+  name: morphling-data-config
   namespace: morphling-system
 apiVersion: v1
 data:
   namespace: morphling-system
-  http-client-image: kubedl/morphling-http-client
-  http-client.yaml: |-
+  algorithm-names: |-
+    ["random", "grid"]
+  http-client-image: "kubedl/morphling-http-client:demo"
+  http-hsf-image: "kubedl/morphling-hsf-client:demo"
+  http-client-yaml: |-
     metadata:
-      name: "resnet50-client"
+      name: "mobilenet-client"
       namespace: "default"
     spec:
       template:
         spec:
           containers:
-          - image: kubedl/morphling-http-client
+          - name: pi
+            image: kubedl/morphling-http-client:demo
             env:
               - name: TF_CPP_MIN_LOG_LEVEL
                 value: "3"
               - name: MODEL_NAME
-                value: "resnet50"
+                value: "mobilenet"
+            resources:
+              requests:
+                cpu: 800m
+                memory: "1800Mi"
+              limits:
+                cpu: 800m
+                memory: "1800Mi"
             command: [ "python3" ]
-            args: ["morphling_client.py", "--model", "resnet50", "--printLog", "True"]
+            args: ["morphling_client.py", "--model", "mobilenet", "--printLog", "True", "--num_tests", "10"]
+
             imagePullPolicy: IfNotPresent
           restartPolicy: Never
-      backoffLimit: 4
+      backoffLimit: 1
+
+  hsf-client-yaml: |-
+    metadata:
+      name: "mobilenet-client"
+      namespace: "default"
+    spec:
+      template:
+        spec:
+          containers:
+          - name: pi
+            image: kubedl/morphling-http-client:demo
+            env:
+              - name: TF_CPP_MIN_LOG_LEVEL
+                value: "3"
+              - name: MODEL_NAME
+                value: "mobilenet"
+            resources:
+              requests:
+                cpu: 800m
+                memory: "1800Mi"
+              limits:
+                cpu: 800m
+                memory: "1800Mi"
+            command: [ "python3" ]
+            args: ["morphling_client.py", "--model", "mobilenet", "--printLog", "True", "--num_tests", "10"]
+
+            imagePullPolicy: IfNotPresent
+          restartPolicy: Never
+      backoffLimit: 1
+  http-service-yaml: |-
+    metadata:
+      name: "mobilenet-pod"
+      namespace: "default"
+    template:
+      spec:
+        containers:
+          - name: resnet-container
+            image: kubedl/morphling-tf-model:demo-cv
+            imagePullPolicy: IfNotPresent
+            env:
+              - name: MODEL_NAME
+                value: "mobilenet"
+            resources:
+              requests:
+                cpu: 1
+                memory: "1800Mi"
+              limits:
+                cpu: 1
+                memory: "1800Mi"
+            ports:
+              - containerPort: 8500
+
+
 
