@@ -1,5 +1,6 @@
 import {Badge} from 'antd';
 import React from 'react';
+import ExperimentStatus from "@/components/ExperimentStatus";
 
 const STATUS_MAP = {
   'All': {
@@ -48,4 +49,4 @@ const PodStatus = props => {
 
 };
 
-export default PodStatus;
+export default ExperimentStatus;

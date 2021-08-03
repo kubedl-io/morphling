@@ -189,6 +189,14 @@ const TableForm = ({value, onChange}) => {
           return;
         }
       }
+      if (target.type === "discrete") {
+        if (!target.list.match(/^(\s*-?\d+(\.\d+)?)(\s*,\s*-?\d+(\.\d+)?)*$/) && !target.list.match(/^(\s*-?[a-zA-Z0-9][a-zA-Z0-9_\-]?)+(,(\s*-?[a-zA-Z0-9][a-zA-Z0-9_\-]?)+)*$/)) {
+          message.error(intl.formatMessage({id: 'morphling-dashboard-err-valid-par-discrete'}));
+          e.target.focus();
+          setLoading(false);
+          return;
+        }
+      }
 
       delete target.isNew;
       toggleEditable(e, key);
@@ -368,7 +376,7 @@ const TableForm = ({value, onChange}) => {
       title: intl.formatMessage({id: 'morphling-dashboard-pe-parameter-max'}),
       dataIndex: 'max',
       key: 'max',
-      width: '13%',
+      width: '8%',
       render: (text, record) => {
         if (record.editable && getFiled("type", record.key) !== "discrete") {
           return (

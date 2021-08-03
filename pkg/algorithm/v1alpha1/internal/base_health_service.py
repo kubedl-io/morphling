@@ -18,10 +18,11 @@ import threading
 
 import grpc
 
-from api.v1alpha1.manager.health.python import health_pb2 as _health_pb2
-from api.v1alpha1.manager.health.python import health_pb2_grpc as _health_pb2_grpc
+from api.v1alpha1.grpc_proto.health.python import health_pb2 as _health_pb2, health_pb2_grpc as _health_pb2_grpc
 
 SERVICE_NAME = _health_pb2.DESCRIPTOR.services_by_name['Health'].full_name
+
+# https://grpc.github.io/grpc/python/grpc_health_checking.html
 
 
 class _Watcher:
@@ -82,7 +83,7 @@ class HealthServicer(_health_pb2_grpc.HealthServicer):
         self.Watch.__func__.experimental_non_blocking = experimental_non_blocking
         self.Watch.__func__.experimental_thread_pool = experimental_thread_pool
         self._gracefully_shutting_down = False
-        self.set("manager.v1alpha3.Suggestion", _health_pb2.HealthCheckResponse.SERVING)
+        self.set("algorithm.probe", _health_pb2.HealthCheckResponse.SERVING)
 
     def _on_close_callback(self, send_response_callback, service):
 

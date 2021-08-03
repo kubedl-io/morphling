@@ -529,7 +529,7 @@ export default {
   'morphling-dashboard-err-valid-par-double': "Please enter doubles for parameters",
   'morphling-dashboard-err-valid-par-range': "Please enter valid parameter range",
   'morphling-dashboard-pe-parameter-min': "Min",
-  'morphling-dashboard-pe-parameter-max': "Max (exclude)",
+  'morphling-dashboard-pe-parameter-max': "Max",
   'morphling-dashboard-pe-parameter-step': "Step",
   'morphling-dashboard-pe-parameter-list': "Discrete List",
   'morphling-dashboard-pe-parameter-action': "Operation",
@@ -554,6 +554,8 @@ export default {
   'morphling-dashboard-err-duplicate': "Please delete duplicated parameters",
   "morphling-dashboard-results": "Profiling Results",
   "morphling-dashboard-optimal": "Current Optimal Configuration",
+  'morphling-dashboard-err-valid-par-discrete': "Please enter valid list: number, letters, digits, '-', and '_'",
+
 
 
 

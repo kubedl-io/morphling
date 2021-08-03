@@ -17,10 +17,13 @@ limitations under the License.
 package controllers
 
 import (
+	"github.com/alibaba/morphling/api/v1alpha1"
 	"github.com/alibaba/morphling/pkg/controllers/trial"
+	controllerruntime "sigs.k8s.io/controller-runtime"
 )
 
 func init() {
-	// AddToManagerFuncs is a list of functions to create controllers and add them to a manager.
-	AddToManagerFuncs = append(AddToManagerFuncs, trial.Add)
+	SetupWithManagerMap[&v1alpha1.Trial{}] = func(mgr controllerruntime.Manager) error {
+		return trial.NewReconciler(mgr).SetupWithManager(mgr)
+	}
 }

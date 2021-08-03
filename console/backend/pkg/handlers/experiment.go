@@ -57,7 +57,7 @@ func (handler *ExperimentHandler) GetExperimentList(query *utils.Query) ([]utils
 	for _, pe := range expList.Items {
 
 		// Time
-		if pe.Status.StartTime.Time.After(query.EndTime) || pe.Status.StartTime.Time.Before(query.StartTime) {
+		if pe.Status.StartTime != nil && (pe.Status.StartTime.Time.After(query.EndTime) || pe.Status.StartTime.Time.Before(query.StartTime)) {
 			continue
 		}
 
@@ -87,7 +87,7 @@ func (handler *ExperimentHandler) GetExperimentList(query *utils.Query) ([]utils
 		if pe.Status.CompletionTime != nil {
 			newPeInfo.EndTime = pe.Status.CompletionTime.Time.Local().Format(constant.JobInfoTimeFormat)
 			newPeInfo.DurationTime = utils.GetTimeDiffer(pe.Status.StartTime.Time, pe.Status.CompletionTime.Time)
-		} else{
+		} else {
 			newPeInfo.DurationTime = utils.GetTimeDiffer(pe.Status.StartTime.Time.Local(), metav1.Now().Time)
 		}
 		peInfoList = append(peInfoList, newPeInfo)
@@ -154,6 +154,7 @@ func (handler *ExperimentHandler) GetExperimentDetail(query *utils.Query) (utils
 		Parallelism:     *pe.Spec.Parallelism,
 		//Parameters:         nil,
 		//Trials:             nil,
+		CurrentOptimalTrials: make([]utils.CurrentOptimalTrial, 0),
 	}
 
 	// EndTime and DurationTime
@@ -162,6 +163,20 @@ func (handler *ExperimentHandler) GetExperimentDetail(query *utils.Query) (utils
 		peInfo.DurationTime = utils.GetTimeDiffer(pe.Status.StartTime.Time, pe.Status.CompletionTime.Time)
 	} else {
 		peInfo.DurationTime = utils.GetTimeDiffer(pe.Status.StartTime.Time.Local(), metav1.Now().Time)
+	}
+
+	// CurrentOptimalTrial
+	if pe.Status.CurrentOptimalTrial.TunableParameters != nil {
+		peInfo.CurrentOptimalTrials = append(peInfo.CurrentOptimalTrials, utils.CurrentOptimalTrial{
+			ObjectiveName:  pe.Status.CurrentOptimalTrial.ObjectiveMetricsObserved[0].Name,
+			ObjectiveValue: pe.Status.CurrentOptimalTrial.ObjectiveMetricsObserved[0].Value,
+		})
+
+		parameterSamples := map[string]string{}
+		for _, samplingResults := range pe.Status.CurrentOptimalTrial.TunableParameters {
+			parameterSamples[samplingResults.Name] = samplingResults.Value
+		}
+		peInfo.CurrentOptimalTrials[0].ParameterSamples = parameterSamples
 	}
 
 	// Parameters
@@ -195,7 +210,7 @@ func (handler *ExperimentHandler) GetExperimentDetail(query *utils.Query) (utils
 	return peInfo, nil
 }
 
-func (handler *ExperimentHandler) getTrialList (name, ns string) ([]utils.TrialSpec, error){
+func (handler *ExperimentHandler) getTrialList(name, ns string) ([]utils.TrialSpec, error) {
 	ctrlClient := handler.client
 
 	// Get trials
@@ -213,11 +228,11 @@ func (handler *ExperimentHandler) getTrialList (name, ns string) ([]utils.TrialS
 	trialSpecList := make([]utils.TrialSpec, 0)
 
 	for _, trial := range trialList.Items {
-		succeeded := false
+		//succeeded := false
 		for _, condition := range trial.Status.Conditions {
 			if condition.Type == morphlingv1alpha1.TrialSucceeded &&
 				condition.Status == corev1.ConditionTrue {
-				succeeded = true
+				//succeeded = true
 			}
 		}
 		var lastTrialCondition string
@@ -226,22 +241,22 @@ func (handler *ExperimentHandler) getTrialList (name, ns string) ([]utils.TrialS
 		}
 
 		newTrial := utils.TrialSpec{
-			Name:   trial.Name,
-			Status: lastTrialCondition,
+			Name:       trial.Name,
+			Status:     lastTrialCondition,
 			CreateTime: trial.Status.StartTime.Time.Local().Format(constant.JobInfoTimeFormat),
 			//ObjectiveName:    trial.Status.TrialResult.ObjectiveMetricsObserved[0].Name,
 			//ObjectiveValue:   trial.Status.TrialResult.ObjectiveMetricsObserved[0].Value,
 			//ParameterSamples: nil,
 		}
 
-		if succeeded {
+		{ //if succeeded
 			newTrial.ObjectiveName = trial.Status.TrialResult.ObjectiveMetricsObserved[0].Name
 			newTrial.ObjectiveValue = trial.Status.TrialResult.ObjectiveMetricsObserved[0].Value
 		}
 
 		if trial.Spec.SamplingResult != nil {
-			parameterSamples := (map[string]string{})
-			for _, samplingResults := range (trial.Spec.SamplingResult) {
+			parameterSamples := map[string]string{}
+			for _, samplingResults := range trial.Spec.SamplingResult {
 				parameterSamples[samplingResults.Name] = samplingResults.Value
 			}
 			newTrial.ParameterSamples = parameterSamples
@@ -307,7 +322,6 @@ func (handler *ExperimentHandler) DeleteJobFromBackend(ns, name string) error {
 // Submit experiment
 func (handler *ExperimentHandler) SubmitExperiment(data []byte) error {
 
-
 	pe := morphlingv1alpha1.ProfilingExperiment{}
 	err := json.Unmarshal(data, &pe)
 	if err == nil {
@@ -322,7 +336,6 @@ func (handler *ExperimentHandler) SubmitExperiment(data []byte) error {
 	return handler.submitExperiment(pe)
 }
 
-
 // Submit experiment with parameters
 func (handler *ExperimentHandler) SubmitExperimentPars(dataRaw []byte) error {
 
@@ -333,7 +346,6 @@ func (handler *ExperimentHandler) SubmitExperimentPars(dataRaw []byte) error {
 		klog.Errorf("failed to unmarshal experiment in yaml format, fallback to json marshalling then, data: %s", string(dataRaw))
 		return err
 	}
-
 
 	pe := morphlingv1alpha1.ProfilingExperiment{}
 
@@ -377,7 +389,6 @@ func (handler *ExperimentHandler) SubmitExperimentPars(dataRaw []byte) error {
 
 	return handler.submitExperiment(pe)
 }
-
 
 func (handler *ExperimentHandler) submitExperiment(pe morphlingv1alpha1.ProfilingExperiment) error {
 	if err := handler.client.Create(context.Background(), &pe); err != nil {

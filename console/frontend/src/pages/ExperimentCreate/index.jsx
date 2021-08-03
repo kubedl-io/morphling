@@ -2,13 +2,13 @@ import AceEditor from 'react-ace';
 import 'ace-builds/src-noconflict/theme-sqlserver';
 import 'ace-builds/src-noconflict/mode-yaml';
 // import "ace-builds/src-noconflict/theme-github";
-import {Button, Card, Col, Form, Input, InputNumber, Row, Select} from "antd";
+import {Button, Card, Col, Form, Input, InputNumber, Row, Select, message} from "antd";
 import React, {useEffect, useState} from "react";
 import {connect} from "dva";
 import {PageHeaderWrapper} from "@ant-design/pro-layout";
 import {submitPePars, submitPeYaml} from "./service";
 import FooterToolbar from "./components/FooterToolbar";
-import {initialClientYaml, initialParameter, initialServiceYaml, initialYaml} from "./components/InitiForm";
+import { initialParameter, initialYaml} from "./components/InitiForm";
 import {getLocale, history, useIntl} from 'umi';
 import {queryAlgorithmNames, queryCurrent, queryNamespaces} from "@/services/user";
 import TableForm from './components/TableForm';
@@ -17,12 +17,14 @@ import styles from "./style.less";
 const FormItem = Form.Item;
 const ExperimentCreate = ({globalConfig}) => {
   const intl = useIntl();
+  const algorithmNames = globalConfig["algorithm-names"]
+  const initialClientYaml = globalConfig["http-client-yaml"]
+  const initialServiceYaml = globalConfig["http-service-yaml"]
   const [submitLoading, setSubmitLoading] = useState(false);
   const [usersInfo, setUsersInfo] = useState({});
   const [activeMainTabKey, setMainActiveTabKey] = useState("parameter");
   const [activeYamlTabKey, setActiveYamlTabKey] = useState("client");
   const [namespaces, setNamespaces] = useState([]);
-  const [algorithmNames, setAlgorithmNames] = useState([]);
   const objectiveNames = ["qps"]
   const objectiveTypes = ["maximize", "minimize"]
   const [form] = Form.useForm();
@@ -98,8 +100,8 @@ const ExperimentCreate = ({globalConfig}) => {
     });
     fetchNamespaces().then(r => {
     });
-    fetchAlgorithmNames().then(r => {
-    });
+    // fetchAlgorithmNames().then(r => {
+    // });
   }, []);
 
   const preventBubble = (e) => {e.preventDefault();}
@@ -115,15 +117,15 @@ const ExperimentCreate = ({globalConfig}) => {
     setNamespaces(namespaces);
   }
 
-  const fetchAlgorithmNames = async () => {
-    const response = await queryAlgorithmNames();
-
-    let algorithmNames = [];
-    response.data.forEach(item => {
-      algorithmNames.push(item)
-    });
-    setAlgorithmNames(algorithmNames);
-  }
+  // const fetchAlgorithmNames = async () => {
+  //   const response = await queryAlgorithmNames();
+  //
+  //   let algorithmNames = [];
+  //   response.data.forEach(item => {
+  //     algorithmNames.push(item)
+  //   });
+  //   setAlgorithmNames(algorithmNames);
+  // }
 
   const fetchUser = async () => {
     const currenteUsers = await queryCurrent();
@@ -136,7 +138,8 @@ const ExperimentCreate = ({globalConfig}) => {
   };
 
   const splitParameterList = (string) => {
-    return string.split(',')
+    // message.error(string.replace(/\s+/g, '').split(','));
+    return string.replace(/\s+/g, '').split(',')
   }
 
   const onFormSubmit = async form => {
@@ -232,6 +235,8 @@ const ExperimentCreate = ({globalConfig}) => {
       let ret = await submitPePars(data_all);
       if (ret.code === "200") {
         history.push("/pe-monitor");
+      } else{
+        message.error(ret.data);
       }
     } finally {
       setSubmitLoading(false);
@@ -244,6 +249,8 @@ const ExperimentCreate = ({globalConfig}) => {
       let ret = await submitPeYaml(peYaml);
       if (ret.code === "200") {
         history.push("/pe-monitor");
+      }else{
+        message.error(ret.data);
       }
     } finally {
       setSubmitLoading(false);

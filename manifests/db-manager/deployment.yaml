@@ -22,18 +22,14 @@ spec:
       containers:
         - name: morphling-db-manager
           image: kubedl/morphling-database-manager
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           env:
             - name : DB_NAME
               value: "mysql"
             - name: DB_PASSWORD
               value: "morphling"
-          #            valueFrom:
-          #              secretKeyRef:
-          #                name: morphling-mysql-secrets
-          #                key: MYSQL_ROOT_PASSWORD
           command:
-            - './morphling-db-manager'
+            - './morphling-storage'
           ports:
             - name: api
               containerPort: 6799
