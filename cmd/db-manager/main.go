@@ -41,9 +41,9 @@ func (s *server) Check(ctx context.Context, in *health_pb.HealthCheckRequest) (*
 	}
 
 	// We only accept optional service name only if it's set to suggested format.
-	if in != nil && in.Service != "" && in.Service != "grpc_algorithm.health.v1.Health" {
+	if in != nil && in.Service != "" && in.Service != "grpc.health.v1.Health" {
 		resp.Status = health_pb.HealthCheckResponse_UNKNOWN
-		return &resp, fmt.Errorf("grpc_algorithm.health.v1.Health can only be accepted if you specify service name.")
+		return &resp, fmt.Errorf("grpc.health.v1.Health can only be accepted if you specify service name.")
 	}
 
 	return &resp, nil
