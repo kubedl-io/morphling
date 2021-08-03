@@ -91,6 +91,7 @@ func TestCreateTrial(t *testing.T) {
 	g := gomega.NewGomegaWithT(t)
 	mockCtrl := gomock.NewController(t)
 	defer mockCtrl.Finish()
+	time.Sleep(5 * time.Second)
 	mgr, err := manager.New(cfg, manager.Options{})
 	g.Expect(err).NotTo(gomega.HaveOccurred())
 	c := mgr.GetClient()
