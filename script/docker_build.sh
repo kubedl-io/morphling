@@ -13,7 +13,7 @@ cd ${SCRIPT_ROOT}
 echo "cd to ${SCRIPT_ROOT}"
 
 # controller, storage, and ui
-docker build -t ${UI_IMG} -f cmd/ui/Dockerfile .
+docker build -t ${UI_IMG} -f  console/Dockerfile .
 docker build -t ${DB_MANAGER_IMG} -f cmd/db-manager/Dockerfile .
 docker build -t ${CONTROLLER_IMG} -f cmd/controllers/Dockerfile .
 
