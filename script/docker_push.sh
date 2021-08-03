@@ -8,7 +8,7 @@ UI_IMG=kubedl/morphling-ui:latest
 ALGORITHM_IMG=kubedl/morphling-algorithm:base
 CLIENT_IMG=kubedl/morphling-http-client:demo
 
-SCRIPT_ROOT=$(dirname ${BASH_SOURCE})/../..
+SCRIPT_ROOT=$(dirname ${BASH_SOURCE})/..
 cd ${SCRIPT_ROOT}
 echo "cd to ${SCRIPT_ROOT}"
 
