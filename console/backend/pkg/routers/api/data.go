@@ -26,7 +26,6 @@ func (ctrl *DataAPIsController) RegisterRoutes(routes *gin.RouterGroup) {
 	data.GET("/namespaces", ctrl.getNamespaces)
 	data.GET("/config", ctrl.getConfig)
 	//data.GET("/namespaces", ctrl.algorithmNames)
-
 }
 
 func (ctrl *DataAPIsController) getClusterTotal(c *gin.Context) {
