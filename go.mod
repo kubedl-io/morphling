@@ -3,32 +3,24 @@ module github.com/alibaba/morphling
 go 1.16
 
 require (
-	github.com/DATA-DOG/go-sqlmock v1.5.0
-	github.com/Rosaniline/gorm-ut v0.0.0-20190331143837-786b71894576
 	github.com/ghodss/yaml v1.0.0
 	github.com/gin-contrib/sessions v0.0.3
 	github.com/gin-contrib/static v0.0.1
 	github.com/gin-gonic/gin v1.7.2
 	github.com/go-logr/logr v0.1.0
 	github.com/go-sql-driver/mysql v1.6.0
-	github.com/go-test/deep v1.0.7
 	github.com/golang/mock v1.4.4
 	github.com/golang/protobuf v1.4.3
 	github.com/jinzhu/gorm v1.9.16
+	github.com/jinzhu/now v1.1.2 // indirect
 	github.com/mattn/go-sqlite3 v2.0.1+incompatible // indirect
-	github.com/onsi/ginkgo v1.11.0
 	github.com/onsi/gomega v1.8.1
-	github.com/prometheus/common v0.4.1 // indirect
-	github.com/satori/go.uuid v1.2.0
-	github.com/spf13/viper v1.3.2
 	github.com/stretchr/testify v1.7.0
 	golang.org/x/net v0.0.0-20201010224723-4f7140c49acb
 	golang.org/x/sys v0.0.0-20201015000850-e3ed0017c211 // indirect
-	google.golang.org/genproto v0.0.0-20201015140912-32ed001d685c
+	google.golang.org/genproto v0.0.0-20201015140912-32ed001d685c // indirect
 	google.golang.org/grpc v1.32.0
 	google.golang.org/protobuf v1.25.0
-	gopkg.in/DATA-DOG/go-sqlmock.v1 v1.3.0
-	gorm.io/driver/mysql v1.1.1 // indirect
 	k8s.io/api v0.18.5
 	k8s.io/apimachinery v0.18.5
 	k8s.io/client-go v0.18.5
