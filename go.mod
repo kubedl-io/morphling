@@ -27,6 +27,7 @@ require (
 	k8s.io/klog v1.0.0
 	k8s.io/kubernetes v1.18.5
 	sigs.k8s.io/controller-runtime v0.6.0
+	sigs.k8s.io/controller-tools v0.3.0 // indirect
 )
 
 replace (
@@ -56,8 +57,9 @@ replace (
 	k8s.io/sample-controller => k8s.io/sample-controller v0.18.5
 )
 
-//replace k8s.io/api => k8s.io/api v0.18.6
-//replace (
-//	k8s.io/code-generator => k8s.io/code-generator v0.18.6
-//	sigs.k8s.io/controller-tools/cmd/controller-gen => sigs.k8s.io/controller-tools/cmd/controller-gen v0.3.0
-//)
+//replace
+replace (
+	//k8s.io/api => k8s.io/api v0.18.6
+	k8s.io/code-generator => k8s.io/code-generator v0.18.5
+	//sigs.k8s.io/controller-tools/cmd/controller-gen => sigs.k8s.io/controller-tools/cmd/controller-gen v0.3.0
+)
