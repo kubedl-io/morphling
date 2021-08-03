@@ -58,11 +58,11 @@ generate: controller-gen
 
 # Build the docker image
 docker-build:
-	bash scripts/docker_build.sh
+	bash script/docker_build.sh
 
 # Push the docker image
 docker-push:
-	bash scripts/docker_push.sh
+	bash script/docker_push.sh
 
 # find or download controller-gen
 # download controller-gen if necessary
