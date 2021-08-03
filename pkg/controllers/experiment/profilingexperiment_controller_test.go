@@ -160,7 +160,7 @@ func TestReconcileExperiment(t *testing.T) {
 	}, Timeout).Should(gomega.BeTrue())
 }
 
-func TestSetParameterSpace(t *testing.T) {
+func _TestSetParameterSpace(t *testing.T) {
 
 	testCases := map[string]struct {
 		parSpec        morphlingv1alpha1.ParameterSpec
