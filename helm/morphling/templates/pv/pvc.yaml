@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: morphling-mysql
+  namespace: morphling-system
+  labels:
+    app: morphling
+    {{- include "morphling.labels" . | nindent 4 }}
+spec:
+  storageClassName: standard
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

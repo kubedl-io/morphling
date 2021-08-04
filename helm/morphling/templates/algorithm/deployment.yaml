@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   name: morphling-algorithm-server
   namespace: morphling-system
+  labels:
+    {{- include "morphling.labels" . | nindent 4 }}
 spec:
   replicas: 1
   revisionHistoryLimit: 10

@@ -1,0 +1,68 @@
+
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  creationTimestamp: null
+  name: {{ include "morphling.fullname" . }}-role
+rules:
+- apiGroups:
+  - apps
+  resources:
+  - deployments
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - apps
+  resources:
+  - deployments/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - tuning.kubedl.io
+  resources:
+  - profilingexperiments
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - tuning.kubedl.io
+  resources:
+  - profilingexperiments/status
+  verbs:
+  - get
+  - patch
+  - update
+- apiGroups:
+  - tuning.kubedl.io
+  resources:
+  - trials
+  verbs:
+  - create
+  - delete
+  - get
+  - list
+  - patch
+  - update
+  - watch
+- apiGroups:
+  - tuning.kubedl.io
+  resources:
+  - trials/status
+  verbs:
+  - get
+  - patch
+  - update

@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: morphling-mysql
+  namespace: morphling-system
+  labels:
+    app: morphling
+    component: mysql
+    {{- include "morphling.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: morphling
+      component: mysql
+  template:
+    metadata:
+      name: morphling-mysql
+      labels:
+        app: morphling
+        component: mysql
+    spec:
+      containers:
+        - name: morphling-mysql
+          image: kubedl/mysql
+          imagePullPolicy: IfNotPresent
+          args:
+            - --datadir
+            - /var/lib/mysql/datadir
+          env:
+            - name: MYSQL_ROOT_PASSWORD
+              value: "morphling"
+            - name: MYSQL_ALLOW_EMPTY_PASSWORD
+              value: "true"
+            - name: MYSQL_DATABASE
+              value: "morphling"
+          ports:
+            - name: dbapi
+              containerPort: 3306
+          readinessProbe:
+            exec:
+              command:
+                - "/bin/bash"
+                - "-c"
+                - "mysql -D ${MYSQL_DATABASE} -u root -p${MYSQL_ROOT_PASSWORD} -e 'SELECT 1'"
+            initialDelaySeconds: 120
+            periodSeconds: 50
+            timeoutSeconds: 5
+          livenessProbe:
+            exec:
+              command:
+                - "/bin/bash"
+                - "-c"
+                - "mysqladmin ping -u root -p${MYSQL_ROOT_PASSWORD}"
+            initialDelaySeconds: 120
+            periodSeconds: 10
+            timeoutSeconds: 5
+          volumeMounts:
+            - name: morphling-mysql
+              mountPath: /var/lib/mysql
+      volumes:
+        - name: morphling-mysql
+          persistentVolumeClaim:
+            claimName: morphling-mysql
