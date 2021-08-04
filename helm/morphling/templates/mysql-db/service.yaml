@@ -1,0 +1,18 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: morphling-mysql
+  namespace: morphling-system
+  labels:
+    app: morphling
+    component: mysql
+    {{- include "morphling.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 3306
+      protocol: TCP
+      name: dbapi
+  selector:
+    app: morphling
+    component: mysql

@@ -228,11 +228,15 @@ func (handler *ExperimentHandler) getTrialList(name, ns string) ([]utils.TrialSp
 	trialSpecList := make([]utils.TrialSpec, 0)
 
 	for _, trial := range trialList.Items {
-		//succeeded := false
+		succeeded := false
 		for _, condition := range trial.Status.Conditions {
 			if condition.Type == morphlingv1alpha1.TrialSucceeded &&
 				condition.Status == corev1.ConditionTrue {
-				//succeeded = true
+				succeeded = true
+			}
+			if condition.Type == morphlingv1alpha1.TrialFailed &&
+				condition.Status == corev1.ConditionTrue {
+				succeeded = true
 			}
 		}
 		var lastTrialCondition string
@@ -249,7 +253,7 @@ func (handler *ExperimentHandler) getTrialList(name, ns string) ([]utils.TrialSp
 			//ParameterSamples: nil,
 		}
 
-		{ //if succeeded
+		if succeeded {
 			newTrial.ObjectiveName = trial.Status.TrialResult.ObjectiveMetricsObserved[0].Name
 			newTrial.ObjectiveValue = trial.Status.TrialResult.ObjectiveMetricsObserved[0].Value
 		}

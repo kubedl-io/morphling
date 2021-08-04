@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: morphling-db-manager
+  namespace: morphling-system
+  labels:
+    app: morphling
+    component: db-manager
+    {{- include "morphling.labels" . | nindent 4 }}
+spec:
+  type: ClusterIP
+  ports:
+    - port: 6799
+      targetPort: 6799
+      protocol: TCP
+      name: api
+  selector:
+    app: morphling
+    component: db-manager
