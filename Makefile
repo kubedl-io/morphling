@@ -74,5 +74,8 @@ else
 CONTROLLER_GEN=$(shell which controller-gen)
 endif
 
-
+# Update helm charts
+# For example: export VERSION=0.5.0 && make helm-charts
+helm-chart:
+	bash script/helm_chart.sh
 
