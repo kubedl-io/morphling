@@ -1,0 +1,47 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: morphling-controller
+  namespace: morphling-system
+  labels:
+    app: morphling-controller
+    {{- include "morphling.labels" . | nindent 4 }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: morphling-controller
+  template:
+    metadata:
+      labels:
+        app: morphling-controller
+      annotations:
+        prometheus.io/scrape: 'true'
+    spec:
+      serviceAccountName: morphling-controller
+      containers:
+        - name: morphling-controller
+          image: kubedl/morphling-controllers
+          imagePullPolicy: Always
+          command: ["./morphling-controller"]
+          ports:
+            - containerPort: 8443
+              name: webhook
+              protocol: TCP
+            - containerPort: 8080
+              name: metrics
+              protocol: TCP
+          env:
+            - name: MORPHLING_CORE_NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+          volumeMounts:
+            - mountPath: /tmp/cert
+              name: cert
+              readOnly: true
+      volumes:
+        - name: cert
+          secret:
+            defaultMode: 420
+            secretName: morphling-controller
