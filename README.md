@@ -1,7 +1,7 @@
 # Morphling
 
 Morphling is an auto-configuration framework for
-machine learning model serving (inference) on Kubernetes.  Check the [website](kubedl.io/tuning/intro/) for details.
+machine learning model serving (inference) on Kubernetes.  Check the [website](http://kubedl.io/tuning/intro/) for details.
 
 ## Overview
 
