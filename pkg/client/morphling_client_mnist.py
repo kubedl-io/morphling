@@ -41,8 +41,10 @@ models = {
     'resnet50v2': [224, 224],
     'vgg16': [224, 224],
     'vgg19': [224, 224],
-    'xception': [299, 299]
+    'xception': [299, 299],
+    'mnist': [256, 256]
 }
+
 
 with tf.device("/cpu:0"):
     tf.get_logger().setLevel('ERROR')
@@ -58,10 +60,10 @@ with tf.device("/cpu:0"):
     tf.compat.v1.app.flags.DEFINE_string('image', '', 'path to imxage in JPEG format')
     tf.compat.v1.app.flags.DEFINE_string('model', os.environ['MODEL_NAME'], 'model name')
     tf.compat.v1.app.flags.DEFINE_string('signature', 'serving_default', 'signature name')
-    tf.compat.v1.app.flags.DEFINE_string('inputs', 'inputs', 'signatureDef for inputs')
-    tf.compat.v1.app.flags.DEFINE_string('outputs', 'predictions', 'signatureDef for outputs')
+    tf.compat.v1.app.flags.DEFINE_string('inputs', 'Conv1_input', 'signatureDef for inputs')
+    tf.compat.v1.app.flags.DEFINE_string('outputs', 'dense', 'signatureDef for outputs')
     tf.compat.v1.app.flags.DEFINE_enum('task', default='cv', enum_values=['cv', 'nlp'], help='which type of task')
-    tf.compat.v1.app.flags.DEFINE_bool('printLog', False, 'whether to print temp results')
+    tf.compat.v1.app.flags.DEFINE_bool('printLog', True, 'whether to print temp results')
     FLAGS = tf.compat.v1.app.flags.FLAGS
 
     # dl_request = requests.get(IMAGE_URL, stream=True)
@@ -73,6 +75,7 @@ with tf.device("/cpu:0"):
         data = tf.image.decode_jpeg(data)
         data = tf.image.convert_image_dtype(data, dtype=tf.float32)
         data = tf.image.resize(data, size=models[FLAGS.model])
+        data = data[:, :, 0:1]  #tf.expand_dims(data[:, :, 0:1], axis=0)  # data = data[:, :, 0]  #
         data = tf.expand_dims(data, axis=0)
     elif FLAGS.task == 'nlp':
         data = tf.convert_to_tensor(["This is a test!"])
@@ -226,7 +229,7 @@ with tf.device("/cpu:0"):
         qps_max = None
         qps_current = FLAGS.qps
         qps_previous = 0
-        rt_slo = 1.0
+        rt_slo = 0.1
 
         error_rate, rt, qps_real = do_inference(num_tests=FLAGS.num_tests, qps=qps_current)
 
