@@ -42,7 +42,7 @@ spec:
       spec:
         containers:
           - name: resnet-container
-            image: demo-mnist
+            image: kubedl/morphling-tf-model:demo-mnist
             imagePullPolicy: IfNotPresent
             env:
               - name: MODEL_NAME
