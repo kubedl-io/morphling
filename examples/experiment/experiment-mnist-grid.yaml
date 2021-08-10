@@ -2,7 +2,7 @@ apiVersion: "tuning.kubedl.io/v1alpha1"
 kind: ProfilingExperiment
 metadata:
   namespace: morphling-system
-  name: mnist-experiment-grid-2
+  name: mnist-experiment-grid-3
 spec:
   objective:
     type: maximize
@@ -69,13 +69,13 @@ spec:
               - "500m"
 #              - "1500m"
               - "2000m"
-        - parameterType: discrete
-          name: "memory"
-          feasibleSpace:
-            list:
-              - "100Mi"
-#              - "1000Mi"
-              - "500Mi"
+#        - parameterType: discrete
+#          name: "memory"
+#          feasibleSpace:
+#            list:
+#              - "100Mi"
+##              - "1000Mi"
+#              - "500Mi"
     - category: "env"
       parameters:
         - parameterType: discrete
