@@ -42,7 +42,7 @@ models = {
     'vgg16': [224, 224],
     'vgg19': [224, 224],
     'xception': [299, 299],
-    'mnist': [1024, 10]
+    'mnist': [28, 28]
 }
 
 
@@ -60,8 +60,8 @@ with tf.device("/cpu:0"):
     tf.compat.v1.app.flags.DEFINE_string('image', '', 'path to imxage in JPEG format')
     tf.compat.v1.app.flags.DEFINE_string('model', os.environ['MODEL_NAME'], 'model name')
     tf.compat.v1.app.flags.DEFINE_string('signature', 'serving_default', 'signature name')
-    tf.compat.v1.app.flags.DEFINE_string('inputs', 'dense_input', 'signatureDef for inputs')
-    tf.compat.v1.app.flags.DEFINE_string('outputs', 'dense_1', 'signatureDef for outputs')
+    tf.compat.v1.app.flags.DEFINE_string('inputs', 'Conv1_input', 'signatureDef for inputs')
+    tf.compat.v1.app.flags.DEFINE_string('outputs', 'dense', 'signatureDef for outputs')
     tf.compat.v1.app.flags.DEFINE_enum('task', default='cv', enum_values=['cv', 'nlp'], help='which type of task')
     tf.compat.v1.app.flags.DEFINE_bool('printLog', True, 'whether to print temp results')
     FLAGS = tf.compat.v1.app.flags.FLAGS
@@ -75,7 +75,8 @@ with tf.device("/cpu:0"):
         data = tf.image.decode_jpeg(data)
         data = tf.image.convert_image_dtype(data, dtype=tf.float32)
         data = tf.image.resize(data, size=models[FLAGS.model])
-        data = data[:, :, 0]  # tf.expand_dims(data, axis=0)
+        data = data[:, :, 0:1]  #tf.expand_dims(data[:, :, 0:1], axis=0)  # data = data[:, :, 0]  #
+        data = tf.expand_dims(data, axis=0)
     elif FLAGS.task == 'nlp':
         data = tf.convert_to_tensor(["This is a test!"])
     data = tf.concat([data] * FLAGS.batch_size, axis=0)
@@ -94,7 +95,7 @@ with tf.device("/cpu:0"):
         request = predict_pb2.PredictRequest()
         request.model_spec.name = FLAGS.model  # 'resnet50'
         request.model_spec.signature_name = FLAGS.signature
-        request.inputs["dense_input"].CopyFrom(tf.make_tensor_proto(data, shape=list(data.shape)))
+        request.inputs[FLAGS.inputs].CopyFrom(tf.make_tensor_proto(data, shape=list(data.shape)))
         result = stub.Predict(request, timeout)  # 100 seconds
         if test_mode:
             print(result)
