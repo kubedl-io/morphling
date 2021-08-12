@@ -2,8 +2,6 @@ kind: ClusterRole
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
   name: morphling-controller
-  labels:
-    {{- include "morphling.labels" . | nindent 4 }}
 rules:
   - apiGroups:
       - ""
@@ -67,16 +65,12 @@ rules:
 apiVersion: v1
 kind: ServiceAccount
 metadata:
-  labels:
-    {{- include "morphling.labels" . | nindent 4 }}
   name: morphling-controller
   namespace: morphling-system
 ---
 kind: ClusterRoleBinding
 apiVersion: rbac.authorization.k8s.io/v1
 metadata:
-  labels:
-    {{- include "morphling.labels" . | nindent 4 }}
   name: morphling-controller
 roleRef:
   apiGroup: rbac.authorization.k8s.io
