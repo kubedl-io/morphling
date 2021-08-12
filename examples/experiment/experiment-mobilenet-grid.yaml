@@ -42,7 +42,7 @@ spec:
       spec:
         containers:
           - name: resnet-container
-            image: kubedl/morphling-tf-model:demo-cv #registry.cn-hangzhou.aliyuncs.com/delphin/resnet-model:aws #kubedl/morphling-tf-model:mobilenet #gcr.io/tensorflow-serving/resnet
+            image: kubedl/morphling-tf-model:demo  #-cv
             imagePullPolicy: IfNotPresent
             env:
               - name: MODEL_NAME
