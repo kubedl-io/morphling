@@ -42,6 +42,8 @@ kubectl apply -f config/crd/bases
  kubectl apply -f manifests/pv
  kubectl apply -f manifests/mysql-db
  kubectl apply -f manifests/db-manager
+ kubectl apply -f manifests/ui
+ kubectl apply -f manifests/algorithm
  ```
 By default, Morphling will be installed under `morphling-system` namespace.
 
@@ -54,10 +56,12 @@ kubectl get deployment -n morphling-system
 
 Expected output:
 ```commandline
-NAME                   READY   UP-TO-DATE   AVAILABLE   AGE
-morphling-controller   1/1     1            1           10m
-morphling-db-manager   1/1     1            1           10m
-morphling-mysql        1/1     1            1           10m
+NAME                         READY   UP-TO-DATE   AVAILABLE   AGE
+morphling-algorithm-server   1/1     1            1           34s
+morphling-controller         1/1     1            1           9m23s
+morphling-db-manager         1/1     1            1           9m11s
+morphling-mysql              1/1     1            1           9m15s
+morphling-ui                 1/1     1            1           4m53s
 ```
 
 #### Uninstall Morphling controller
@@ -68,7 +72,7 @@ kubectl delete namespace morphling-system
 
 #### Delete CRDs
 ```bash
-kubectl delete crd profilingexperiments.tuning.kubedl.io samplings.tuning.kubedl.io trials.tuning.kubedl.io
+kubectl get crd | grep tuning.kubedl.io | cut -d ' ' -f 1 | xargs kubectl delete crd
 ```
 
 ### Install using Helm chart
@@ -182,9 +186,6 @@ mobilenet-experiment-grid   Succeeded   12m   qps           32                  
 ```bash
 kubectl -n morphling-system delete pe --all
 ```
-
-#### Other Examples 
-Check the [Quick Start](docs/quick_start.md) for more examples.
 
 ##  Workflow
 See [Morphling Workflow](./docs/workflow-design.md) to check how Morphling tunes ML serving 
