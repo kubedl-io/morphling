@@ -1,74 +1,77 @@
 apiVersion: tuning.kubedl.io/v1alpha1
 kind: Trial
 metadata:
-  name: resnet50-experiment-trial
+  labels:
+    experiment: mobilenet-experiment-grid-1
+  name: mobilenet-experiment-grid-1-bz8glvnm
   namespace: morphling-system
 spec:
-  objective:
-    objectiveMetricName: qps
-    type: maximize
-  requestTemplate: https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2153705155,1396952620&fm=11&gp=0.jpg
-  samplingResult:
-    - category: resource
-      name: cpu
-      value: "1"
-    - category: env
-      name: BATCH_SIZE
-      value: "1"
-  serviceClientTemplate:
-    metadata:
-      creationTimestamp: null
-      name: resnet50-client
-      namespace: default
+  clientTemplate:
+    metadata: {}
     spec:
-      backoffLimit: 4
+      backoffLimit: 1
       template:
-        metadata:
-          creationTimestamp: null
+        metadata: {}
         spec:
           containers:
             - args:
-                - delphin_client.py
+                - morphling_client.py
                 - --model
-                - resnet50
+                - mobilenet
                 - --printLog
                 - "True"
+                - --num_tests
+                - "10"
               command:
                 - python3
               env:
                 - name: TF_CPP_MIN_LOG_LEVEL
                   value: "3"
                 - name: MODEL_NAME
-                  value: resnet50
-              image: kubedl/morphling-http-client
+                  value: mobilenet
+              image: kubedl/morphling-http-client:demo
               imagePullPolicy: IfNotPresent
               name: pi
               resources:
                 limits:
-                  cpu: "4"
+                  cpu: 800m
+                  memory: 1800Mi
                 requests:
-                  cpu: "4"
+                  cpu: 800m
+                  memory: 1800Mi
           restartPolicy: Never
+  objective:
+    objectiveMetricName: qps
+    type: maximize
+  samplingResult:
+    - category: env
+      name: BATCH_SIZE
+      value: "1"
+    - category: resource
+      name: cpu
+      value: 2000m
+    - category: resource
+      name: memory
+      value: 2000Mi
   servicePodTemplate:
-    metadata:
-      creationTimestamp: null
-      name: resnet-pod
-      namespace: default
+    metadata: {}
     template:
-      metadata:
-        creationTimestamp: null
+      metadata: {}
       spec:
         containers:
           - env:
               - name: MODEL_NAME
-                value: resnet50
-            image: kubedl/morphling-tf-model:resnet50
+                value: mobilenet
+            image: kubedl/morphling-tf-model:demo
             imagePullPolicy: IfNotPresent
             name: resnet-container
             ports:
               - containerPort: 8500
+                protocol: TCP
             resources:
               limits:
                 cpu: "1"
+                memory: 1800Mi
               requests:
                 cpu: "1"
+                memory: 1800Mi

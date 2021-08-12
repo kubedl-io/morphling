@@ -73,7 +73,7 @@ data:
     template:
       spec:
         containers:
-          - name: resnet-container
+          - name: service-container
             image: kubedl/morphling-tf-model:demo-cv
             imagePullPolicy: IfNotPresent
             env:
