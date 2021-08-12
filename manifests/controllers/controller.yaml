@@ -35,12 +35,12 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
-          volumeMounts:
-            - mountPath: /tmp/cert
-              name: cert
-              readOnly: true
-      volumes:
-        - name: cert
-          secret:
-            defaultMode: 420
-            secretName: morphling-controller
+#          volumeMounts:
+#            - mountPath: /tmp/cert
+#              name: cert
+#              readOnly: true
+#      volumes:
+#        - name: cert
+#          secret:
+#            defaultMode: 420
+#            secretName: morphling-controller

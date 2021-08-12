@@ -1,0 +1,2 @@
+model_checkpoint_path: "/kubedl-model/temp-1628583487/variables/variables"
+all_model_checkpoint_paths: "/kubedl-model/temp-1628583487/variables/variables"

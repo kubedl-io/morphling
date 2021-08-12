@@ -17,16 +17,20 @@ limitations under the License.
 package backends
 
 import (
+	"fmt"
 	api_pb "github.com/alibaba/morphling/api/v1alpha1/grpc_proto/grpc_storage/go"
 	_ "github.com/go-sql-driver/mysql"
 	"github.com/jinzhu/gorm"
 	"k8s.io/klog"
 	"sync/atomic"
+	"time"
 )
 
 const (
 	initListSize = 512
 	dbDriver     = "mysql"
+	initInterval = 5 * time.Second
+	initTimeout  = 60 * 10 * time.Second
 )
 
 func NewMysqlBackendService() StorageBackend {
@@ -151,13 +155,33 @@ func (b *MysqlBackend) GetTrialResult(request *api_pb.GetResultRequest) (*api_pb
 	return reply, nil
 }
 
+func (b *MysqlBackend) openMysqlConnection (dbDriver, dbSource string) (db *gorm.DB, err error) {
+	ticker := time.NewTicker(initInterval)
+	defer ticker.Stop()
+	timeoutC := time.After(initTimeout)
+	for {
+		select {
+		case <-ticker.C:
+			if db, err := gorm.Open(dbDriver, dbSource); err == nil {
+				klog.Infof("Mysql db connected")
+				return db, nil
+			} else {
+				klog.Infof("Open sql connection failed: %v", err)
+			}
+		case <-timeoutC:
+			klog.Errorf("Open mysql connection failed (timeout)")
+			return nil, fmt.Errorf("open mysql connection failed (timeout)")
+		}
+	}
+}
+
 func (b *MysqlBackend) init() error {
 	dbSource, logMode, err := GetMysqlDBSource()
 	if err != nil {
 		klog.Errorf("Error init DB: %v", err)
 		return err
 	}
-	if b.db, err = gorm.Open(dbDriver, dbSource); err != nil {
+	if b.db, err = b.openMysqlConnection (dbDriver, dbSource); err != nil {  // gorm.Open(dbDriver, dbSource)
 		klog.Errorf("Error Open DB: %v", err)
 		return err
 	}
