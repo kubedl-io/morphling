@@ -3,5 +3,3 @@ kind: ConfigMap
 metadata:
   name: morphling-config
   namespace: morphling-system
-  labels:
-    {{- include "morphling.labels" . | nindent 4 }}
