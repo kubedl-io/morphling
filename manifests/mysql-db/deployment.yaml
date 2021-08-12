@@ -42,7 +42,7 @@ spec:
                 - "/bin/bash"
                 - "-c"
                 - "mysql -D ${MYSQL_DATABASE} -u root -p${MYSQL_ROOT_PASSWORD} -e 'SELECT 1'"
-            initialDelaySeconds: 120
+            initialDelaySeconds: 10
             periodSeconds: 50
             timeoutSeconds: 5
           livenessProbe:
@@ -51,7 +51,7 @@ spec:
                 - "/bin/bash"
                 - "-c"
                 - "mysqladmin ping -u root -p${MYSQL_ROOT_PASSWORD}"
-            initialDelaySeconds: 120
+            initialDelaySeconds: 10
             periodSeconds: 10
             timeoutSeconds: 5
           volumeMounts:
