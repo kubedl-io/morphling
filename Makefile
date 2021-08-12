@@ -48,6 +48,10 @@ manifests: controller-gen
 fmt:
 	go fmt ./...
 
+# Clean python code
+clean-python:
+	bash script/clean_python_code.sh
+
 # Run go vet against code
 vet:
 	go vet ./...
@@ -57,7 +61,7 @@ generate: controller-gen
 	$(CONTROLLER_GEN) object:headerFile="hack/boilerplate.go.txt" paths="./..."
 
 # Build the docker image
-docker-build:
+docker-build: fmt vet clean-python
 	bash script/docker_build.sh
 
 # Push the docker image

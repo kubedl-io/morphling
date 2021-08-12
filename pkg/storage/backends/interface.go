@@ -20,7 +20,7 @@ import (
 	api_pb "github.com/alibaba/morphling/api/v1alpha1/grpc_proto/grpc_storage/go"
 )
 
-// ObjectStorageBackend provides a collection of abstract methods to
+// StorageBackend provides a collection of abstract methods to
 // interact with different storage backends, write/read pod and job objects.
 type StorageBackend interface {
 	// Initialize initializes a backend storage service with local or remote database.

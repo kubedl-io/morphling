@@ -13,16 +13,17 @@ def main():
     print(qps_previous)
 
     mls = []
-    ml = api_pb2.KeyValue(key='qps', value=str(qps_previous))
+    ml = api_pb2.KeyValue(key="qps", value=str(qps_previous))
     mls.append(ml)
 
     stub_ = api_pb2_grpc.DBStub(channel_manager)
-    result = stub_.SaveResult(api_pb2.SaveResultRequest(
-        trial_name="test-trial",
-        namespace="test-namespace",
-        results=mls
-    ), timeout=20)
+    result = stub_.SaveResult(
+        api_pb2.SaveResultRequest(
+            trial_name="test-trial", namespace="test-namespace", results=mls
+        ),
+        timeout=20,
+    )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

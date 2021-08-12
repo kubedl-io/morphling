@@ -10,7 +10,6 @@ logger = logging.getLogger(__name__)
 
 
 class Parameter:
-
     def __init__(self, name, space_list):
         self.name = name
         self.space_list = space_list
@@ -18,21 +17,22 @@ class Parameter:
         self.length = int(len(self.space_list))
 
     def __str__(self):
-        return "Parameter(name: {}, list: {})".format(self.name, ", ".join(self.space_list))
+        return "Parameter(name: {}, list: {})".format(
+            self.name, ", ".join(self.space_list)
+        )
 
 
 def num2str(assignments, num):
-    assignments.sort(key=operator.attrgetter('key'))
+    assignments.sort(key=operator.attrgetter("key"))
     result = ""
     for i in range(num):
         result += str(assignments[i].key) + ": " + str(assignments[i].value)
         if i < num - 1:
-            result += '-'
+            result += "-"
     return result
 
 
 class BaseSamplingService(object):
-
     def __init__(self, request):
         self.space = []
         self.space_size = 1
@@ -41,12 +41,14 @@ class BaseSamplingService(object):
             self.space.append(new_par)
             self.space_size *= new_par.length
         self.space_size = int(self.space_size)
-        self.space.sort(key=operator.attrgetter('name'))
+        self.space.sort(key=operator.attrgetter("name"))
         self.existing_trials = {}
         self.num_pars = int(len(request.parameters))
 
         for _trial in request.existing_results:
-            self.existing_trials[num2str(_trial.parameter_assignments, self.num_pars)] = _trial.object_value
+            self.existing_trials[
+                num2str(_trial.parameter_assignments, self.num_pars)
+            ] = _trial.object_value
 
     def get_assignment(self, request):
         logger.info("-" * 100 + "\n")
@@ -65,8 +67,14 @@ class BaseSamplingService(object):
             sub_space_size = 1
             for j in range(i + 1, self.num_pars):
                 sub_space_size *= self.space[j].length
-            index_ = int((index % (sub_space_size * self.space[i].length)) / sub_space_size)
-            assignments.append(api_pb2.KeyValue(key=self.space[i].name, value=self.space[i].space_list[index_]))
+            index_ = int(
+                (index % (sub_space_size * self.space[i].length)) / sub_space_size
+            )
+            assignments.append(
+                api_pb2.KeyValue(
+                    key=self.space[i].name, value=self.space[i].space_list[index_]
+                )
+            )
         assert num2str(assignments, self.num_pars) not in self.existing_trials
         self.existing_trials[num2str(assignments, self.num_pars)] = -1
         return assignments
@@ -75,8 +83,14 @@ class BaseSamplingService(object):
         while True:
             assignments = []
             for i in range(self.num_pars):
-                assignments.append(api_pb2.KeyValue(key=self.space[i].name, value=self.space[i].space_list[
-                    np.random.randint(self.space[i].length)]))
+                assignments.append(
+                    api_pb2.KeyValue(
+                        key=self.space[i].name,
+                        value=self.space[i].space_list[
+                            np.random.randint(self.space[i].length)
+                        ],
+                    )
+                )
             if num2str(assignments, self.num_pars) not in self.existing_trials:
                 break
         assert num2str(assignments, self.num_pars) not in self.existing_trials
@@ -91,8 +105,12 @@ class BaseSamplingService(object):
             assignments_set.append(api_pb2.ParameterAssignments(key_values=assignments))
             next_assignment_index += 1
             for assignment in assignments:
-                logger.info("Name = {}, Value = {}, ".format(assignment.key, assignment.value))
-                print("Name = {}, Value = {}, ".format(assignment.key, assignment.value))
+                logger.info(
+                    "Name = {}, Value = {}, ".format(assignment.key, assignment.value)
+                )
+                print(
+                    "Name = {}, Value = {}, ".format(assignment.key, assignment.value)
+                )
             logger.info("\n")
         return assignments_set
 
@@ -102,8 +120,12 @@ class BaseSamplingService(object):
             assignments = self.random_index_search()
             assignments_set.append(api_pb2.ParameterAssignments(key_values=assignments))
             for assignment in assignments:
-                logger.info("Name = {}, Value = {}, ".format(assignment.key, assignment.value))
-                print("Name = {}, Value = {}, ".format(assignment.key, assignment.value))
+                logger.info(
+                    "Name = {}, Value = {}, ".format(assignment.key, assignment.value)
+                )
+                print(
+                    "Name = {}, Value = {}, ".format(assignment.key, assignment.value)
+                )
             logger.info("\n")
         return assignments_set
 
@@ -112,4 +134,4 @@ class BaseSamplingService(object):
         """Encode the name. Chocolate will check if the name contains hyphens.
         Thus we need to encode it.
         """
-        return base64.b64encode(name.encode('utf-8')).decode('utf-8')
+        return base64.b64encode(name.encode("utf-8")).decode("utf-8")
