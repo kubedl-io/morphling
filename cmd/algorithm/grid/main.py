@@ -1,9 +1,11 @@
-import grpc
 import time
+from concurrent import futures
+
+import grpc
+
 from api.v1alpha1.grpc_proto.grpc_algorithm.python3 import api_pb2_grpc
 from api.v1alpha1.grpc_proto.health.python import health_pb2_grpc
 from pkg.algorithm.v1alpha1.grid.service import BaseService
-from concurrent import futures
 
 _ONE_DAY_IN_SECONDS = 60 * 60 * 24
 DEFAULT_PORT = "0.0.0.0:9996"

@@ -6,78 +6,96 @@ import threading
 import time
 from queue import Queue
 
+import api_pb2
+import api_pb2_grpc
 import grpc
 import numpy as np
 import tensorflow as tf
-from tensorflow_serving.apis import predict_pb2
-from tensorflow_serving.apis import prediction_service_pb2_grpc
-
-import api_pb2
-import api_pb2_grpc
+from tensorflow_serving.apis import predict_pb2, prediction_service_pb2_grpc
 
 models = {
-    'densenet121': [224, 224],
-    'densenet169': [224, 224],
-    'densenet201': [224, 224],
-    'efficientnetb0': [224, 224],
-    'efficientnetb1': [240, 240],
-    'efficientnetb2': [260, 260],
-    'efficientnetb3': [300, 300],
-    'efficientnetb4': [380, 380],
-    'efficientnetb5': [456, 456],
-    'efficientnetb6': [528, 528],
-    'efficientnetb7': [600, 600],
-    'inceptionresnetv2': [299, 299],
-    'inceptionv3': [299, 299],
-    'mobilenet': [224, 224],
-    'mobilenetv2': [224, 224],
-    'nasnetlarge': [331, 331],
-    'nasnetmobile': [224, 224],
-    'resnet101': [224, 224],
-    'resnet152': [224, 224],
-    'resnet50': [224, 224],
-    'resnet101v2': [224, 224],
-    'resnet152v2': [224, 224],
-    'resnet50v2': [224, 224],
-    'vgg16': [224, 224],
-    'vgg19': [224, 224],
-    'xception': [299, 299],
-    'mnist': [256, 256]
+    "densenet121": [224, 224],
+    "densenet169": [224, 224],
+    "densenet201": [224, 224],
+    "efficientnetb0": [224, 224],
+    "efficientnetb1": [240, 240],
+    "efficientnetb2": [260, 260],
+    "efficientnetb3": [300, 300],
+    "efficientnetb4": [380, 380],
+    "efficientnetb5": [456, 456],
+    "efficientnetb6": [528, 528],
+    "efficientnetb7": [600, 600],
+    "inceptionresnetv2": [299, 299],
+    "inceptionv3": [299, 299],
+    "mobilenet": [224, 224],
+    "mobilenetv2": [224, 224],
+    "nasnetlarge": [331, 331],
+    "nasnetmobile": [224, 224],
+    "resnet101": [224, 224],
+    "resnet152": [224, 224],
+    "resnet50": [224, 224],
+    "resnet101v2": [224, 224],
+    "resnet152v2": [224, 224],
+    "resnet50v2": [224, 224],
+    "vgg16": [224, 224],
+    "vgg19": [224, 224],
+    "xception": [299, 299],
+    "mnist": [256, 256],
 }
 
 
 with tf.device("/cpu:0"):
-    tf.get_logger().setLevel('ERROR')
+    tf.get_logger().setLevel("ERROR")
 
     # The image URL is the location of the image we should send to the server
     # IMAGE_URL = os.environ['RequestTemplate']
 
-    tf.compat.v1.app.flags.DEFINE_integer('concurrency', 100000, 'maximum number of concurrent inference requests')
-    tf.compat.v1.app.flags.DEFINE_integer('num_tests', 3, 'Number of test images per test')
-    tf.compat.v1.app.flags.DEFINE_integer('batch_size', os.environ['BATCH_SIZE'], 'Number of test images per query')
-    tf.compat.v1.app.flags.DEFINE_integer('qps', 10, 'QPS initial value')
-    tf.compat.v1.app.flags.DEFINE_string('server', os.environ['ServiceName'], 'PredictionService host:port')
-    tf.compat.v1.app.flags.DEFINE_string('image', '', 'path to imxage in JPEG format')
-    tf.compat.v1.app.flags.DEFINE_string('model', os.environ['MODEL_NAME'], 'model name')
-    tf.compat.v1.app.flags.DEFINE_string('signature', 'serving_default', 'signature name')
-    tf.compat.v1.app.flags.DEFINE_string('inputs', 'Conv1_input', 'signatureDef for inputs')
-    tf.compat.v1.app.flags.DEFINE_string('outputs', 'dense', 'signatureDef for outputs')
-    tf.compat.v1.app.flags.DEFINE_enum('task', default='cv', enum_values=['cv', 'nlp'], help='which type of task')
-    tf.compat.v1.app.flags.DEFINE_bool('printLog', True, 'whether to print temp results')
+    tf.compat.v1.app.flags.DEFINE_integer(
+        "concurrency", 100000, "maximum number of concurrent inference requests"
+    )
+    tf.compat.v1.app.flags.DEFINE_integer(
+        "num_tests", 3, "Number of test images per test"
+    )
+    tf.compat.v1.app.flags.DEFINE_integer(
+        "batch_size", os.environ["BATCH_SIZE"], "Number of test images per query"
+    )
+    tf.compat.v1.app.flags.DEFINE_integer("qps", 10, "QPS initial value")
+    tf.compat.v1.app.flags.DEFINE_string(
+        "server", os.environ["ServiceName"], "PredictionService host:port"
+    )
+    tf.compat.v1.app.flags.DEFINE_string("image", "", "path to imxage in JPEG format")
+    tf.compat.v1.app.flags.DEFINE_string(
+        "model", os.environ["MODEL_NAME"], "model name"
+    )
+    tf.compat.v1.app.flags.DEFINE_string(
+        "signature", "serving_default", "signature name"
+    )
+    tf.compat.v1.app.flags.DEFINE_string(
+        "inputs", "Conv1_input", "signatureDef for inputs"
+    )
+    tf.compat.v1.app.flags.DEFINE_string("outputs", "dense", "signatureDef for outputs")
+    tf.compat.v1.app.flags.DEFINE_enum(
+        "task", default="cv", enum_values=["cv", "nlp"], help="which type of task"
+    )
+    tf.compat.v1.app.flags.DEFINE_bool(
+        "printLog", True, "whether to print temp results"
+    )
     FLAGS = tf.compat.v1.app.flags.FLAGS
 
     # dl_request = requests.get(IMAGE_URL, stream=True)
     # dl_request.raise_for_status()
     # data = dl_request.content
-    if FLAGS.task == 'cv':
-        with open("./image.jpg", 'rb') as f:
+    if FLAGS.task == "cv":
+        with open("./image.jpg", "rb") as f:
             data = f.read()
         data = tf.image.decode_jpeg(data)
         data = tf.image.convert_image_dtype(data, dtype=tf.float32)
         data = tf.image.resize(data, size=models[FLAGS.model])
-        data = data[:, :, 0:1]  #tf.expand_dims(data[:, :, 0:1], axis=0)  # data = data[:, :, 0]  #
+        data = data[
+            :, :, 0:1
+        ]  # tf.expand_dims(data[:, :, 0:1], axis=0)  # data = data[:, :, 0]  #
         data = tf.expand_dims(data, axis=0)
-    elif FLAGS.task == 'nlp':
+    elif FLAGS.task == "nlp":
         data = tf.convert_to_tensor(["This is a test!"])
     data = tf.concat([data] * FLAGS.batch_size, axis=0)
     if FLAGS.printLog:
@@ -90,21 +108,20 @@ with tf.device("/cpu:0"):
     channel = grpc.insecure_channel(FLAGS.server)
     stub = prediction_service_pb2_grpc.PredictionServiceStub(channel)
 
-
     def predict(test_mode=False):
         request = predict_pb2.PredictRequest()
         request.model_spec.name = FLAGS.model  # 'resnet50'
         request.model_spec.signature_name = FLAGS.signature
-        request.inputs[FLAGS.inputs].CopyFrom(tf.make_tensor_proto(data, shape=list(data.shape)))
+        request.inputs[FLAGS.inputs].CopyFrom(
+            tf.make_tensor_proto(data, shape=list(data.shape))
+        )
         result = stub.Predict(request, timeout)  # 100 seconds
         if test_mode:
             print(result)
-        response = np.array(
-            result.outputs[FLAGS.outputs].float_val)
+        response = np.array(result.outputs[FLAGS.outputs].float_val)
         prediction = np.argmax(response)
         if test_mode:
-            print('Prediction:', prediction)
-
+            print("Prediction:", prediction)
 
     class Item:
         """An item that we queue for processing by the thread pool."""
@@ -112,7 +129,6 @@ with tf.device("/cpu:0"):
         def __init__(self, request):
             self.request = request
             self.start = time.time()
-
 
     class QueueRunner:
         def __init__(self, threads):
@@ -133,8 +149,7 @@ with tf.device("/cpu:0"):
         def run_one_item(self, item):
             try:
                 result = stub.Predict(item.request, timeout)  # 100 seconds
-                response = np.array(
-                    result.outputs[FLAGS.outputs].float_val)
+                response = np.array(result.outputs[FLAGS.outputs].float_val)
                 _prediction = np.argmax(response)
             except Exception as e:
                 if FLAGS.printLog:
@@ -178,7 +193,6 @@ with tf.device("/cpu:0"):
             for worker in self.workers:
                 worker.join()
 
-
     def do_inference(num_tests, qps):
         """Tests PredictionService with concurrent requests.
 
@@ -197,7 +211,9 @@ with tf.device("/cpu:0"):
         request = predict_pb2.PredictRequest()
         request.model_spec.name = FLAGS.model  # 'resnet50'
         request.model_spec.signature_name = FLAGS.signature
-        request.inputs[FLAGS.inputs].CopyFrom(tf.make_tensor_proto(data, shape=list(data.shape)))
+        request.inputs[FLAGS.inputs].CopyFrom(
+            tf.make_tensor_proto(data, shape=list(data.shape))
+        )
 
         for i in range(num_tests):
             runner = QueueRunner(4)
@@ -216,7 +232,6 @@ with tf.device("/cpu:0"):
 
         return np.mean(error_rate_list), np.mean(rt_list), np.mean(qps_list)
 
-
     def main(_):
         assert FLAGS.num_tests <= 10000
         assert FLAGS.server != ""
@@ -231,11 +246,15 @@ with tf.device("/cpu:0"):
         qps_previous = 0
         rt_slo = 0.1
 
-        error_rate, rt, qps_real = do_inference(num_tests=FLAGS.num_tests, qps=qps_current)
+        error_rate, rt, qps_real = do_inference(
+            num_tests=FLAGS.num_tests, qps=qps_current
+        )
 
         if FLAGS.printLog:
-            print('\nPreparing QPS: %s, QPS_real: %s, Inference error rate: %s%%, RT: %s' %
-                  (qps_current, qps_real, error_rate * 100, np.mean(rt)))
+            print(
+                "\nPreparing QPS: %s, QPS_real: %s, Inference error rate: %s%%, RT: %s"
+                % (qps_current, qps_real, error_rate * 100, np.mean(rt))
+            )
 
         # service is not available
         if error_rate > 0.01:
@@ -244,11 +263,15 @@ with tf.device("/cpu:0"):
             while True:
                 if qps_current < 1:
                     break
-                error_rate, rt, qps_real = do_inference(num_tests=FLAGS.num_tests, qps=qps_current)
+                error_rate, rt, qps_real = do_inference(
+                    num_tests=FLAGS.num_tests, qps=qps_current
+                )
 
                 if FLAGS.printLog:
-                    print('\nQPS: %s, QPS_real: %s, Inference error rate: %s%%, RT: %s' %
-                          (qps_current, qps_real, error_rate * 100, np.mean(rt)))
+                    print(
+                        "\nQPS: %s, QPS_real: %s, Inference error rate: %s%%, RT: %s"
+                        % (qps_current, qps_real, error_rate * 100, np.mean(rt))
+                    )
 
                 qps_current = qps_real
                 if qps_previous > 0 and 1.1 > qps_current / qps_previous > 0.9:
@@ -267,24 +290,26 @@ with tf.device("/cpu:0"):
                     qps_current = (qps_max + qps_previous) / 2
 
                 if FLAGS.printLog:
-                    print('\n next QPS: %s' % qps_current)
+                    print("\n next QPS: %s" % qps_current)
 
         qps_previous = int(qps_previous * FLAGS.batch_size)
         print(qps_previous)
 
         mls = []
-        ml = api_pb2.KeyValue(key='qps', value=str(qps_previous))
+        ml = api_pb2.KeyValue(key="qps", value=str(qps_previous))
         mls.append(ml)
 
         stub_ = api_pb2_grpc.DBStub(channel_manager)
-        result = stub_.SaveResult(api_pb2.SaveResultRequest(
-            trial_name=os.environ['TrialName'],
-            namespace=os.environ['Namespace'],
-            results=mls
-        ), timeout=timeout_in_seconds)
+        result = stub_.SaveResult(
+            api_pb2.SaveResultRequest(
+                trial_name=os.environ["TrialName"],
+                namespace=os.environ["Namespace"],
+                results=mls,
+            ),
+            timeout=timeout_in_seconds,
+        )
         if FLAGS.printLog:
             print(result)
 
-
-    if __name__ == '__main__':
+    if __name__ == "__main__":
         tf.compat.v1.app.run()
