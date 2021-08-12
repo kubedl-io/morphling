@@ -27,6 +27,7 @@ require (
 	k8s.io/klog v1.0.0
 	k8s.io/kubernetes v1.18.5
 	sigs.k8s.io/controller-runtime v0.6.0
+	sigs.k8s.io/controller-tools v0.4.1 // indirect
 )
 
 replace (
