@@ -122,7 +122,7 @@ kubectl delete -n morphling-system pe --all
 Morphling also support launching a single trial to test the configuration performance.
 
 ```commandline
-kubectl -n morphling-system apply -f example/trial/experiment-resnet50.yaml
+kubectl -n morphling-system apply -f example/trial/experiment-mobilenet.yaml
 ```
 
 ### List current trials
