@@ -6,7 +6,6 @@ metadata:
   labels:
     app: morphling
     component: db-manager
-    {{- include "morphling.labels" . | nindent 4 }}
 spec:
   type: ClusterIP
   ports:

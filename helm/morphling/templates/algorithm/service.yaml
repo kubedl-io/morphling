@@ -3,8 +3,6 @@ kind: Service
 metadata:
   name: morphling-algorithm-server
   namespace: morphling-system
-  labels:
-    {{- include "morphling.labels" . | nindent 4 }}
 spec:
   ports:
     - name: morphling-api
