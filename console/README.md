@@ -9,9 +9,9 @@ This is the source code for the Morphling UI.
 
 ## Folder structure
 
-1. For React frontend, you can find it under [console/frontend](./frontend).
+1. For React frontend, you can find it under console/frontend.
 
-2. For Go backend you, can find it under [console/backend](./frontend).
+2. For Go backend you, can find it under console/backend.
 
 ## Development
 

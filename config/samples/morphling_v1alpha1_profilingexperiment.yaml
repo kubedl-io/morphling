@@ -1,48 +1,81 @@
 apiVersion: "tuning.kubedl.io/v1alpha1"
 kind: ProfilingExperiment
 metadata:
-  namespace: default
-  name: grid-experiment
+  namespace: morphling-system
+  name: mobilenet-experiment-grid
 spec:
-  requestTemplate: ""
-  serviceName: "resnet"
   objective:
     type: maximize
     objectiveMetricName: qps
   algorithm:
     algorithmName: grid
-  samplingLimit: 3
-  serviceClientTemplate:
-    metadata:
-      name: "resnet-client"
-      namespace: "default"
+  parallelism: 1
+  maxNumTrials: 18
+  clientTemplate:
     spec:
       template:
         spec:
           containers:
             - name: pi
-              image: perl
-              command: ["perl",  "-Mbignum=bpi", "-wle", "print bpi(2)"]
+              image: kubedl/morphling-http-client:demo
+              env:
+                - name: TF_CPP_MIN_LOG_LEVEL
+                  value: "3"
+                - name: MODEL_NAME
+                  value: "mobilenet"
+              resources:
+                requests:
+                  cpu: 800m
+                  memory: "1800Mi"
+                limits:
+                  cpu: 800m
+                  memory: "1800Mi"
+              command: [ "python3" ]
+              args: ["morphling_client.py", "--model", "mobilenet", "--printLog", "True", "--num_tests", "10"]
+
               imagePullPolicy: IfNotPresent
           restartPolicy: Never
-      backoffLimit: 4
+      backoffLimit: 1
+
   servicePodTemplate:
-    metadata:
-      name: "resnet-pod"
-      namespace: "default"
     template:
       spec:
         containers:
-          - name: resnet-container
-            image: lwangbm/resnet_serving
+          - name: service-container
+            image: kubedl/morphling-tf-model:demo  #-cv
             imagePullPolicy: IfNotPresent
+            env:
+              - name: MODEL_NAME
+                value: "mobilenet"
+            resources:
+              requests:
+                cpu: 1
+                memory: "1800Mi"
+              limits:
+                cpu: 1
+                memory: "1800Mi"
             ports:
               - containerPort: 8500
-  parameters:
+
+  tunableParameters:
     - category: "resource"
       parameters:
-        - parameterType: double
+        - parameterType: discrete
           name: "cpu"
           feasibleSpace:
-            min: "0.01"
-            max: "0.03"
+            list:
+              - "2000m"
+        - parameterType: discrete
+          name: "memory"
+          feasibleSpace:
+            list:
+              - "200Mi"
+              - "2000Mi"
+    - category: "env"
+      parameters:
+        - parameterType: discrete
+          name: "BATCH_SIZE"
+          feasibleSpace:
+            list:
+              - "1"
+              - "2"
