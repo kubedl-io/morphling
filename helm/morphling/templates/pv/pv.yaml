@@ -5,7 +5,6 @@ metadata:
   labels:
     type: local
     app: morphling
-    {{- include "morphling.labels" . | nindent 4 }}
 spec:
   storageClassName: standard
   capacity:
