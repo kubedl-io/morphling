@@ -1,7 +1,0 @@
-apiVersion: tuning.kubedl.io/v1alpha1
-kind: Sampling
-metadata:
-  name: sampling-sample
-spec:
-  # Add fields here
-  foo: bar

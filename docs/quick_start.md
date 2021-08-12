@@ -1,7 +1,7 @@
 # Quick Start
 
 
-This example demonstrates how to tune the configuration for a [resnet50](https://www.tensorflow.org/api_docs/python/tf/keras/applications/ResNet50) model deployed with [Tensorflow Serving](https://www.tensorflow.org/tfx/guide/serving) under Morphling.
+This example demonstrates how to tune the configuration for a [mobilenet](https://www.tensorflow.org/api_docs/python/tf/keras/applications/mobilenet) model deployed with [Tensorflow Serving](https://www.tensorflow.org/tfx/guide/serving) under Morphling.
 
 ## Tuning a ProfilingExperiment using Random Search
 In this example, apart from CPU cores and batch size shown in [README](../README.md), we also include
@@ -9,108 +9,97 @@ GPU memory sharing as an additional tunable configuration.
 Besides, we use random search for configuration sampling.
 
 ```commandline
-kubectl -n morphling-system apply -f https://raw.githubusercontent.com/alibaba/morphling/master/experiment/experiment-resnet50-random.yaml
+kubectl -n morphling-system apply -f https://raw.githubusercontent.com/alibaba/morphling/main/examples/experiment/experiment-mobilenet-grid.yaml
 ```
 
 ```yaml
-# kubectl  -n morphling-system get pe resnet50-experiment-grid -o yaml
+# kubectl  -n morphling-system get pe mobilenet-experiment-grid -o yaml
 apiVersion: "tuning.kubedl.io/v1alpha1"
 kind: ProfilingExperiment
 metadata:
   namespace: morphling-system
-  name: resnet50-experiment-grid
+  name: mobilenet-experiment-grid
 spec:
-  requestTemplate: "https://ss1.bdstatic.com/70cFuXSh_Q1YnxGkpoWK1HF6hhy/it/u=2153705155,1396952620&fm=11&gp=0.jpg"
   objective:
     type: maximize
     objectiveMetricName: qps
   algorithm:
     algorithmName: grid
   parallelism: 1
-  maxNumTrials: 3
+  maxNumTrials: 18
   clientTemplate:
-    metadata:
-      name: "resnet50-client"
-      namespace: "default"
     spec:
       template:
         spec:
-          imagePullSecrets:
-            - name: harborsecretkey
           containers:
             - name: pi
-              image: kubedl/morphling-http-client
+              image: kubedl/morphling-http-client:demo
               env:
                 - name: TF_CPP_MIN_LOG_LEVEL
                   value: "3"
                 - name: MODEL_NAME
-                  value: "resnet50"
+                  value: "mobilenet"
               resources:
                 requests:
-                  cpu: 4
+                  cpu: 800m
+                  memory: "1800Mi"
                 limits:
-                  cpu: 4
+                  cpu: 800m
+                  memory: "1800Mi"
               command: [ "python3" ]
-              args: ["delphin_client.py", "--model", "resnet50", "--printLog", "True"]
+              args: ["morphling_client.py", "--model", "mobilenet", "--printLog", "True", "--num_tests", "10"]
 
               imagePullPolicy: IfNotPresent
           restartPolicy: Never
-      backoffLimit: 4
+      backoffLimit: 1
 
   servicePodTemplate:
-    metadata:
-      name: "resnet-pod"
-      namespace: "default"
     template:
       spec:
-        imagePullSecrets:
-          - name: harborsecretkey
         containers:
-          - name: resnet-container
-            image: kubedl/morphling-tf-model
+          - name: service-container
+            image: kubedl/morphling-tf-model:demo  #-cv
             imagePullPolicy: IfNotPresent
             env:
               - name: MODEL_NAME
-                value: "resnet50"
+                value: "mobilenet"
             resources:
               requests:
                 cpu: 1
-                nvidia.com/gpu: "1"
+                memory: "1800Mi"
+                # nvidia.com/gpu: "1"
               limits:
                 cpu: 1
-                nvidia.com/gpu: "1"
+                memory: "1800Mi"
+                # nvidia.com/gpu: "1"
             ports:
               - containerPort: 8500
 
   tunableParameters:
     - category: "resource"
       parameters:
-        - parameterType: int
+        - parameterType: discrete
           name: "cpu"
           feasibleSpace:
-            min: "1"
-            max: "5"
-            step: "1"
+            list:
+              #              - "500m"
+              #              - "1500m"
+              - "2000m"
+        - parameterType: discrete
+          name: "memory"
+          feasibleSpace:
+            list:
+              - "200Mi"
+              #              - "1000Mi"
+              - "2000Mi"
     - category: "env"
       parameters:
-        - parameterType: double
-          name: "GPU_MEM"
-          feasibleSpace:
-            min: "0.20"
-            max: "1.01"
-            step: "0.20"
         - parameterType: discrete
           name: "BATCH_SIZE"
           feasibleSpace:
             list:
               - "1"
               - "2"
-              - "4"
-              - "8"
-              - "16"
-              - "32"
-              - "64"
-              - "128"
 ```
 ### List current trials
 
@@ -146,3 +135,4 @@ kubectl -n morphling-system get trial
 
 ```commandline
 kubectl delete -n morphling-system trial --all
+```

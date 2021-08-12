@@ -144,7 +144,7 @@ For detailed UI deployment and developing guide, please check [UI.md](https://gi
 
 ## Running Examples
 
-This example demonstrates how to tune the configuration for a [resnet50](https://www.tensorflow.org/api_docs/python/tf/keras/applications/ResNet50) model deployed with [Tensorflow Serving](https://www.tensorflow.org/tfx/guide/serving) under Morphling.
+This example demonstrates how to tune the configuration for a [mobilenet](https://www.tensorflow.org/api_docs/python/tf/keras/applications/mobilenet) model deployed with [Tensorflow Serving](https://www.tensorflow.org/tfx/guide/serving) under Morphling.
 
 For demonstration, we choose _two_ configurations to tune: 
 the first one the CPU cores (resource allocation), and the second one is maximum serving batch size (runtime parameter). 
@@ -153,7 +153,7 @@ We use grid search for configuration sampling.
 #### Submit the configuration tuning experiment
 
 ```bash
-kubectl -n morphling-system apply -f https://raw.githubusercontent.com/alibaba/morphling/master/example/experiment/experiment-resnet50-grid.yaml
+kubectl -n morphling-system apply -f https://raw.githubusercontent.com/alibaba/morphling/main/examples/experiment/experiment-mobilenet-grid.yaml
 ```
 
 #### Monitor the status of the configuration tuning experiment
@@ -173,8 +173,8 @@ kubectl -n morphling-system get pe
 
 Expected output:
 ```bash
-NAME                  STATE       AGE   OBJECT NAME   OPTIMAL OBJECT VALUE   OPTIMAL PARAMETERS
-resnet50-experiment   Succeeded   12m   qps           15                     [map[category:resource name:cpu value:4] map[category:env name:BATCH_SIZE value:32]]
+NAME                        STATE       AGE   OBJECT NAME   OPTIMAL OBJECT VALUE   OPTIMAL PARAMETERS
+mobilenet-experiment-grid   Succeeded   12m   qps           32                     [map[category:resource name:cpu value:4] map[category:env name:BATCH_SIZE value:32]]
 ```
 
 #### Delete the tuning experiment
