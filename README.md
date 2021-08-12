@@ -67,7 +67,7 @@ morphling-ui                 1/1     1            1           4m53s
 #### Uninstall Morphling controller
 
 ```bash
-kubectl delete namespace morphling-system
+bash script/undeploy.sh
 ```
 
 #### Delete CRDs
