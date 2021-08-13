@@ -102,7 +102,7 @@ with tf.device("/cpu:0"):
         print("Input data shape: ", data.shape)
         print("FLAGS.batch_size: ", FLAGS.batch_size)
     timeout = 100  # 100 seconds
-    manager_server = "morphling-db-manager:6799"
+    manager_server = "morphling-db-manager.morphling-system:6799"
     channel_manager = grpc.insecure_channel(manager_server)
     timeout_in_seconds = 10
     channel = grpc.insecure_channel(FLAGS.server)
