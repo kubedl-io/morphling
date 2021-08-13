@@ -12,3 +12,4 @@ SCRIPT_ROOT=$(dirname ${BASH_SOURCE})/..
 
 cd ${SCRIPT_ROOT}
 kustomize build manifests/ | kubectl delete -f -
+kubectl delete namespace morphling-system

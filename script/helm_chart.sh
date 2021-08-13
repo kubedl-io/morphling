@@ -20,4 +20,4 @@ cp -r manifests/* helm/morphling/templates
 rm -f helm/morphling/*.morphlingbackup
 rm -f helm/morphling/templates/*.morphlingbackup
 #rm -f helm/morphling/kustomization.yaml
-find . -type f -name 'kustomization.yaml' -exec rm {} +
+find helm/morphling/templates -type f -name 'kustomization.yaml' -exec rm {} +

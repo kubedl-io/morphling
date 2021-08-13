@@ -260,9 +260,9 @@ const (
 // +kubebuilder:object:root=true
 // +kubebuilder:printcolumn:name="State",type=string,JSONPath=`.status.conditions[-1:].type`
 // +kubebuilder:printcolumn:name="Age",type=date,JSONPath=`.metadata.creationTimestamp`
-// +kubebuilder:printcolumn:name="Object Name",type=string,JSONPath=`.status.currentOptimalTrial.objectiveMetricsObserved[-1:].name`
-// +kubebuilder:printcolumn:name="Optimal Object Value",type=string,JSONPath=`.status.currentOptimalTrial.objectiveMetricsObserved[-1:].value`
-// +kubebuilder:printcolumn:name="Optimal Parameters",type=string,JSONPath=`.status.currentOptimalTrial.tunableParameters`
+// +kubebuilder:printcolumn:name="Objective-Name",type=string,JSONPath=`.status.currentOptimalTrial.objectiveMetricsObserved[-1:].name`
+// +kubebuilder:printcolumn:name="Optimal-Objective-Value",type=string,JSONPath=`.status.currentOptimalTrial.objectiveMetricsObserved[-1:].value`
+// +kubebuilder:printcolumn:name="Optimal-Parameters",type=string,JSONPath=`.status.currentOptimalTrial.tunableParameters`
 // +kubebuilder:resource:shortName="pe"
 // +kubebuilder:subresource:status
 // ProfilingExperiment is the Schema for the profilingexperiments API
