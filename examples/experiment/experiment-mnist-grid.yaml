@@ -1,7 +1,6 @@
 apiVersion: "tuning.kubedl.io/v1alpha1"
 kind: ProfilingExperiment
 metadata:
-  namespace: morphling-system
   name: mnist-experiment-grid
 spec:
   objective:
