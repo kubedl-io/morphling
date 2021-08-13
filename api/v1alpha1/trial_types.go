@@ -89,8 +89,8 @@ const (
 // +kubebuilder:object:root=true
 // +kubebuilder:printcolumn:name="State",type=string,JSONPath=`.status.conditions[-1:].type`
 // +kubebuilder:printcolumn:name="Age",type=date,JSONPath=`.metadata.creationTimestamp`
-// +kubebuilder:printcolumn:name="Object Name",type=string,JSONPath=`.status.trialResult.objectiveMetricsObserved[-1:].name`
-// +kubebuilder:printcolumn:name="Object Value",type=string,JSONPath=`.status.trialResult.objectiveMetricsObserved[-1:].value`
+// +kubebuilder:printcolumn:name="Objective-Name",type=string,JSONPath=`.status.trialResult.objectiveMetricsObserved[-1:].name`
+// +kubebuilder:printcolumn:name="Objective-Value",type=string,JSONPath=`.status.trialResult.objectiveMetricsObserved[-1:].value`
 // +kubebuilder:printcolumn:name="Parameters",type=string,JSONPath=`.spec.samplingResult`
 // +kubebuilder:subresource:status
 // Trial is the Schema for the trials API

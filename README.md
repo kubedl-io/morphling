@@ -135,12 +135,12 @@ kubectl -n morphling-system get svc morphling-ui
 Expected output:
 ```commandline
 NAME           TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
-morphling-ui   NodePort   10.96.63.162   <none>        80:30680/TCP   44m
+morphling-ui   NodePort   10.96.63.162   <none>        9091:30680/TCP   44m
 ```
 
 If you are using minikube, you can get access to the UI with port-forward:
 ```commandline
-kubectl -n morphling-system port-forward --address 0.0.0.0 svc/morphling-ui 30263:80
+kubectl -n morphling-system port-forward --address 0.0.0.0 svc/morphling-ui 30263:9091
 ```
 Then you can get access to the ui at http://localhost:30263/.
 

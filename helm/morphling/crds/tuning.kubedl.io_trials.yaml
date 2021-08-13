@@ -24,10 +24,10 @@ spec:
       name: Age
       type: date
     - jsonPath: .status.trialResult.objectiveMetricsObserved[-1:].name
-      name: Object Name
+      name: Objective-Name
       type: string
     - jsonPath: .status.trialResult.objectiveMetricsObserved[-1:].value
-      name: Object Value
+      name: Objective-Value
       type: string
     - jsonPath: .spec.samplingResult
       name: Parameters

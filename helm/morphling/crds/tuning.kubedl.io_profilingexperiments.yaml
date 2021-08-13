@@ -26,13 +26,13 @@ spec:
       name: Age
       type: date
     - jsonPath: .status.currentOptimalTrial.objectiveMetricsObserved[-1:].name
-      name: Object Name
+      name: Objective-Name
       type: string
     - jsonPath: .status.currentOptimalTrial.objectiveMetricsObserved[-1:].value
-      name: Optimal Object Value
+      name: Optimal-Objective-Value
       type: string
     - jsonPath: .status.currentOptimalTrial.tunableParameters
-      name: Optimal Parameters
+      name: Optimal-Parameters
       type: string
     name: v1alpha1
     schema:
