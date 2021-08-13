@@ -4,7 +4,6 @@ metadata:
   labels:
     experiment: mobilenet-experiment-grid-1
   name: mobilenet-experiment-grid-1-bz8glvnm
-  namespace: morphling-system
 spec:
   clientTemplate:
     metadata: {}
