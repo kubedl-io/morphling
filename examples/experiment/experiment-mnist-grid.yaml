@@ -50,11 +50,9 @@ spec:
               requests:
                 cpu: 1
                 memory: "1800Mi"
-                # nvidia.com/gpu: "1"
               limits:
                 cpu: 1
                 memory: "1800Mi"
-                # nvidia.com/gpu: "1"
             ports:
               - containerPort: 8500
 
@@ -66,15 +64,7 @@ spec:
           feasibleSpace:
             list:
               - "500m"
-#              - "1500m"
               - "2000m"
-#        - parameterType: discrete
-#          name: "memory"
-#          feasibleSpace:
-#            list:
-#              - "100Mi"
-##              - "1000Mi"
-#              - "500Mi"
     - category: "env"
       parameters:
         - parameterType: discrete
