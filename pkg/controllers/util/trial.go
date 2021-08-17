@@ -44,6 +44,6 @@ func GetServiceEndpoint(t *morphlingv1alpha1.Trial) string {
 func GetDBStorageEndpoint() string {
 	return fmt.Sprintf("%s.%s:%d",
 		consts.DefaultMorphlingDBManagerServiceName,
-		consts.DefaultMorphlingNamespace,
+		consts.DefaultControllerNamespace,
 		consts.DefaultMorphlingDBManagerServicePort)
 }
