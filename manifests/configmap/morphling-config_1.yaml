@@ -1,35 +1,15 @@
-apiVersion: "tuning.kubedl.io/v1alpha1"
-kind: ProfilingExperiment
+kind: ConfigMap
 metadata:
-  name: mnist-experiment-grid
-spec:
-  objective:
-    type: maximize
-    objectiveMetricName: qps
-  algorithm:
-    algorithmName: grid
-  parallelism: 1
-  maxNumTrials: 4
-
-  tunableParameters:
-    - category: "resource"
-      parameters:
-        - parameterType: discrete
-          name: "cpu"
-          feasibleSpace:
-            list:
-              - "500m"
-              - "2000m"
-    - category: "env"
-      parameters:
-        - parameterType: discrete
-          name: "BATCH_SIZE"
-          feasibleSpace:
-            list:
-              - "1"
-              - "2"
-
-  clientTemplate:
+  name: morphling-data-config
+  namespace: morphling-system
+apiVersion: v1
+data:
+  namespace: morphling-system
+  algorithm-names: |-
+    ["random", "grid"]
+  http-client-image: "kubedl/morphling-http-client:demo"
+  http-hsf-image: "kubedl/morphling-hsf-client:demo"
+  http-client-yaml: |-
     spec:
       template:
         spec:
@@ -50,11 +30,40 @@ spec:
                 memory: "1800Mi"
             command: [ "python3" ]
             args: ["morphling_client_mnist.py", "--model", "mnist", "--printLog", "True", "--num_tests", "10"]
+
             imagePullPolicy: IfNotPresent
           restartPolicy: Never
       backoffLimit: 1
 
-  servicePodTemplate:
+  hsf-client-yaml: |-
+    metadata:
+      name: "mobilenet-client"
+      namespace: "default"
+    spec:
+      template:
+        spec:
+          containers:
+          - name: pi
+            image: kubedl/morphling-http-client:demo
+            env:
+              - name: TF_CPP_MIN_LOG_LEVEL
+                value: "3"
+              - name: MODEL_NAME
+                value: "mobilenet"
+            resources:
+              requests:
+                cpu: 800m
+                memory: "1800Mi"
+              limits:
+                cpu: 800m
+                memory: "1800Mi"
+            command: [ "python3" ]
+            args: ["morphling_client.py", "--model", "mobilenet", "--printLog", "True", "--num_tests", "10"]
+
+            imagePullPolicy: IfNotPresent
+          restartPolicy: Never
+      backoffLimit: 1
+  http-service-yaml: |-
     template:
       spec:
         containers:
@@ -73,6 +82,3 @@ spec:
                 memory: "1800Mi"
             ports:
               - containerPort: 8500
-
-
-

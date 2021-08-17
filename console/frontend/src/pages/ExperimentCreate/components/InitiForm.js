@@ -4,7 +4,7 @@ const initialParameter = {
   algorithmName: "grid",
   objectiveType: "maximize",
   objectiveName: "qps",
-  maxTrials: 6,
+  maxTrials: 4,
   parallelism: 1,
   tuningParameters: [{
     key: '1',
@@ -18,7 +18,7 @@ const initialParameter = {
       category: 'Env',
       name: 'BATCH_SIZE',
       type: 'discrete',
-      list: "1, 2, 4"
+      list: "1, 2"
     }]
 };
 
