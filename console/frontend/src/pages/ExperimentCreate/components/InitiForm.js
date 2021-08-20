@@ -1,37 +1,25 @@
 const initialParameter = {
   name: "demo-experiment",
-  namespace: "morphling-system",
+  namespace: "default",
   algorithmName: "grid",
   objectiveType: "maximize",
   objectiveName: "qps",
-  maxTrials: 18,
+  maxTrials: 4,
   parallelism: 1,
   tuningParameters: [{
     key: '1',
     category: 'Resource',
     name: 'CPU',
     type: 'discrete',
-    list: "500m, 1000m, 2000m"
+    list: "500m, 2000m"
   },
     {
       key: '2',
       category: 'Env',
       name: 'BATCH_SIZE',
-      type: 'int',
-      max: '2',
-      min: '1',
-      step: '1',
-      list: ''
-    },
-    {
-      key: '3',
-      category: 'Resource',
-      name: 'Memory',
       type: 'discrete',
-      list: "200Mi, 1000Mi, 2000Mi"
+      list: "1, 2"
     }]
-
-
 };
 
 const initialYaml = ''

@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: morphling-ui
-  namespace: morphling-system
+  namespace: {{ .Release.Namespace }}
   labels:
     app: morphling
     component: ui
@@ -28,7 +28,7 @@ spec:
           args:
             - '--port=9091'
           env:
-            - name: MORPHLING_CORE_NAMESPACE
+            - name: MORPHLING_UI_NAMESPACE
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
