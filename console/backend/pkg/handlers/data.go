@@ -240,7 +240,7 @@ func (handler *DataHandler) GetConfig() (utils.MorphlingConfig, error) {
 	cm := corev1.ConfigMap{}
 	err := handler.client.Get(context.Background(), types.NamespacedName{
 		Name:      configName,
-		Namespace: constant.UINameSpace,
+		Namespace: constant.DefaultUINamespace,
 	}, &cm)
 	if err != nil {
 		return utils.MorphlingConfig{}, fmt.Errorf("failed to get morphling-data-config, err: %v", err)

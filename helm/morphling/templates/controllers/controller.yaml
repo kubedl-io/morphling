@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: morphling-controller
-  namespace: morphling-system
+  namespace: {{ .Release.Namespace }}
   labels:
     app: morphling-controller
 spec:
@@ -35,12 +35,3 @@ spec:
               valueFrom:
                 fieldRef:
                   fieldPath: metadata.namespace
-#          volumeMounts:
-#            - mountPath: /tmp/cert
-#              name: cert
-#              readOnly: true
-#      volumes:
-#        - name: cert
-#          secret:
-#            defaultMode: 420
-#            secretName: morphling-controller

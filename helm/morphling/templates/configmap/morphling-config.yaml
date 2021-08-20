@@ -1,10 +1,10 @@
 kind: ConfigMap
 metadata:
   name: morphling-data-config
-  namespace: morphling-system
+  namespace: {{ .Release.Namespace }}
 apiVersion: v1
 data:
-  namespace: morphling-system
+  namespace: {{ .Release.Namespace }}
   algorithm-names: |-
     ["random", "grid"]
   http-client-image: "kubedl/morphling-http-client:demo"
@@ -12,7 +12,7 @@ data:
   http-client-yaml: |-
     metadata:
       name: "mobilenet-client"
-      namespace: "default"
+      namespace: {{ .Release.Namespace }}
     spec:
       template:
         spec:
@@ -41,7 +41,7 @@ data:
   hsf-client-yaml: |-
     metadata:
       name: "mobilenet-client"
-      namespace: "default"
+      namespace: {{ .Release.Namespace }}
     spec:
       template:
         spec:
@@ -69,7 +69,7 @@ data:
   http-service-yaml: |-
     metadata:
       name: "mobilenet-pod"
-      namespace: "default"
+      namespace: {{ .Release.Namespace }}
     template:
       spec:
         containers:

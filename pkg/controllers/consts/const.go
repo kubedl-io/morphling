@@ -16,6 +16,8 @@ limitations under the License.
 
 package consts
 
+import "os"
+
 const (
 	// LabelExperimentName is the label of experiment name.
 	LabelExperimentName = "experiment"
@@ -39,7 +41,20 @@ const (
 	DefaultMorphlingMySqlServicePort = "3306"
 	// DefaultMorphlingDBManagerServiceName is the default db-manager k8s service name
 	DefaultMorphlingDBManagerServiceName = "morphling-db-manager"
-	// DefaultMorphlingDBManagerServicePort is the default db-manager k8s service port
-	DefaultMorphlingDBManagerServicePort = 6799
-	DefaultMorphlingNamespace            = "morphling-system"
+
+	//DefaultMorphlingDBManagerServicePort = 6799
+	//DefaultMorphlingNamespace            = "morphling-system"
 )
+
+var (
+	DefaultControllerNamespace = GetEnvOrDefault("MORPHLING_CORE_NAMESPACE", "morphling-system")
+	// DefaultMorphlingDBManagerServicePort is the default db-manager k8s service port
+	DefaultMorphlingDBManagerServicePort = GetEnvOrDefault("DB_PORT", "6799")
+)
+
+func GetEnvOrDefault(key string, fallback string) string {
+	if value, ok := os.LookupEnv(key); ok {
+		return value
+	}
+	return fallback
+}
