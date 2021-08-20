@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: morphling-ui
-  namespace: morphling-system
+  namespace: {{ .Release.Namespace }}
   labels:
     app: morphling
     component: ui

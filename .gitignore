@@ -29,5 +29,3 @@ vendor
 
 # arch
 arch
-
-!/manifests/configmap/morphling-config_1.yaml

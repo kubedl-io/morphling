@@ -17,7 +17,10 @@ cp config/crd/bases/* helm/morphling/crds
 cp config/rbac/role.yaml helm/morphling/templates
 sed -i.morphlingbackup 's/name:.*/name: {{ include "morphling.fullname" . }}-role/g' helm/morphling/templates/role.yaml
 cp -r manifests/* helm/morphling/templates
+find helm/morphling/templates/ -type f -exec sed -i.morphlingbackup 's/namespace: .*/namespace: {{ .Release.Namespace }}/g;' {} +
+
 rm -f helm/morphling/*.morphlingbackup
 rm -f helm/morphling/templates/*.morphlingbackup
 #rm -f helm/morphling/kustomization.yaml
 find helm/morphling/templates -type f -name 'kustomization.yaml' -exec rm {} +
+find helm/morphling/templates -type f -name '*.morphlingbackup' -exec rm {} +

@@ -2,7 +2,7 @@ apiVersion: apps/v1
 kind: Deployment
 metadata:
   name: morphling-algorithm-server
-  namespace: morphling-system
+  namespace: {{ .Release.Namespace }}
 spec:
   replicas: 1
   revisionHistoryLimit: 10
