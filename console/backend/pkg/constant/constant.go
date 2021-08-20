@@ -12,9 +12,8 @@ const (
 )
 
 var (
-	PreservedNS = [...]string{"kube-system", "kube-public"}
+	PreservedNS        = [...]string{"kube-system", "kube-public"}
 	DefaultUINamespace = GetEnvOrDefault("MORPHLING_UI_NAMESPACE", "morphling-system")
-
 )
 
 const (

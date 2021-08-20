@@ -155,7 +155,7 @@ func (b *MysqlBackend) GetTrialResult(request *api_pb.GetResultRequest) (*api_pb
 	return reply, nil
 }
 
-func (b *MysqlBackend) openMysqlConnection (dbDriver, dbSource string) (db *gorm.DB, err error) {
+func (b *MysqlBackend) openMysqlConnection(dbDriver, dbSource string) (db *gorm.DB, err error) {
 	ticker := time.NewTicker(initInterval)
 	defer ticker.Stop()
 	timeoutC := time.After(initTimeout)
@@ -181,7 +181,7 @@ func (b *MysqlBackend) init() error {
 		klog.Errorf("Error init DB: %v", err)
 		return err
 	}
-	if b.db, err = b.openMysqlConnection (dbDriver, dbSource); err != nil {  // gorm.Open(dbDriver, dbSource)
+	if b.db, err = b.openMysqlConnection(dbDriver, dbSource); err != nil { // gorm.Open(dbDriver, dbSource)
 		klog.Errorf("Error Open DB: %v", err)
 		return err
 	}
