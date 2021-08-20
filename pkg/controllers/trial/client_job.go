@@ -4,6 +4,7 @@ import (
 	"context"
 	"fmt"
 	morphlingv1alpha1 "github.com/alibaba/morphling/api/v1alpha1"
+	"github.com/alibaba/morphling/pkg/controllers/consts"
 	"github.com/alibaba/morphling/pkg/controllers/util"
 	batchv1 "k8s.io/api/batch/v1"
 	corev1 "k8s.io/api/core/v1"
@@ -102,6 +103,7 @@ func appendJobEnv(t *morphlingv1alpha1.Trial, env []corev1.EnvVar) []corev1.EnvV
 	env = append(env, corev1.EnvVar{Name: "ServiceName", Value: util.GetServiceEndpoint(t)})
 	env = append(env, corev1.EnvVar{Name: "TrialName", Value: fmt.Sprintf(t.Name)})
 	env = append(env, corev1.EnvVar{Name: "Namespace", Value: fmt.Sprintf(t.Namespace)})
+	env = append(env, corev1.EnvVar{Name: "DBPort", Value: fmt.Sprintf(consts.DefaultMorphlingDBManagerServicePort)})
 	for _, cat := range t.Spec.SamplingResult {
 		name := strings.ReplaceAll(strings.ToUpper(cat.Name), ".", "_")
 		env = append(env, corev1.EnvVar{Name: name, Value: fmt.Sprintf(cat.Value)})
