@@ -35,8 +35,8 @@ jobs:
             exit 1
           fi
 
-#      - name: Install Kubebuilder
-#        uses: RyanSiu1995/kubebuilder-action@v1.2
+      - name: Install Kubebuilder
+        uses: RyanSiu1995/kubebuilder-action@v1.2.1
 
       - name: Cache Go Dependencies
         uses: actions/cache@v2
