@@ -142,7 +142,7 @@ type Metric struct {
 	Value string `json:"value,omitempty"`
 }
 
-// Types of the hyper-parameters to be tuned, we support the following several kinds of parameters.
+// ParameterType defines the type of hyper-parameter to be tuned, we support the following several kinds of parameters.
 type ParameterType string
 
 const (
@@ -152,13 +152,13 @@ const (
 	ParameterTypeCategorical ParameterType = "categorical"
 )
 
-// Categories of parameters, high-level parameter divisions, including env, args, resource
+// ParameterCategory id the category of parameters, high-level parameter divisions, including env, args, resource
 type ParameterCategory struct {
 	Category   Category        `json:"category,omitempty"`
 	Parameters []ParameterSpec `json:"parameters,omitempty"`
 }
 
-// Range of the hyper-parameters to be tuned
+// FeasibleSpace defines the range of the hyper-parameters to be tuned
 type FeasibleSpace struct {
 	// The max value of the search space.
 	Max string `json:"max,omitempty"`
@@ -187,14 +187,14 @@ const (
 	CategoryArgs Category = "args"
 )
 
-// Meta data of a hyper-parameter to be tuned
+// ParameterSpec is the meta data of a hyper-parameter to be tuned
 type ParameterSpec struct {
 	Name          string        `json:"name,omitempty"`
 	ParameterType ParameterType `json:"parameterType,omitempty"`
 	FeasibleSpace FeasibleSpace `json:"feasibleSpace,omitempty"`
 }
 
-// Optimization obj classes: minimize or maximize
+// ObjectiveType is the optimization obj classes: minimize or maximize
 type ObjectiveType string
 
 const (
@@ -202,7 +202,7 @@ const (
 	ObjectiveTypeMaximize ObjectiveType = "maximize"
 )
 
-// Optimization obj, e.g., minimize the resource cost per QPS
+// ObjectiveSpec defines the optimization obj, e.g., minimize the resource cost per QPS
 type ObjectiveSpec struct {
 	// The type of the objective, including minimize or maximize
 	Type ObjectiveType `json:"type,omitempty"`
@@ -211,7 +211,7 @@ type ObjectiveSpec struct {
 	ObjectiveMetricName string `json:"objectiveMetricName,omitempty"`
 }
 
-// Parameters key-value pair of the Opt. algorithm
+// AlgorithmSetting defines the parameters key-value pair of the Opt. algorithm
 type AlgorithmSetting struct {
 	// The name of the key-value pair.
 	Name string `json:"name,omitempty"`
@@ -220,7 +220,7 @@ type AlgorithmSetting struct {
 	Value string `json:"value,omitempty"`
 }
 
-// Supported searching algorithms
+// AlgorithmName is the supported searching algorithms
 type AlgorithmName string
 
 const (
@@ -229,23 +229,23 @@ const (
 	GridSearch   AlgorithmName = "grid"
 )
 
-// Specification of the Opt. algorithm
+// AlgorithmSpec is the specification of Opt. algorithm
 type AlgorithmSpec struct {
-	// The name of algorithm for sampling_client: random, grid, bayesianoptimiation.
+	// The name of algorithm for sampling_client: random, grid, bayesian optimization.
 	AlgorithmName AlgorithmName `json:"algorithmName,omitempty"`
 
 	// The key-value pairs representing settings for sampling_client algorithms.
 	AlgorithmSettings []AlgorithmSetting `json:"algorithmSettings,omitempty"`
 }
 
-// Current hyper-parameter value (key-value pair)
+// ParameterAssignment defines the current hyper-parameter value (key-value pair)
 type ParameterAssignment struct {
 	Name     string   `json:"name,omitempty"`
 	Value    string   `json:"value,omitempty"`
 	Category Category `json:"category,omitempty"`
 }
 
-// status of the ProfilingExperiment
+// ProfilingConditionType defines the status of the ProfilingExperiment
 type ProfilingConditionType string
 
 const (
