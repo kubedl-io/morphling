@@ -14,7 +14,7 @@ kubectl -n morphling-system apply -f https://raw.githubusercontent.com/alibaba/m
 
 ```yaml
 # kubectl  -n morphling-system get pe mobilenet-experiment-grid -o yaml
-apiVersion: "tuning.kubedl.io/v1alpha1"
+apiVersion: "morphling.kubedl.io/v1alpha1"
 kind: ProfilingExperiment
 metadata:
   namespace: morphling-system

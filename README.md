@@ -75,7 +75,7 @@ bash script/undeploy.sh
 
 #### Delete CRDs
 ```bash
-kubectl get crd | grep tuning.kubedl.io | cut -d ' ' -f 1 | xargs kubectl delete crd
+kubectl get crd | grep morphling.kubedl.io | cut -d ' ' -f 1 | xargs kubectl delete crd
 ```
 
 ### Install using Helm chart
@@ -115,7 +115,7 @@ helm uninstall morphling -n morphling-system
 #### Delete all morphling CRDs
 
 ```bash
-kubectl get crd | grep tuning.kubedl.io | cut -d ' ' -f 1 | xargs kubectl delete crd
+kubectl get crd | grep morphling.kubedl.io | cut -d ' ' -f 1 | xargs kubectl delete crd
 ```
 
 ## Morphling UI

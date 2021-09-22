@@ -144,7 +144,7 @@ const ExperimentCreate = ({globalConfig}) => {
 
   const onFormSubmit = async form => {
     let data = {
-      apiVersion: "tuning.kubedl.io/v1alpha1",
+      apiVersion: "morphling.kubedl.io/v1alpha1",
       kind: "ProfilingExperiment",
       metadata: {
         name: deCapitalizeFirstLetter(form.name),

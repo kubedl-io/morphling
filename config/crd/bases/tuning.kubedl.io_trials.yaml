@@ -6,9 +6,9 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.4.1
   creationTimestamp: null
-  name: trials.tuning.kubedl.io
+  name: trials.morphling.kubedl.io
 spec:
-  group: tuning.kubedl.io
+  group: morphling.kubedl.io
   names:
     kind: Trial
     listKind: TrialList

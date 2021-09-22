@@ -15,7 +15,7 @@ rules:
       - watch
       - get
   - apiGroups:
-      - tuning.kubedl.io
+      - morphling.kubedl.io
     resources:
       - profilingexperiments
       - trials

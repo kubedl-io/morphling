@@ -105,7 +105,8 @@ type ProfilingExperimentStatus struct {
 type CollectorKind string
 
 // +k8s:deepcopy-gen=true
-// ProfilingExperimentCondition describes the state of the experiment at a certain point.
+
+// ProfilingCondition describes the state of the experiment at a certain point.
 type ProfilingCondition struct {
 	// Type of experiment condition.
 	Type ProfilingConditionType `json:"type"`
@@ -265,6 +266,7 @@ const (
 // +kubebuilder:printcolumn:name="Optimal-Parameters",type=string,JSONPath=`.status.currentOptimalTrial.tunableParameters`
 // +kubebuilder:resource:shortName="pe"
 // +kubebuilder:subresource:status
+
 // ProfilingExperiment is the Schema for the profilingexperiments API
 type ProfilingExperiment struct {
 	metav1.TypeMeta   `json:",inline"`

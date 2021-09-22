@@ -5,7 +5,7 @@ metadata:
   name: profilingexperiment-viewer-role
 rules:
 - apiGroups:
-  - tuning.kubedl.io
+  - morphling.kubedl.io
   resources:
   - profilingexperiments
   verbs:
@@ -13,7 +13,7 @@ rules:
   - list
   - watch
 - apiGroups:
-  - tuning.kubedl.io
+  - morphling.kubedl.io
   resources:
   - profilingexperiments/status
   verbs:

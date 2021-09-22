@@ -6,9 +6,9 @@ metadata:
   annotations:
     controller-gen.kubebuilder.io/version: v0.4.1
   creationTimestamp: null
-  name: profilingexperiments.tuning.kubedl.io
+  name: profilingexperiments.morphling.kubedl.io
 spec:
-  group: tuning.kubedl.io
+  group: morphling.kubedl.io
   names:
     kind: ProfilingExperiment
     listKind: ProfilingExperimentList

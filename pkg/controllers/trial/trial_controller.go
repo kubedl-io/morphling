@@ -134,8 +134,8 @@ type ReconcileTrial struct {
 	updateStatusHandler updateStatusFunc
 }
 
-// +kubebuilder:rbac:groups=tuning.kubedl.io,resources=trials,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=tuning.kubedl.io,resources=trials/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=morphling.kubedl.io,resources=trials,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=morphling.kubedl.io,resources=trials/status,verbs=get;update;patch
 // +kubebuilder:rbac:groups=apps,resources=deployments,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups=apps,resources=deployments/status,verbs=get;update;patch
 

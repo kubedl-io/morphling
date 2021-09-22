@@ -16,7 +16,7 @@ limitations under the License.
 
 // Package v1alpha1 contains API Schema definitions for the morphling v1alpha1 API group
 // +kubebuilder:object:generate=true
-// +groupName=tuning.kubedl.io
+// +groupName=morphling.kubedl.io
 // +kubebuilder:subresource:status
 package v1alpha1
 
@@ -26,7 +26,7 @@ import (
 )
 
 const (
-	Group   = "tuning.kubedl.io"
+	Group   = "morphling.kubedl.io"
 	Version = "v1alpha1"
 )
 

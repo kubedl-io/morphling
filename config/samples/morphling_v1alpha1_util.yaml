@@ -1,4 +1,4 @@
-apiVersion: tuning.kubedl.io/v1alpha1
+apiVersion: morphling.kubedl.io/v1alpha1
 kind: Util
 metadata:
   name: util-sample

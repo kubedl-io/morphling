@@ -45,7 +45,7 @@ func TestMain(m *testing.M) {
 }
 
 func TestGetDbName(t *testing.T) {
-	dbName := "root:morphling@tcp(morphling-mysql:3306)/morphling?timeout=5s"
+	dbName := "root:morphling@tcp(morphling-mysql:3306)/morphling?timeout=35s"
 	dbSource, _, err := GetMysqlDBSource()
 	if err != nil {
 		t.Errorf("GetMysqlDBSource returns err %v", err)
