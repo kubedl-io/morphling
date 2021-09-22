@@ -44,7 +44,7 @@ func GetMysqlDBSource() (dbSource, logMode string, err error) {
 	password := GetEnvOrDefault(EnvDBPassword, "morphling")
 
 	// Expected: "root:morphling@tcp(morphling-mysql:3306)/morphling?timeout=5s"
-	dbSource = fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?timeout=5s", user, password, host, port, db)
+	dbSource = fmt.Sprintf("%s:%s@tcp(%s:%d)/%s?timeout=35s", user, password, host, port, db)
 	logMode = GetEnvOrDefault(EnvLogMode, "no")
 
 	return dbSource, logMode, nil
