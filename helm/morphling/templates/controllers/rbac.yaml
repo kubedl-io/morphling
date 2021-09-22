@@ -50,7 +50,7 @@ rules:
     verbs:
       - '*'
   - apiGroups:
-      - tuning.kubedl.io
+      - morphling.kubedl.io
     resources:
       - profilingexperiments
       - profilingexperiments/status

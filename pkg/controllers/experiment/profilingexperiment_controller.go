@@ -114,10 +114,10 @@ type ProfilingExperimentReconciler struct {
 	updateStatusHandler updateStatusFunc
 }
 
-// +kubebuilder:rbac:groups=tuning.kubedl.io,resources=profilingexperiments,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=tuning.kubedl.io,resources=profilingexperiments/status,verbs=get;update;patch
-// +kubebuilder:rbac:groups=tuning.kubedl.io,resources=trials,verbs=get;list;watch;create;update;patch;delete
-// +kubebuilder:rbac:groups=tuning.kubedl.io,resources=trials/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=morphling.kubedl.io,resources=profilingexperiments,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=morphling.kubedl.io,resources=profilingexperiments/status,verbs=get;update;patch
+// +kubebuilder:rbac:groups=morphling.kubedl.io,resources=trials,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups=morphling.kubedl.io,resources=trials/status,verbs=get;update;patch
 
 // Reconcile reads that state of the cluster for a trial object and makes changes based on the state read
 func (r *ProfilingExperimentReconciler) Reconcile(req ctrl.Request) (ctrl.Result, error) {

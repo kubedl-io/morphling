@@ -27,7 +27,7 @@ rules:
   - patch
   - update
 - apiGroups:
-  - tuning.kubedl.io
+  - morphling.kubedl.io
   resources:
   - profilingexperiments
   verbs:
@@ -39,7 +39,7 @@ rules:
   - update
   - watch
 - apiGroups:
-  - tuning.kubedl.io
+  - morphling.kubedl.io
   resources:
   - profilingexperiments/status
   verbs:
@@ -47,7 +47,7 @@ rules:
   - patch
   - update
 - apiGroups:
-  - tuning.kubedl.io
+  - morphling.kubedl.io
   resources:
   - trials
   verbs:
@@ -59,7 +59,7 @@ rules:
   - update
   - watch
 - apiGroups:
-  - tuning.kubedl.io
+  - morphling.kubedl.io
   resources:
   - trials/status
   verbs:
