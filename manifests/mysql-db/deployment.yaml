@@ -21,7 +21,7 @@ spec:
     spec:
       containers:
         - name: morphling-mysql
-          image: kubedl/mysql
+          image: kubedl/mysql:8.0.26
           imagePullPolicy: Always
           args:
             - --datadir
