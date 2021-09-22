@@ -10,7 +10,7 @@ CLIENT_IMG=kubedl/morphling-http-client:demo
 
 SCRIPT_ROOT=$(dirname ${BASH_SOURCE})/..
 cd ${SCRIPT_ROOT}
-echo "cd to ${SCRIPT_ROOT}"
+echo "cd to ${SCRIPT_ROOT}" 
 
 # controller, storage, and ui
 docker build -t ${UI_IMG} -f  console/Dockerfile .
