@@ -13,7 +13,6 @@ spec:
       protocol: TCP
       name: ui
       targetPort: 9091
-      nodePort: 30680
   selector:
     app: morphling
     component: ui
