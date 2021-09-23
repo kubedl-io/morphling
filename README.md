@@ -1,9 +1,8 @@
 <h1 align="center">
-    <img src="./docs/img/logo_center.png" alt="logo" width="200">
+    <img src="./docs/img/logo.png" alt="logo" width="200">
   <br>
 </h1>
 
-![](docs/img/logo_center.png)
 # Morphling
 
 Morphling is an auto-configuration framework for
