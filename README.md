@@ -1,4 +1,4 @@
-![Stack](docs/img/logo.png)
+![](docs/img/logo_center.png)
 # Morphling
 
 Morphling is an auto-configuration framework for
