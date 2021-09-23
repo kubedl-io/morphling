@@ -36,7 +36,7 @@ Key benefits include:
 From git root directory, run
 
 ```commandline
-kubectl apply -f config/crd/bases
+kubectl apply -k config/crd/bases
 ```
 
 
@@ -45,13 +45,13 @@ kubectl apply -f config/crd/bases
  ```commandline
  kubectl create namespace morphling-system
  
- kubectl apply -f manifests/configmap
- kubectl apply -f manifests/controllers
- kubectl apply -f manifests/pv
- kubectl apply -f manifests/mysql-db
- kubectl apply -f manifests/db-manager
- kubectl apply -f manifests/ui
- kubectl apply -f manifests/algorithm
+ kubectl apply -k manifests/configmap
+ kubectl apply -k manifests/controllers
+ kubectl apply -k manifests/pv
+ kubectl apply -k manifests/mysql-db
+ kubectl apply -k manifests/db-manager
+ kubectl apply -k manifests/ui
+ kubectl apply -k manifests/algorithm
  ```
 By default, Morphling will be installed under `morphling-system` namespace.
 
@@ -117,7 +117,7 @@ Helm will install CRDs and other Morphling components under `morphling-system` n
 helm uninstall morphling -n morphling-system
 ```
 
-#### Delete all morphling CRDs
+#### Delete all Morphling CRDs
 
 ```bash
 kubectl get crd | grep morphling.kubedl.io | cut -d ' ' -f 1 | xargs kubectl delete crd
@@ -128,7 +128,7 @@ Morphling UI is built upon [Ant Design](https://ant.design/).
 
 If you are installing Morphling with Yaml files, from the root directory, run
 ```bash
-kubectl apply -f manifests/ui
+kubectl apply -k manifests/ui
 ```
 
 Or if you are installing Morphling with Helm chart, Morphling UI is automatically deployed.
