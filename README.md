@@ -1,7 +1,4 @@
-<h1 align="center">
-    <img src="./docs/img/logo.png" alt="logo" width="200">
-  <br>
-</h1>
+
 
 # Morphling
 
@@ -10,7 +7,7 @@ machine learning model serving (inference) on Kubernetes.  Check the [website](h
 
 Morphling paper accepted at ACM Socc 2021:  
 **Morphling: Fast, Near-Optimal Auto-Configuration for Cloud-Native Model Serving**
-
+<img src="./docs/img/logo.png" alt="logo" width="400">
 ## Overview
 
 Morphling tunes the optimal configurations for your ML/DL model serving deployments.
