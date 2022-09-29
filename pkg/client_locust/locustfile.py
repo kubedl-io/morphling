@@ -99,3 +99,5 @@ class TensorflowGrpcUser(GrpcUser):
             )
             timeout = 100 # second
             self.client.Predict(request, timeout)
+
+

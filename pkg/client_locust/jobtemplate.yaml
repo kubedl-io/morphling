@@ -22,6 +22,10 @@ spec:
             value: "locustfile.py"
           - name: LOCUST_METRICS_EXPORT
             value: true
+          - name: FAIL_RATIO
+            value: 0.3
+          - name: PRINTLOG
+            value: True
         resources:
           requests:
             cpu: 800m

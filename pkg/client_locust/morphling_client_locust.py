@@ -25,6 +25,7 @@ channel_manager = grpc.insecure_channel(manager_server)
 timeout_in_seconds = 10
 rt_slo = 1.0 # currently slo is not guaranteed
 batch_size = int(os.getenv("BATCH_SIZE", 1))
+failratio_limit = float(os.getenv("FAIL_RATIO", 0.2))
 printlog = os.getenv("PRINTLOG", 'False').lower() in ('true', '1', 't')
 
 # Locust Settings
@@ -36,6 +37,7 @@ settings = invokust.create_settings(
     metrics_export=os.getenv("LOCUST_METRICS_EXPORT", 'False').lower() in ('true', '1', 't'),
     loglevel=os.getenv("LOCUST_LOGLEVEL", "INFO")
     )
+loadtest = invokust.LocustLoadTest(settings)
 
 def do_inference():
     """Tests PredictionService with concurrent requests.
@@ -43,15 +45,22 @@ def do_inference():
     Returns:
         The QPS and classification error rate.
     """
-    loadtest = invokust.LocustLoadTest(settings)
     loadtest.run()
     stats = loadtest.stats()
-    mean_error_rate = stats['num_requests_fail']/stats['num_requests'] if stats['num_requests'] > 0 else 0 
+    mean_error_rate = stats['fail_ratio']
     stats = stats["requests"]['grpc_Predict']
-    return   mean_error_rate, stats['median_response_time'], stats['total_rps'] * batch_size
+    if mean_error_rate > failratio_limit:
+        stats['total_rps'] = -1                                 # if the error rate is too high, then clear the result directly
+    else:
+        stats['total_rps'] *= batch_size                        # take batch_size into account
+    return mean_error_rate, stats['median_response_time'], stats['total_rps']
 
 def main():
-    error_rate, rt, qps_real = do_inference()
+    error_rate, rt, qps_real = do_inference()                   # first try
+    while qps_real == -1 and loadtest.settings.num_users > 10 : # if num_users is too large
+        time.sleep(5)
+        loadtest.settings.num_users /= 2                        # halve the value
+        error_rate, rt, qps_real = do_inference()
 
     if printlog:
         print(

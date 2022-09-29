@@ -12,6 +12,7 @@ import os
 # patch grpc so that it uses gevent instead of asyncio
 import grpc.experimental.gevent as grpc_gevent
 grpc_gevent.init_gevent()
+failratio_limit = float(os.getenv("FAIL_RATIO", 0.2))
 
 class GrpcClient:
     def __init__(self, environment, stub, output):
@@ -65,3 +66,21 @@ class GrpcUser(User):
     def stop(self, force=False):
        self._channel_closed = True
        time.sleep(1)
+
+# Add a FailRatio Listener
+from locust.runners import STATE_STOPPING, STATE_STOPPED, STATE_CLEANUP, MasterRunner, LocalRunner
+def checker(environment):
+    while not environment.runner.state in [STATE_STOPPING, STATE_STOPPED, STATE_CLEANUP]:
+        time.sleep(1)
+        if environment.runner.stats.total.fail_ratio > failratio_limit:
+            print(f"fail ratio was {environment.runner.stats.total.fail_ratio}, quitting")
+            environment.runner.quit()
+            if environment.web_ui != None:
+                environment.web_ui.stop()
+            return
+
+@events.init.add_listener
+def on_locust_init(environment, **_kwargs):
+    # dont run this on workers, we only care about the aggregated numbers
+    if isinstance(environment.runner, MasterRunner) or isinstance(environment.runner, LocalRunner):
+        gevent.spawn(checker, environment)

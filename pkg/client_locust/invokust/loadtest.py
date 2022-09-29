@@ -6,11 +6,12 @@ import json
 import signal
 import logging
 import time
+from locust import events
 from locust.env import Environment
 from locust.log import setup_logging
 from locust.stats import stats_printer
 from locust.util.timespan import parse_timespan
-from .prometheus_exporter import metrics_export
+from .prometheus_exporter import metrics_export # import the event hook
 
 setup_logging("INFO", None)
 logger = logging.getLogger(__name__)
@@ -30,6 +31,7 @@ class LocustLoadTest(object):
         self.settings = settings
         self.start_time = None
         self.end_time = None
+        self.web_ui = None
         gevent.signal_handler(signal.SIGTERM, sig_term_handler)
 
     def stats(self):
@@ -43,6 +45,7 @@ class LocustLoadTest(object):
             "num_requests_fail": self.env.runner.stats.num_failures,
             "start_time": self.start_time,
             "end_time": self.end_time,
+            "fail_ratio": self.env.runner.stats.total.fail_ratio
         }
 
         for name, value in self.env.runner.stats.entries.items():
@@ -123,16 +126,18 @@ class LocustLoadTest(object):
                 user_classes=self.settings.classes,
                 reset_stats=self.settings.reset_stats,
                 tags=self.settings.tags,
+                events=events,
                 exclude_tags=self.settings.exclude_tags,
                 stop_timeout=self.settings.stop_timeout,
             )
 
             self.env.create_local_runner()
-            gevent.spawn(stats_printer(self.env.stats))
+            # gevent.spawn(stats_printer(self.env.stats)) # need to be stopped properly
 
-            if self.settings.metrics_export:
-                self.env.create_web_ui()
-                metrics_export(self.env, self.env.runner)
+            if self.web_ui == None and self.settings.metrics_export: # reuse the exist web_ui
+                self.web_ui = self.env.create_web_ui()
+
+            self.env.events.init.fire(environment=self.env, runner=self.env.runner, web_ui=self.web_ui) # fire event hooks
 
             self.env.runner.start(
                 user_count=self.settings.num_users, spawn_rate=self.settings.spawn_rate
