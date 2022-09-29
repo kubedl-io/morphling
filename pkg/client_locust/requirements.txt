@@ -43,9 +43,9 @@ termcolor===1.1.0
 threadpoolctl===2.1.0
 update===0.0.1
 urllib3===1.25.11
-Werkzeug===1.0.1
+Werkzeug===2.0.0
 wheel===0.34.2
 wrapt===1.12.1
 zipp===3.1.0
-locust===1.6.0
+locust===2.8.4
 prometheus-client===0.14.1

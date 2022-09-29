@@ -19,7 +19,7 @@ spec:
           - name: LOCUST_RUN_TIME
             value: 20
           - name: LOCUST_LOCUSTFILE
-            value: "locustfile.py"
+            value: "locustfile_grpcuser.py"
           - name: LOCUST_METRICS_EXPORT
             value: true
           - name: FAIL_RATIO

@@ -48,7 +48,7 @@ def do_inference():
     loadtest.run()
     stats = loadtest.stats()
     mean_error_rate = stats['fail_ratio']
-    stats = stats["requests"]['grpc_Predict']
+    stats = list(stats["requests"].values())[0]                 # extract the dict, only need the first item
     if mean_error_rate > failratio_limit:
         stats['total_rps'] = -1                                 # if the error rate is too high, then clear the result directly
     else:
