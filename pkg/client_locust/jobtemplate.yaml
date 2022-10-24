@@ -1,0 +1,41 @@
+metadata:
+  name: "mobilenet-client"
+  namespace: morphling-system
+spec:
+  template:
+    spec:
+      containers:
+      - name: pi
+        image: yukiozhu/morphling-client-plugin:demo
+        env:
+          - name: TF_CPP_MIN_LOG_LEVEL
+            value: "3"
+          - name: MODEL_NAME
+            value: "mobilenet"
+          - name: LOCUST_NUM_USERS
+            value: 10
+          - name: LOCUST_SPAWN_RATE
+            value: 10
+          - name: LOCUST_RUN_TIME
+            value: 20
+          - name: LOCUST_LOCUSTFILE
+            value: "locustfile_grpcuser.py"
+          - name: LOCUST_METRICS_EXPORT
+            value: true
+          - name: FAIL_RATIO
+            value: 0.3
+          - name: PRINTLOG
+            value: True
+        resources:
+          requests:
+            cpu: 800m
+            memory: "1800Mi"
+          limits:
+            cpu: 800m
+            memory: "1800Mi"
+        command: [ "python3" ]
+        args: ["morphling_client_locust.py"]
+
+        imagePullPolicy: Always
+      restartPolicy: Never
+  backoffLimit: 1
