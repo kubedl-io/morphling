@@ -22,7 +22,7 @@ spec:
       containers:
         - name: morphling-ui
           image: kubedl/morphling-ui
-          imagePullPolicy: Always
+          imagePullPolicy: IfNotPresent
           command:
             - '/backend-server'
           args:

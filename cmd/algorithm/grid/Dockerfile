@@ -9,7 +9,7 @@ RUN if [ "$(uname -m)" = "ppc64le" ] || [ "$(uname -m)" = "aarch64" ]; then \
     apt-get -y install gfortran libopenblas-dev liblapack-dev && \
     pip install cython 'numpy>=1.13.3'; \
     fi
-RUN GRPC_HEALTH_PROBE_VERSION=v0.3.1 && \
+RUN GRPC_HEALTH_PROBE_VERSION=v0.4.28 && \
     if [ "$(uname -m)" = "ppc64le" ]; then \
     wget -qO/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-ppc64le; \
     elif [ "$(uname -m)" = "aarch64" ]; then \
@@ -23,7 +23,7 @@ ADD ./pkg/ ${TARGET_DIR}/pkg/
 ADD ./api/ ${TARGET_DIR}/api/
 ADD ./${SUGGESTION_DIR}/ ${TARGET_DIR}/${SUGGESTION_DIR}/
 WORKDIR  ${TARGET_DIR}/${SUGGESTION_DIR}
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple
 
 RUN chgrp -R 0 ${TARGET_DIR} \
   && chmod -R g+rwX ${TARGET_DIR}
