@@ -1,0 +1,14 @@
+uvicorn
+wget
+grpcio
+grpcio-tools
+protobuf
+tenacity
+huggingface_hub
+safetensors
+googleapis-common-protos
+transformers
+transformers_stream_generator
+vllm-flash-attn
+bitsandbytes>=0.44.0
+accelerate>=0.26.0

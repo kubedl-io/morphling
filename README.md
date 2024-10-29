@@ -168,6 +168,13 @@ We use grid search for configuration sampling.
 kubectl -n morphling-system apply -f https://raw.githubusercontent.com/alibaba/morphling/main/examples/experiment/experiment-mobilenet-grid.yaml
 ```
 
+To start multi-framework tunining experiment:
+```bash
+kubectl -n morphling-system apply -f examples/experiment/experiment-grid.yaml
+```
+
+You can specify the model name in this file `examples/experiment/experiment-grid.yaml`. Noted that under the setting of `INFERENCE_FRAMEWORK=vllm` and `DTYPE=int8`, the bitsandbytes only support LLMs with LLAMA architecture (LlamaForCausalLM). So far we only support tuning between float16/bfloat16 and int8 data types. Make sure there are enough resources for LLM serving.
+
 #### Monitor the status of the configuration tuning experiment
 ```bash
 kubectl get -n morphling-system pe
@@ -216,6 +223,12 @@ make test
 ```bash
 make manifests
 ```
+#### Build Multi inference framework Docker Image
+
+Download the right version of vllm .whl file to `pkg/server` directory ([the guidance to download](https://docs.vllm.ai/en/latest/getting_started/installation.html#install-released-versions)) before building the image. 
+For example, if the CUDA version is 11.8 and want to download vllm with version 0.6.1.post1, then download `vllm-0.6.1.post1+cu118-cp310-cp310-manylinux1_x86_64.whl` to `pkg/server` directory. Noeted that the python version in this image is 3.10.
+Then modify the arguments `CUDA_VERSION` and `VLLM_FILE` in `script/docker_build.sh`, and building the image.
+
 #### Build the component docker images, e.g., Morphling controller, DB-Manager
 
 ```bash

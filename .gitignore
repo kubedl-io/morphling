@@ -29,3 +29,9 @@ vendor
 
 # arch
 arch
+
+# model file cache
+.kubedl_model_cache/
+
+# vllm wheel file
+*.whl
