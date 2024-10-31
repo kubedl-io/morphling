@@ -1,4 +1,4 @@
-FROM python:3.6
+FROM python:3.10
 
 RUN if [ "$(uname -m)" = "ppc64le" ] || [ "$(uname -m)" = "aarch64" ]; then \
         apt-get -y update && \
@@ -15,10 +15,10 @@ RUN GRPC_HEALTH_PROBE_VERSION=v0.4.28 && \
     fi && \
     chmod +x /bin/grpc_health_probe
 
-ADD . /workspace
 WORKDIR /workspace
+ADD requirements.txt /workspace
 RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --no-cache-dir -r requirements.txt
-# RUN pip install --no-cache-dir -r requirements.txt
 
-ENV BATCH_SIZE 1
-ENTRYPOINT ["/bin/sh", "-c", "sleep 100000"]
+COPY ./*.py /workspace/
+
+ENTRYPOINT ["/bin/sh", "-c", "sleep 10000"]

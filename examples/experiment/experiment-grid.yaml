@@ -1,0 +1,102 @@
+apiVersion: "morphling.kubedl.io/v1alpha1"
+kind: ProfilingExperiment
+metadata:
+  name: experiment-grid-inferframe
+spec:
+  objective:
+    type: maximize
+    objectiveMetricName: qps
+  algorithm:
+    algorithmName: grid
+  parallelism: 1
+  maxNumTrials: 4
+  tunableParameters:
+    - category: "resource"
+      parameters:
+        - parameterType: discrete
+          name: "cpu"
+          feasibleSpace:
+            list:
+              - "15000m"
+              - "30000m"
+    - category: "env"
+      parameters:
+        - parameterType: discrete
+          name: "BATCH_SIZE"
+          feasibleSpace:
+            list:
+              - "1"
+              - "4"
+    - category: "env"
+      parameters:
+        - parameterType: discrete
+          name: "INFERENCE_FRAMEWORK"
+          feasibleSpace: 
+            list:
+              - "torch"
+              - "vllm"
+    - category: "env"
+      parameters:
+        - parameterType: discrete
+          name: "INPUT_LENGTH"
+          feasibleSpace:
+            list:
+              - "short"
+              - "middle"
+              - "long"
+    - category: "env"
+      parameters:
+        - parameterType: discrete
+          name: "DTYPE"
+          feasibleSpace:
+            list:
+              - "int8"
+              - "fp16"
+  clientTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: client
+            image: kubedl/morphling-grpc-client:demo
+            resources:
+              requests:
+                cpu: 4
+                memory: "4Gi"
+              limits:
+                cpu: 10
+                memory: "10Gi"
+            command: [ "python3" ]
+            args: ["morphling_client.py"]
+            imagePullPolicy: IfNotPresent
+          restartPolicy: Never
+      backoffLimit: 10
+  servicePodTemplate:
+    template:
+      spec:
+        containers:
+          - name: service-container
+            image: kubedl/morphling-grpc-server:latest
+            imagePullPolicy: IfNotPresent
+            env:
+              - name: MODEL_NAME
+                # value: "huggyllama/llama-7b"
+                value: "microsoft/Phi-1_5"
+            resources:
+              requests:
+                cpu: 15
+                memory: "8Gi"
+                nvidia.com/gpu: "1"
+              limits:
+                cpu: 30
+                memory: "32Gi"
+                nvidia.com/gpu: "1"
+            ports:
+              - containerPort: 8500
+            volumeMounts:
+              - name: model-cache
+                mountPath: /workspace/.kubedl_model_cache
+        volumes:
+          - name: model-cache
+            emptyDir: {}
+        restartPolicy: Always
