@@ -18,7 +18,7 @@ spec:
     spec:
       containers:
         - image: kubedl/morphling-algorithm:base
-          imagePullPolicy: Always #IfNotPresent
+          imagePullPolicy: IfNotPresent
 #          command: [ "/bin/sh" ]
 #          args: ["-c", "sleep 100000"]
 

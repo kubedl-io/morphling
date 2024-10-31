@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package api.predict;
+
+option go_package = "../grpc_predict/go";
+
+// Define prediction service
+service Predictor {
+  // Perform model inference
+  rpc Predict(PredictRequest) returns (PredictResponse);
+}
+
+// Prediction request
+message PredictRequest {
+  bytes input_data = 1;   // Input data, can be serialized tensor or other formats
+  map<string, string> metadata = 2;  // Additional metadata
+}
+
+// Prediction response
+message PredictResponse {
+  bytes output_data = 1;  // Output data, can be serialized tensor or other formats
+  map<string, string> metadata = 2;  // Additional metadata
+}
