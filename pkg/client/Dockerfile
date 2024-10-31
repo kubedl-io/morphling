@@ -5,7 +5,7 @@ RUN if [ "$(uname -m)" = "ppc64le" ] || [ "$(uname -m)" = "aarch64" ]; then \
         apt-get -y install gfortran libopenblas-dev liblapack-dev && \
         pip install cython 'numpy>=1.13.3'; \
     fi
-RUN GRPC_HEALTH_PROBE_VERSION=v0.3.1 && \
+RUN GRPC_HEALTH_PROBE_VERSION=v0.4.28 && \
     if [ "$(uname -m)" = "ppc64le" ]; then \
 	wget -qO/bin/grpc_health_probe https://github.com/grpc-ecosystem/grpc-health-probe/releases/download/${GRPC_HEALTH_PROBE_VERSION}/grpc_health_probe-linux-ppc64le; \
     elif [ "$(uname -m)" = "aarch64" ]; then \
@@ -17,8 +17,8 @@ RUN GRPC_HEALTH_PROBE_VERSION=v0.3.1 && \
 
 ADD . /workspace
 WORKDIR /workspace
-#RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --no-cache-dir -r requirements.txt
-RUN pip install --no-cache-dir -r requirements.txt
+RUN pip install -i https://pypi.tuna.tsinghua.edu.cn/simple --no-cache-dir -r requirements.txt
+# RUN pip install --no-cache-dir -r requirements.txt
 
 ENV BATCH_SIZE 1
 ENTRYPOINT ["/bin/sh", "-c", "sleep 100000"]

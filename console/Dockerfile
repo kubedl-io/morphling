@@ -3,6 +3,7 @@ FROM golang:1.16.5 as backend-builder
 WORKDIR /workspace
 
 COPY . .
+ENV GOPROXY=https://goproxy.cn,direct
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go mod vendor
 RUN CGO_ENABLED=0 GOOS=linux GOARCH=amd64 go build -mod=vendor -a -o backend-server console/backend/main.go
 
@@ -12,7 +13,7 @@ WORKDIR /workspace
 
 COPY console/frontend/ .
 RUN rm -rf ./dist && rm -rf ./node_modules && rm -f ./package-lock.json
-RUN npm --registry=https://registry.npm.taobao.org install --no-optional
+RUN npm --registry=https://registry.npmmirror.com install --no-optional
 RUN npm run build
 
 FROM alpine:latest
