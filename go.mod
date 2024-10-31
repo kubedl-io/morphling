@@ -11,13 +11,14 @@ require (
 	github.com/go-sql-driver/mysql v1.6.0
 	github.com/golang/mock v1.4.4
 	github.com/golang/protobuf v1.4.3
+	github.com/google/go-github/v39 v39.2.0
 	github.com/jinzhu/gorm v1.9.16
 	github.com/jinzhu/now v1.1.2 // indirect
 	github.com/mattn/go-sqlite3 v2.0.1+incompatible // indirect
 	github.com/onsi/gomega v1.8.1
 	github.com/stretchr/testify v1.7.0
-	golang.org/x/net v0.0.0-20201010224723-4f7140c49acb
-	golang.org/x/sys v0.0.0-20201015000850-e3ed0017c211 // indirect
+	golang.org/x/net v0.0.0-20210226172049-e18ecbb05110
+	golang.org/x/oauth2 v0.0.0-20190604053449-0f29369cfe45
 	google.golang.org/genproto v0.0.0-20201015140912-32ed001d685c // indirect
 	google.golang.org/grpc v1.32.0
 	google.golang.org/protobuf v1.25.0

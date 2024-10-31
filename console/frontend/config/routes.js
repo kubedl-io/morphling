@@ -57,6 +57,12 @@ export default [
                 component: './ExperimentCreate',
               },
               {
+                path: '/llm-service-version',
+                name: 'llm-service-version',
+                icon: 'dashboard',
+                component: './LLMServiceVersion',
+              },
+              {
                 path: '/admin',
                 name: 'admin',
                 icon: 'crown',
