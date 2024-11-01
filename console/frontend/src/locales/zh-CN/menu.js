@@ -58,6 +58,6 @@ export default {
   'menu.pe-monitor': '任务列表',
   "morphling-dashboard-domain-name": "Domain name",
   'menu.pe-submit': '新建画像',
-
+  'menu.llm-service-version': 'LLM服务版本',
 
 };

@@ -30,8 +30,11 @@ vendor
 # arch
 arch
 
-# model file cache
-.kubedl_model_cache/
+# model cache dir
+.kubedl_model_cache
 
-# vllm wheel file
-*.whl
+# vllm install package
+vllm*.whl
+
+# backend server executable file
+backend-server

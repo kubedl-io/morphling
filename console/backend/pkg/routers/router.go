@@ -73,10 +73,11 @@ func InitRouter(cmgr *clientmgr.ClientMgr) *gin.Engine {
 
 	experimentHandler := handlers.NewExperimentHandler(cmgr)
 	dataHandler := handlers.NewDataHandler(cmgr)
+	llmServiceVersionHandler := handlers.NewLLMServiceVersionHandler(cmgr)
 
 	// Register api v1 customized routers.
 	apiV1Routes := r.Group(constant.ApiV1Routes)
-	apiControllers := defaultAPIs(dataHandler, experimentHandler)
+	apiControllers := defaultAPIs(dataHandler, experimentHandler, llmServiceVersionHandler)
 	for _, ctrl := range apiControllers {
 		ctrl.RegisterRoutes(apiV1Routes)
 	}
@@ -84,9 +85,10 @@ func InitRouter(cmgr *clientmgr.ClientMgr) *gin.Engine {
 	return r
 }
 
-func defaultAPIs(dataHandler *handlers.DataHandler, experimentHandler *handlers.ExperimentHandler) []APIController {
+func defaultAPIs(dataHandler *handlers.DataHandler, experimentHandler *handlers.ExperimentHandler, llmServiceVersionHandler *handlers.LLMServiceVersionHandler) []APIController {
 	return []APIController{
 		api.NewDataAPIsController(dataHandler),
 		api.NewExperimentAPIsController(experimentHandler),
+		api.NewLLMServiceVersionAPIsController(llmServiceVersionHandler),
 	}
 }

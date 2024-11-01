@@ -118,3 +118,23 @@ type QueryPagination struct {
 	PageSize int
 	Count    int
 }
+
+type GitHubRepoInfo struct {
+	Owner         string `json:"owner"`
+	Repo          string `json:"repo"`
+	Branch        string `json:"branch"`
+	AccessToken   string `json:"accessToken"`
+}
+
+
+type LLMServiceVersion struct {
+	ModelName string `json:"modelName"`
+	Version   string `json:"version"`
+	CreationTime string `json:"creationTime"`
+	AssociatedExperimentSpec morphlingv1alpha1.ProfilingExperimentSpec `json:"associatedExperimentSpec"`
+}
+
+type LLMServiceVersionRequest struct {
+	GitHubRepoInfo 	GitHubRepoInfo 	`json:"gitHubRepoInfo"`
+	LLMServiceVersion 	LLMServiceVersion `json:"llmServiceVersion"`
+}

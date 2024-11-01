@@ -62,3 +62,39 @@ func GetTimeDiffer(startTime time.Time, endTime time.Time) (differ string) {
 	buffer.WriteString("s")
 	return buffer.String()
 }
+
+
+func generateTunableParametersYAML(params []morphlingv1alpha1.ParameterCategory) string {
+    var result strings.Builder
+    result.WriteString("  tunableParameters:\n")
+    
+    for _, category := range params {
+        result.WriteString(fmt.Sprintf("    - category: \"%s\"\n", category.Category))
+        result.WriteString("      parameters:\n")
+        
+        for _, param := range category.Parameters {
+            result.WriteString(fmt.Sprintf("        - parameterType: %s\n", param.ParameterType))
+            result.WriteString(fmt.Sprintf("          name: \"%s\"\n", param.Name))
+            result.WriteString("          feasibleSpace:\n")
+            
+            if len(param.FeasibleSpace.List) > 0 {
+                result.WriteString("            list:\n")
+                for _, item := range param.FeasibleSpace.List {
+                    result.WriteString(fmt.Sprintf("              - \"%s\"\n", item))
+                }
+            } else {
+                if param.FeasibleSpace.Max != "" {
+                    result.WriteString(fmt.Sprintf("            max: \"%s\"\n", param.FeasibleSpace.Max))
+                }
+                if param.FeasibleSpace.Min != "" {
+                    result.WriteString(fmt.Sprintf("            min: \"%s\"\n", param.FeasibleSpace.Min))
+                }
+                if param.FeasibleSpace.Step != "" {
+                    result.WriteString(fmt.Sprintf("            step: \"%s\"\n", param.FeasibleSpace.Step))
+                }
+            }
+        }
+    }
+    
+    return result.String()
+}
